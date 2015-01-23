@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class SearchTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#SearchAction()}.
+	 */
+	@Test
+	public void testSearchAction() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#searchAction()}.
+	 */
+	@Test
+	public void testSearchAction1() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#getString()}.
+	 */
+	@Test
+	public void testGetString() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#setString(java.lang.String)}.
+	 */
+	@Test
+	public void testSetString() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#getList_books()}.
+	 */
+	@Test
+	public void testGetList_books() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#updateTypeSearch(javax.faces.event.AjaxBehaviorEvent)}.
+	 */
+	@Test
+	public void testUpdateTypeSearch() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.SearchAction#setType_search(java.lang.String)}.
+	 */
+	@Test
+	public void testSetType_search() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

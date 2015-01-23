@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+	<application>
+		<locale-config>
+			<default-locale>en_CA</default-locale>
+			<supported-locale>en_CA</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<!-- package ending in the base name of the message bundle files -->
+			<base-name>bundle.messages</base-name>
+			<!-- The name to use in EL when referring to text in the bundle -->
+			<var>msgs</var>
+		</resource-bundle>
+	</application>
+
+
+	<!-- ALL navigations -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toHome</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toLogin</from-outcome>
+			<to-view-id>/profile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+		<navigation-rule>
+		<navigation-case>
+			<from-outcome>toHelp</from-outcome>
+			<to-view-id>/help.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>redirectToSearch</from-outcome>
+			<to-view-id>/search.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toRegistration</from-outcome>
+			<to-view-id>/registration.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toBook</from-outcome>
+			<to-view-id>/single_book.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toCheckout</from-outcome>
+			<to-view-id>/shopping_cart.xhtml</to-view-id>
+	
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toOrder</from-outcome>
+			<to-view-id>/checkout.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toInvoice</from-outcome>
+			<to-view-id>/invoice.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toInfo</from-outcome>
+			<to-view-id>/info.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toManagement</from-outcome>
+			<to-view-id>/secured/management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toProfile</from-outcome>
+			<to-view-id>/profile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Nav rules for management pages -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toBannerMt</from-outcome>
+			<to-view-id>/secured/banner_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toInventoryMt</from-outcome>
+			<to-view-id>/secured/inventory_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toNewMt</from-outcome>
+			<to-view-id>/secured/news_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toOrderMt</from-outcome>
+			<to-view-id>/secured/order_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toReportMt</from-outcome>
+			<to-view-id>/secured/reports.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toReviewMt</from-outcome>
+			<to-view-id>/secured/review_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toSaleMt</from-outcome>
+			<to-view-id>/secured/sales_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toSurveyMt</from-outcome>
+			<to-view-id>/secured/survey_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toUserMt</from-outcome>
+			<to-view-id>/secured/users_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- end management pages rules -->
+
+
+</faces-config>

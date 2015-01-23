@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<body class="">
+	
+	<h:form>
+
+		<div class="main-content">
+			<div class="grid_3 omega" id="bookdepot-sidebar">
+				<div id="sidebar">
+					<div class="sideblock">
+						<div class="menu">
+							<h:form>
+								<h:selectOneMenu id="searchby"
+								value="#">
+								<f:selectItem id="tor" itemLabel="Toronto" itemValue="#" />
+								<f:selectItem id="mon" itemLabel="Montreal" itemValue="#" />
+								<f:selectItem id="que" itemLabel="Quebec City" itemValue="#" />
+								<f:selectItem id="hal" itemLabel="Halifax" itemValue="#" />
+								<f:selectItem id="sai" itemLabel="Staint-John" itemValue="#" />
+								<f:selectItem id="fre" itemLabel="Fredericton" itemValue="#" />
+								<f:selectItem id="win" itemLabel="Winnipeg" itemValue="#" />
+								<f:selectItem id="vic" itemLabel="Victoria" itemValue="#" />
+								<f:selectItem id="van" itemLabel="Vancouver" itemValue="#" />
+								<f:selectItem id="cha" itemLabel="Charlottetown" itemValue="#" />
+								<f:selectItem id="reg" itemLabel="Regina" itemValue="#" />
+								<f:selectItem id="edm" itemLabel="Edmonton" itemValue="#" />
+								<f:selectItem id="sas" itemLabel="Saskatoon" itemValue="#" />
+								<f:selectItem id="cal" itemLabel="Calgary" itemValue="#" />
+								<f:selectItem id="stjohns" itemLabel="St. John's" itemValue="#" />
+								<f:selectItem id="ott" itemLabel="Ottawa" itemValue="#" />
+								<f:selectItem id="whi" itemLabel="Whitehorse" itemValue="#" />
+								<f:selectItem id="yel" itemLabel="Yellowknife" itemValue="#" />
+								<f:selectItem id="uqa" itemLabel="Iqaluit" itemValue="#" />
+								<f:selectItem id="kuj" itemLabel="Kuujjuaq" itemValue="#" />
+							</h:selectOneMenu>
+								<h:inputText value="" size="10" />
+								<h:outputText value="&#160;" />
+								<h:commandButton styleClass="small-button" type="submit" value="#{msgs.search}" action="#" />
+								<br /><br />
+							</h:form>
+						</div>
+
+						<ul class="menu">
+							<h:outputText>#{msgs.searchGenre}</h:outputText>
+							<ui:repeat value="#{genreDAO.allGenres}" var="genre_list">
+								<li><h:commandLink value="#{genre_list.genre}"></h:commandLink></li>
+							</ui:repeat>
+						</ul>
+						<div class="clear"></div>
+					</div>
+
+					<div class="sideblock">
+						<h3 class="title">(BANNER)</h3>
+						<h:commandLink fragment="home.xhtml">
+							<h:graphicImage name="./images/banner.jpg" alt="image"
+								styleClass="shadow" />
+						</h:commandLink>
+						<div class="clear"></div>
+					</div>
+
+					<div class="sideblock last">
+						<h3 class="title">SURVEY</h3>
+						<h:form>
+
+							<h:selectOneRadio value="bla bla" layout="pageDirection">
+								<h6 style="color: #EB540A;">What does the fox say?
+									(#{survey.question})</h6>
+								<f:selectItem itemValue="piupiupiu" itemLabel="piu piu piu" />
+								<f:selectItem itemValue="wiuwiuwiu" itemLabel="wiu wiu wiu" />
+								<f:selectItem itemValue="wagawagawaga"
+									itemLabel="waga waga waga" />
+							</h:selectOneRadio>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+						</h:form>
+					</div>
+
+				</div>
+				<!-- Sidebar End -->
+			</div>
+			<!-- Grid 3 End -->
+		</div>
+
+	</h:form>
+
+</body>
+</html>

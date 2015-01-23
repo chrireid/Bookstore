@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- Made by Polina, Chris, Matthieu -->
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="grid.css" target="head" /> 
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+
+	<script type="text/javascript">
+		window.onresize = function(event) {
+			
+			updatechartpanel();
+		}
+	</script>
+
+</h:head>
+
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline"
+							value="#{msgs.homeTitle}" />
+					</h:panelGroup>
+<!-- 					Random Books -->
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page" value="#{msgs.slogan}" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br />
+					<h:panelGroup class="grid_10">
+					<ui:repeat value="#{bookAction.randomBooksByGenre}" var="book">
+						<h:form>
+							<h:panelGroup class="grid_3">
+								<h:commandLink width="200" action="#{bookAction.getShowBook}"
+									alt="image" styleClass="shadow">
+									<h:graphicImage width="200" height="300" name="#{book.cover}"
+										alt="image" styleClass="shadow" />
+									<f:param name="_id" value="#{book.id}" />
+								</h:commandLink>
+								<br />
+								<br />
+								<h:commandLink action="#{bookAction.getShowBook}">
+									<h3>#{book.title}</h3>
+									<f:param name="_id" value="#{book.id}" />
+								</h:commandLink>
+								<h4 style="color: #EB540A;">$#{book.price}</h4>
+							</h:panelGroup>
+						</h:form>
+					</ui:repeat>
+					<p style="color: #f2f2f2; text-align: center;">__________________________________________________________________________________________________________</p>
+					</h:panelGroup>
+<!-- 					Recent Books -->
+					<h:panelGroup class="grid_5 alpha">
+						<h:outputText styleClass="h2" value="RECENTLY ADDED"
+							style="color:#EB540A;" />
+						<br />
+						<br />
+						<ui:repeat value="#{bookAction.mostRecentBooks}" var="books">
+							<div class="grid_2">
+								<h:graphicImage name="#{books.cover}" alt="image"
+									styleClass="shadow" width="100" />
+								#{of:abbreviate(books.title, 15)}
+							</div>
+
+
+						</ui:repeat>
+					</h:panelGroup>
+					
+<!-- 					RSS -->
+					<h:panelGroup class="grid_4">
+					<ui:repeat value="#{RSSAction.feed}" var="feed">
+						<h:panelGroup class="grid_5 alpha"
+							style="padding:10px 10px 10px 10px;">
+							<h4>
+								<h:outputText escape="false" value="#{feed.title}"
+									style="font-weight:bold" />
+							</h4>
+							<br />
+							<h:outputText escape="false" value="#{feed.description}" />
+
+						</h:panelGroup>
+					</ui:repeat>
+					</h:panelGroup>
+					<br />
+					<h:panelGroup class="grid_10"><p style="color: #f2f2f2; text-align: center;">__________________________________________________________________________________________________________</p></h:panelGroup>
+					
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+
+</h:body>
+</html>

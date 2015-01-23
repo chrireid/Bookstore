@@ -1,0 +1,5 @@
+package g4w14.BookStore.reports;
+
+public class ReportLineActionBean {
+
+}

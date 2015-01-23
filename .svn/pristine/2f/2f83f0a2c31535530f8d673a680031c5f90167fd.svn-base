@@ -1,0 +1,266 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.AuthorBean;
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+/**
+ * Class for Author DBA access
+ * 
+ * @author Tristan
+ * 
+ */
+@Named("authorDAO")
+@RequestScoped
+public class AuthorDAOImpl {
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	public AuthorDAOImpl() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		this.url = values[0];
+		this.user = values[1];
+		this.password = values[2];
+
+	}
+
+	/**
+	 * Inserts author into database
+	 * 
+	 * @param a
+	 * @return success
+	 * @throws SQLException
+	 */
+	public int insert(AuthorBean a) throws SQLException {
+		int success = -1;
+		int records;
+
+		if (a == null)
+			return 0;
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("INSERT INTO authors_test(lastname,firstname) VALUES (?,?)");) {
+			statement.setString(2, a.getFirstname());
+			statement.setString(1, a.getLastname());
+
+			records = statement.executeUpdate();
+			if (records != 1)
+				success = -1;
+
+			/**
+			 * Used to return correct author_id if already inserted
+			 */
+			try (Connection conn = DriverManager.getConnection(url, user,
+					password);
+					PreparedStatement stmnt = connection
+							.prepareStatement("SELECT * FROM authors_test WHERE firstname = ? AND lastname = ?");) {
+				stmnt.setString(1, a.getFirstname());
+				stmnt.setString(2, a.getLastname());
+				ResultSet rs = null;
+				rs = stmnt.executeQuery();
+				rs.next();
+				success = rs.getInt(1);
+			}
+
+		}
+		return success;
+
+	}
+
+	/**
+	 * Updates author fields: either firstname, lastname or both at once.
+	 * 
+	 * @param Author
+	 *            bean
+	 * @param id
+	 *            to be updated
+	 * @return records affected
+	 * @throws SQLException
+	 */
+	public int update(AuthorBean a, int id) throws SQLException {
+		int records;
+		int counter = 2;
+
+		if (a == null) {
+			return 0;
+		}
+		String sql = "UPDATE authors_test SET _id = ?";
+		if (!(a.getFirstname() == "")) {
+			sql += ", firstname = ?";
+			counter++;
+		}
+		if (!(a.getLastname() == "")) {
+			sql += ", lastname = ?";
+			counter++;
+		}
+
+		sql += " WHERE _id = ?";
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+			ps.setInt(1, a.get_id());
+			if (!(a.getFirstname() == "")) {
+				ps.setString(counter, a.getFirstname());
+			}
+			if (!(a.getLastname() == "")) {
+				ps.setString(counter, a.getLastname());
+			}
+			records = ps.executeUpdate();
+		}
+		return records;
+
+	}
+
+	/**
+	 * Returns all authors for specific book
+	 * 
+	 * @param b
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<AuthorBean> getAuthorsByBook(BookBean b)
+			throws SQLException {
+		ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+		String authorQuery = "SELECT * FROM authors_test WHERE ";
+		int ctr = 0;
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT author_id FROM authors_books_test WHERE book_id = ?");)
+
+		{
+			statement.setLong(1, b.getId());
+			try (ResultSet rs = statement.executeQuery();) {
+
+				while (rs.next()) {
+					authors.add(new AuthorBean());
+					authors.get(ctr).set_id(rs.getInt(1));
+					ctr++;
+					authorQuery += "author_id = ? OR ";
+				}
+				authorQuery = authorQuery
+						.substring(0, authorQuery.length() - 3);
+			}
+		}
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement(authorQuery);)
+
+		{
+			for (int i = 1; i <= ctr; i++) {
+				statement.setLong(i, authors.get(i - 1).get_id());
+			}
+			try (ResultSet rs = statement.executeQuery();) {
+				authors = new ArrayList<AuthorBean>();
+				while (rs.next()) {
+					AuthorBean temp = new AuthorBean();
+					temp.set_id(rs.getInt("_id"));
+					temp.setFirstname(rs.getString("firstname"));
+					temp.setLastname(rs.getString("lastname"));
+					authors.add(temp);
+				}
+			}
+
+		}
+		return authors;
+
+	}
+
+	/**
+	 * Method which tries every word in the search query against every field in
+	 * Authors (first name, last name)
+	 * 
+	 * @param query
+	 * @return
+	 * @throws SQLException
+	 */
+	public AuthorBean getAuthorByString(String query) throws SQLException {
+		if (query == null)
+			return null;
+
+		ArrayList<AuthorBean> authorList = new ArrayList<AuthorBean>();
+		AuthorBean temp;
+
+		/**
+		 * Counters to keep track of which Author more closely matches the
+		 * string
+		 */
+		int totalMatches = 0;
+		int mostMatchesToDate = 0;
+
+		/**
+		 * Splits query by space for parsing.
+		 */
+		String[] queryArray = query.split(" ");
+
+		/**
+		 * Retrieves every author record
+		 */
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM authors_test");) {
+			try (ResultSet rs = statement.executeQuery();) {
+				while (rs.next()) {
+					temp = new AuthorBean();
+					temp.set_id(rs.getInt(1));
+					temp.setFirstname(rs.getString(2));
+					temp.setLastname(rs.getString(3));
+
+					authorList.add(temp);
+
+				}
+			}
+
+		}
+
+		AuthorBean parsedAuthor = new AuthorBean();
+		/**
+		 * Loops through every author and compares it's first name and last name
+		 * to every word in search query, delimited by a space. e.g:
+		 * "Steven King is awesome" Each word will be compared to firstname and
+		 * lastname of every author bean. The one with most matches will be
+		 * returned
+		 */
+		for (int i = 0; i < authorList.size(); i++) {
+			totalMatches = 0;
+			for (int k = 0; k < queryArray.length; k++) {
+				if ((authorList.get(i).getFirstname()).equals(queryArray[k])
+						|| (authorList.get(i).getLastname())
+								.equals(queryArray[k])) {
+					totalMatches++;
+					if (totalMatches > mostMatchesToDate) {
+						parsedAuthor = authorList.get(i);
+						mostMatchesToDate = totalMatches;
+					}
+				}
+			}
+		}
+
+		return parsedAuthor;
+	}
+
+}

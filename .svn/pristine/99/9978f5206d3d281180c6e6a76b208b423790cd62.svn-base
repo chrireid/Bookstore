@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="REGISTRATION" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page"
+							value="Make sure the information is accurate" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:form>
+						<h:panelGrid styleClass="grid_5 alpha" columns="2">
+
+							<h:outputText styleClass="h2" value="#{msgs.loginInfo}" />
+							<br />
+
+							<!--  Login fields -->
+
+							<h:outputLabel for="login" value="#{msgs.login} *" />
+							<h:inputText label="#{msgs.login}" id="login"
+								value="#{userBean.login}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="6"></f:validateLength>
+								<f:ajax event="keyup" render="nameError" />
+							</h:inputText>
+							<h:message id="nameError" for="login" errorStyle="color:red;" />
+
+
+							<!--  Password fields -->
+							<h:outputLabel for="password" value="#{msgs.password} *" />
+							<h:inputSecret label="#{msgs.password}" id="password"
+								binding="#{passwordComponent}" value="#{userBean.password}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:ajax event="keyup" render="passError" />
+								<f:validateLength minimum="6" />
+							</h:inputSecret>
+							<h:message id="passError" for="password" errorStyle="color:red;" />
+
+							<!--  Second Password's Fields -->
+							<h:outputLabel for="cpassword" value="#{msgs.cpassword}: *" />
+							<h:inputSecret label="#{msgs.password}" id="cpassword"
+								required="#{not empty passwordComponent.value}">
+								<f:validator validatorId="confirmPasswordValidator" />
+								<f:attribute name="passwordComponent"
+									value="#{passwordComponent}" />
+								<f:ajax event="keyup" render="pass2Error" />
+							</h:inputSecret>
+							<h:message id="pass2Error" for="cpassword"
+								errorStyle="color:red;" />
+
+							<br />
+							<!--  "Address" section label -->
+							<h:outputText styleClass="h3" value="#{msgs.address}" />
+							<br />
+							<!--  Title fields -->
+							<h:outputLabel for="title" value="#{msgs.title}: " />
+							<h:inputText label="#{msgs.title}" id="title"
+								value="#{userBean.title}">
+								<f:validateLength minimum="2" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="titleError" />
+							</h:inputText>
+							<h:message id="titleError" for="title" errorStyle="color:red;" />
+							<br />
+
+							<!--  Last Name fields -->
+							<h:outputLabel for="lname" value="#{msgs.lname}: " />
+							<h:inputText id="lname" label="#{msgs.lname}"
+								value="#{userBean.lastName}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="2" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="lnameError" />
+							</h:inputText>
+							<h:message id="lnameError" for="lname" errorStyle="color:red;" />
+							<br />
+
+							<!--  First Name fields -->
+							<h:outputLabel for="fname" value="#{msgs.fname}: " />
+							<h:inputText id="fname" label="#{msgs.fname}"
+								value="#{userBean.firstName}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="2" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="fnameError" />
+							</h:inputText>
+							<h:message id="fnameError" for="fname" errorStyle="color:red;" />
+							<br />
+
+							<!--  Company -->
+							<h:outputLabel for="company" value="#{msgs.company}: " />
+							<h:inputText id="company" label="#{msgs.company}"
+								value="#{userBean.company}">
+								<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+								<f:validateLength minimum="2" />
+								<f:ajax event="keyup" render="companyNameError" />
+							</h:inputText>
+							<h:message id="companyNameError" for="company"
+								errorStyle="color:red;" />
+							<br />
+
+							<!-- Address line 1 -->
+							<h:outputLabel for="address1" value="#{msgs.address}: " />
+							<h:inputText id="address1" label="#{msgs.address}"
+								value="#{userBean.address1}">
+								<f:validateLength minimum="6" />
+								<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+								<f:ajax event="keyup" render="ad1Error" />
+							</h:inputText>
+							<h:message id="ad1Error" for="address1" errorStyle="color:red;" />
+							<br />
+
+							<!-- Address line 2 -->
+							<h:outputLabel for="address2"
+								value="#{msgs.address} #{msgs.secondLine}: " />
+							<h:inputText id="address2" label="#{msgs.address}"
+								value="#{userBean.address2}">
+								<f:validateLength minimum="6" />
+								<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+								<f:ajax event="keyup" render="ad2Error" />
+							</h:inputText>
+							<h:message id="ad2Error" for="address2" errorStyle="color:red;" />
+							<br />
+
+							<!--  City  -->
+							<h:outputLabel for="city" value="#{msgs.city}: " />
+							<h:inputText id="city" label="#{msgs.city}"
+								value="#{userBean.city}">
+								<f:validateLength minimum="6" />
+								<f:validateRegex pattern="[a-zA-Z -]+" />
+								<f:ajax event="keyup" render="cityError" />
+							</h:inputText>
+							<h:message id="cityError" for="city" errorStyle="color:red;" />
+							<br />
+
+							<!--  province  -->
+							<br />
+							<h:outputLabel for="province" value="Province: " />
+							<br />
+							<h:selectOneMenu id="province" value="#{userBean.province}">
+								<f:selectItem id="ab" itemLabel="AB" itemValue="Alberta" />
+								<f:selectItem id="bc" itemLabel="BC"
+									itemValue="British Columbia" />
+								<f:selectItem id="mb" itemLabel="MB" itemValue="Manitoba" />
+								<f:selectItem id="nb" itemLabel="NB" itemValue="New Brunswick" />
+								<f:selectItem id="nl" itemLabel="NL" itemValue="NewfoundLand" />
+								<f:selectItem id="ns" itemLabel="NS" itemValue="Nova Scotia" />
+								<f:selectItem id="nt" itemLabel="NT"
+									itemValue="Northwest Territories" />
+								<f:selectItem id="nu" itemLabel="NU" itemValue="Nunavut" />
+								<f:selectItem id="on" itemLabel="ON" itemValue="Ontario" />
+								<f:selectItem id="pe" itemLabel="PE"
+									itemValue="Prince Edward Island" />
+								<f:selectItem id="qc" itemLabel="QC" itemValue="Quebec" />
+								<f:selectItem id="ks" itemLabel="SK" itemValue="Saskatchewan" />
+								<f:selectItem id="yt" itemLabel="YT" itemValue="Yukon" />
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="country_menu" value="Country: " />
+
+
+
+							<!--  postal  -->
+							<h:outputLabel for="postal" value="#{msgs.postal}: " />
+							<h:inputText id="postal" label="#{msgs.postal}"
+								value="#{userBean.postalCode}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="6" />
+								<f:validateLength maximum="6" />
+								<f:ajax event="keyup" render="postalError" />
+							</h:inputText>
+							<h:message id="postalError" for="postal" errorStyle="color:red;" />
+						</h:panelGrid>
+
+						<!-- Second Column -->
+						<h:panelGrid styleClass="grid_5 omega" columns="2">
+							<h:outputText styleClass="h2"
+								value="#{msgs.contact} #{msgs.info}" />
+
+							<!--  Phone number -->
+							<br />
+							<h:outputLabel for="phone" value="#{msgs.phoneNum}: " />
+							<h:inputText id="phone" label="#{msgs.phoneNum}"
+								value="#{userBean.phone}">
+								<f:validateRegex pattern="^([+]?[0-9]+$)" />
+								<f:validateLength minimum="10" />
+								<f:validateLength maximum="12" />
+								<f:ajax event="keyup" render="phoneError" />
+							</h:inputText>
+							<h:message id="phoneError" for="phone" errorStyle="color:red;" />
+
+
+							<!--  Cell phone  -->
+							<h:outputLabel for="cell" value="#{msgs.cell}: " />
+							<h:inputText id="cell" label="#{msgs.cell}"
+								value="#{userBean.cellphone}">
+								<f:validateRegex pattern="^([+]?[0-9]+$)" />
+								<f:validateLength minimum="10" />
+								<f:validateLength maximum="12" />
+								<f:ajax event="keyup" render="cellError" />
+							</h:inputText>
+							<h:message id="cellError" for="cell" errorStyle="color:red;" />
+
+
+							<!-- Email -->
+							<h:outputLabel for="email" value="#{msgs.email}: *" />
+							<h:inputText id="email" label="#{msgs.email}"
+								value="#{userBean.email}">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+								<f:ajax event="keyup" render="emailError" />
+							</h:inputText>
+							<h:message id="emailError" for="email" errorStyle="color:red;" />
+							<br />
+
+							<!-- Address Block -->
+							<h:outputText styleClass="h2" value="#{msgs.shippingAddress}:" />
+							<br />
+
+							<!-- Shipping Title -->
+							<h:outputLabel for="s_title" value="#{msgs.title}: " />
+							<h:inputText id="s_title" label="#{msgs.title}"
+								value="#{userBean.shippingTitle}">
+								<f:validateLength minimum="2" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="s_titleError" />
+							</h:inputText>
+							<h:message id="s_titleError" for="s_title"
+								errorStyle="color:red;" />
+							<br />
+
+
+							<!--  Last Name -->
+							<h:outputLabel for="s_lname" value="#{msgs.lname}: " />
+							<h:inputText id="s_lname" label="#{msgs.lname}"
+								value="#{userBean.shippingLastName}">
+								<f:validateLength minimum="3" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="s_lnameError" />
+							</h:inputText>
+							<h:message id="s_lnameError" errorStyle="color:red;"
+								for="s_lname" />
+							<br />
+
+							<!--  First Name -->
+							<h:outputLabel for="s_fname" value="#{msgs.fname}: " />
+							<h:inputText id="s_fname" label="#{msgs.fname}"
+								value="#{userBean.shippingFirstName}">
+								<f:validateLength minimum="3" />
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="s_fnameError" />
+							</h:inputText>
+							<h:message id="s_fnameError" errorStyle="color:red;"
+								for="s_fname" />
+							<br />
+
+							<!--  Shipping Company -->
+							<h:outputLabel for="s_company" value="#{msgs.company}: " />
+							<h:inputText id="s_company" label="#{msgs.company}"
+								value="#{userBean.shippingCompany}">
+								<f:validateLength minimum="2" />
+								<f:validateRegex pattern="[a-zA-Z ]+" />
+								<f:ajax event="keyup" render="s_companyError" />
+							</h:inputText>
+							<h:message id="s_companyError" errorStyle="color:red;"
+								for="s_company" />
+							<br />
+
+							<!-- Shipping address -->
+							<h:outputText for="s_addrs" value="#{msgs.shippingAddress}" />
+							<h:inputText id="s_addrs" label="#{msgs.shippingAddress}"
+								value="#{userBean.shippingAddress1}">
+								<f:validateLength minimum="6" />
+								<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+								<f:ajax event="keyup" render="s_addrsError" />
+							</h:inputText>
+							<h:message id="s_addrsError" errorStyle="color:red;"
+								for="s_addrs" />
+							<br />
+
+							<!--  Shipping address 2 -->
+							<h:outputText for="s_addrs2"
+								value="#{msgs.shippingAddress} #{msgs.secondLine}" />
+							<h:inputText id="s_addrs2" label="#{msgs.shippingAddress}"
+								value="#{userBean.shippingAddress2}">
+								<f:ajax event="keyup" render="s_addrs2Error" />
+								<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+							</h:inputText>
+							<h:message id="s_addrs2Error" errorStyle="color:red;"
+								for="s_addrs2" />
+							<br />
+
+
+							<!-- Shipping City -->
+							<h:outputLabel for="city" value="#{msgs.city}: " />
+							<h:inputText id="s_city" label="#{msgs.city}"
+								value="#{userBean.shippingCity}">
+								<f:validateLength minimum="6" />
+								<f:validateRegex pattern="[a-zA-Z -]+" />
+								<f:ajax event="keyup" render="s_cityError" />
+							</h:inputText>
+							<h:message id="s_cityError" for="s_city" errorStyle="color:red;" />
+							<br />
+
+							<h:selectOneMenu id="s_country"
+								value="#{userBean.shippingCountry}">
+								<f:selectItem id="s_canada" itemLabel="Canada"
+									itemValue="Canada" />
+							</h:selectOneMenu>
+
+							<!-- Postal -->
+							<h:outputLabel for="s_postal" value="#{msgs.postal}: " />
+							<br />
+							<h:inputText id="s_postal" label="#{msgs.postal}"
+								value="#{userBean.shippingPostalCode}"
+								validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="6" />
+								<f:validateLength maximum="6" />
+								<f:ajax event="keyup" render="s_postalError" />
+							</h:inputText>
+							<h:message id="s_postalError" errorStyle="color:red;"
+								for="s_postal" />
+
+						</h:panelGrid>
+
+						<h:panelGroup styleClass="clear"></h:panelGroup>
+						<br />
+						<br />
+
+						<h:commandButton value="Register"
+							action="#{userAction.insert(userBean)}"
+							style="margin-right:10px;" />
+
+
+						<h:commandButton value="Clear" action="#"
+							style="margin-right:10px;" />
+
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

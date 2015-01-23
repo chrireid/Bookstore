@@ -1,0 +1,116 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import g4w14.BookStore.actionbeans.SurveyActionBean;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * @author Xander
+ * 
+ */
+
+
+public class SurveyAnswerBean {
+
+	private long _id;
+	private long question_id;
+	private String answer;
+	private int answer_count;
+
+	/**
+	 * 
+	 */
+	public SurveyAnswerBean() {
+		super();
+		this._id = 0;
+		this.question_id = 0;
+		this.answer = "";
+		this.answer_count = 0;
+	}
+
+	public SurveyAnswerBean(long _id, long question_id, String answer,
+			int answer_count) {
+		super();
+		this._id = _id;
+		this.question_id = question_id;
+		this.answer = answer;
+		this.answer_count = answer_count;
+	}
+
+	public long getId() {
+		return _id;
+	}
+
+	public void setId(long _id) {
+		this._id = _id;
+	}
+
+	public long getQuestionId() {
+		return question_id;
+	}
+
+	public void setQuestionId(long question_id) {
+		this.question_id = question_id;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
+	public int getAnswerCount() {
+		return answer_count;
+	}
+
+	public void setAnswerCount(int answer_count) {
+		this.answer_count = answer_count;
+	}
+
+	@Override
+	public String toString() {
+		return "SurveyAnswerBean [_id=" + _id + ", question_id=" + question_id
+				+ ", answer=" + answer + ", answer_count=" + answer_count + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (_id ^ (_id >>> 32));
+		result = prime * result + ((answer == null) ? 0 : answer.hashCode());
+		result = prime * result + answer_count;
+		result = prime * result + (int) (question_id ^ (question_id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SurveyAnswerBean other = (SurveyAnswerBean) obj;
+		if (_id != other._id)
+			return false;
+		if (answer == null) {
+			if (other.answer != null)
+				return false;
+		} else if (!answer.equals(other.answer))
+			return false;
+		if (answer_count != other.answer_count)
+			return false;
+		if (question_id != other.question_id)
+			return false;
+		return true;
+	}
+
+}

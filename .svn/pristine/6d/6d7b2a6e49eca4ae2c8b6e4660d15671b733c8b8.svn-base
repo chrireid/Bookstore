@@ -1,0 +1,83 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.BookBean;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIOutput;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+@SessionScoped
+public class SearchManagementAction implements Serializable {
+
+	
+	private static final long serialVersionUID = -5040831461188322535L;
+	private String string; // value from the input search
+	private String type_search;
+	private ArrayList<BookBean> books;
+
+	@Inject
+	BookActionBean bookAction;
+	
+	public SearchManagementAction() throws SQLException {
+		books = bookAction.getAllBooks();
+		type_search = "by_publisher";
+		string = "";
+	}
+	
+	public ArrayList<BookBean> getBooks() {
+		return books;
+	}
+	public void setBooks(ArrayList<BookBean> books) {
+		this.books = books;
+	}
+
+
+	public String getString() {
+		if (string == null) {
+			string = "";
+		}
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
+	}
+
+	/*
+	 * Main method called when search button clicked
+	 */
+	public ArrayList<BookBean> searchAction() throws SQLException {
+		
+		System.out.println("SearchAction method called");
+		
+		if (!type_search.equals("")) {
+			if (type_search.equals("by_title")) {
+				books = bookAction.getBooksByTitle(string);
+			} else if (type_search.equals("by_publisher")) {
+				books = bookAction.getBooksByPublisher(string);
+			} else if (type_search.equals("by_author")) {
+				books = bookAction.getBooksByAuthor(string);
+			} else if (type_search.equals("by_isbn")) {
+				books = bookAction.getBooksByISBN(string);
+			}
+		} else {
+			books = bookAction.getAllBooks();
+		}
+		
+		
+		return books;
+	}
+	
+	public void updateTypeSearch(AjaxBehaviorEvent event) {
+
+		type_search = (String) ((UIOutput) event.getSource()).getValue();
+
+	}
+}

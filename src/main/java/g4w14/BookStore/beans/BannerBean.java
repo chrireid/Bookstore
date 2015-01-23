@@ -1,0 +1,139 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import java.io.Serializable;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+
+
+/**
+ * @author Xander
+ *
+ */
+@Named
+@RequestScoped
+public class BannerBean implements Serializable{
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7041777573855373444L;
+	private long id;
+	private String title; 
+	private String image;
+	private boolean active;
+	
+	
+public BannerBean()
+{
+	super();
+	this.id = 0;
+	this.title = "";
+	this.image = "";
+	this.active = false;
+}
+
+
+public BannerBean(long id, String title, String image, boolean active)
+{
+	super();
+	this.id = id;
+	this.title = title;
+	this.image = image;
+	this.active = active;
+}
+
+
+public long getId() {
+	return id;
+}
+
+
+public void setId(long id) {
+	this.id = id;
+}
+
+
+public String getTitle() {
+	return title;
+}
+
+
+public void setTitle(String title) {
+	this.title = title;
+}
+
+
+public String getImage() {
+	return image;
+}
+
+
+public void setImage(String image) {
+	this.image = image;
+}
+
+
+public boolean isActive() {
+	return active;
+}
+
+
+public void setActive(boolean active) {
+	this.active = active;
+}
+
+
+@Override
+public String toString() {
+	return "BannerBean [id=" + id + ", title=" + title + ", image=" + image
+			+ ", active=" + active + "]";
+}
+
+
+@Override
+public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + (active ? 1231 : 1237);
+	result = prime * result + (int) (id ^ (id >>> 32));
+	result = prime * result + ((image == null) ? 0 : image.hashCode());
+	result = prime * result + ((title == null) ? 0 : title.hashCode());
+	return result;
+}
+
+
+@Override
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	BannerBean other = (BannerBean) obj;
+	if (active != other.active)
+		return false;
+	if (id != other.id)
+		return false;
+	if (image == null) {
+		if (other.image != null)
+			return false;
+	} else if (!image.equals(other.image))
+		return false;
+	if (title == null) {
+		if (other.title != null)
+			return false;
+	} else if (!title.equals(other.title))
+		return false;
+	return true;
+}
+
+
+
+}

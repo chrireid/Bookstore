@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	
+    >
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<!-- Tristan Charette -->
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+	<h:outputStylesheet library="css" name="tablestyle.css" target="head"/>
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+	<ui:insert name="content">
+		
+		<h:form>
+		<h:dataTable 
+                    styleClass="order-table"
+    				headerClass="order-table-header"
+    				rowClasses="order-table-odd-row,order-table-even-row"
+                    width="700" border="0" value="#{ordersActionBean.allOrders}" var="order">
+                	
+                	
+                	<h:column>
+                   			 <f:facet name="header">
+                                <h:outputText value="Order Id" />
+                       		</f:facet>
+                                <h:outputText value="#{order.id}"></h:outputText>
+                               
+                    </h:column>
+                    
+                	
+                	<h:column>
+                   			 <f:facet name="header">
+                                <h:outputText value="Customer Id" />
+                       		</f:facet>
+                                <h:outputText value="#{order.userId}"></h:outputText>
+                               
+                    </h:column>
+                    
+                        <h:column>
+                  			  <f:facet name="header">
+                               <h:outputText value="Books in Order" />
+                               </f:facet>
+                                <rich:panel>
+							        <h:form>
+							        <rich:dataGrid value="#{order.books}" var="book" columns="2"  width="200px">
+							            <rich:panel bodyClass="pbody">
+							                <f:facet name="header">
+							                    <h:outputText value="#{book.title} "></h:outputText>
+							                </f:facet>
+							                <h:panelGrid columns="2">
+							                    <h:outputText value="ISBN:" styleClass="label"></h:outputText>
+							                    <h:outputText value="#{book.isbn}" />
+							                    <h:outputText value="Price:" styleClass="label"></h:outputText>
+							                    <h:outputText value="#{book.list_price}" />
+							                    <h:outputText value="publisher:" styleClass="label"></h:outputText>
+							                    <h:outputText value="#{book.publisher}" />
+							                    <h:outputText value="Times:" styleClass="label"></h:outputText>
+							                    <h:outputText value="1" />
+							                </h:panelGrid>
+							            </rich:panel>
+							           
+							        </rich:dataGrid>
+							        </h:form>
+							    </rich:panel>    
+                     </h:column>
+                    
+                
+                     
+                    <h:column>
+                   			 <f:facet name="header">
+                                <h:outputText value="Total Sale Amount" />
+                       		</f:facet>
+                                <h:outputText value="#{ordersActionBean.getTotalCostByOrderId(order.id)}"></h:outputText>
+                                
+                    </h:column>
+
+					<h:column>
+                  	<f:facet name="header">
+                            <h:outputText value="Order Date" />
+                 	 </f:facet>
+                            <h:outputText value="#{order.orderDate}"></h:outputText>
+                     </h:column>
+
+					<h:column>
+                   			 <f:facet name="header">
+                                <h:outputText value="Remove" />
+                                </f:facet>
+					<h:commandButton styleClass="small-button" value="X" action="#{ordersActionBean.remove(order.id)}" update="@form"></h:commandButton>
+					</h:column>
+					
+                    <f:facet name="footer">
+
+                    </f:facet>
+        
+                </h:dataTable>
+            </h:form>    
+	</ui:insert>
+
+	<br/><br/><br/><br/><br/><br/><br/><br/>
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

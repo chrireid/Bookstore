@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+/**
+ * @author 1141649
+ *
+ */
+public class OrderDetailsBean {
+
+}

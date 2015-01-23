@@ -1,0 +1,202 @@
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+import g4w14.BookStore.beans.AuthorBean;
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.beans.GenreBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Named("authorsBooksAction")
+@RequestScoped
+public class AuthorsBooksActionBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7600647241263624117L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	public AuthorsBooksActionBean() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		log.debug("AuthorsBooksDAOImpl instantiated");
+	}
+
+	public int insert(int bookId, int authId) throws SQLException {
+		int success = -1;
+		int records;
+
+		if (bookId == 0 || authId == 0)
+			return 0;
+
+		ResultSet rs = null;
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("INSERT INTO authors_books_test(author_id,book_id) VALUES (?,?)");) {
+			statement.setInt(1, authId);
+			statement.setInt(2, bookId);
+			success = statement.executeUpdate();
+		}
+		return success;
+
+	}
+
+	public int update(BookBean bb) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * Retrieves all books corresponding to the Author id
+	 */
+	public ArrayList<BookBean> searchByAuthor(AuthorBean ab)
+			throws SQLException {
+		ArrayList<BookBean> bookRecords;
+		BookBean temp;
+		/**
+		 * Verify not null
+		 */
+		if (ab.get_id() == 0)
+			return null;
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM inventory_test WHERE author_id = ?");) {
+			statement.setLong(1, ab.get_id());
+			bookRecords = new ArrayList<BookBean>();
+			try (ResultSet rs = statement.executeQuery();) {
+
+				while (rs.next()) {
+					temp = new BookBean();
+
+					temp.setId(rs.getInt("_id"));
+					temp.setIsbn(rs.getString("isbn"));
+					temp.setTitle(rs.getString("title"));
+					temp.setPublisher(rs.getString("publisher"));
+					temp.setPages(rs.getInt("pages"));
+					temp.setCover(rs.getString("cover"));
+					temp.setType(rs.getInt("type"));
+					temp.setEformat(rs.getString("eformat"));
+					temp.setOn_hand(rs.getInt("on_hand"));
+					temp.setWholesale_price(rs.getBigDecimal("wholesale_price"));
+					temp.setList_price(rs.getBigDecimal("list_price"));
+					temp.setSale_price(rs.getBigDecimal("sale_price"));
+					temp.setWeight(rs.getDouble("weight"));
+					temp.setdimensions(rs.getString("dimensions"));
+					temp.setCreate_date(rs.getTimestamp("create_date"));
+					temp.setStatus(rs.getInt("status"));
+					temp.setLink(rs.getString("link"));
+
+					/**
+					 * Since genre is in a seperate table, must return genreBean
+					 * that corresponds to genre_id
+					 */
+					GenreBean tempGB = new GenreBean();
+					tempGB.setId(rs.getLong("genre"));
+					ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+
+					try {
+						GenreActionBean genreDAO = new GenreActionBean();
+						tempGB = genreDAO.getGenreById(tempGB);
+						authors = this.searchByBook(temp);
+					} catch (NullPointerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					temp.setGenre(tempGB);
+					temp.setAuthors(authors);
+
+					/**
+					 * Since authors are in a seperate table, must return
+					 * authorBean arraylist that corresponds to the author_ids
+					 */
+					// TODO:DAO
+					bookRecords.add(temp);
+
+				}
+
+			}
+			return bookRecords;
+		}
+	}
+
+	public ArrayList<AuthorBean> searchByBook(BookBean bb) throws SQLException {
+		ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+		String authorQuery = "SELECT * FROM authors_test WHERE ";
+		int ctr = 0;
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT author_id FROM authors_books_test WHERE book_id = ?");)
+
+		{
+			statement.setLong(1, bb.getId());
+			try (ResultSet rs = statement.executeQuery();) {
+
+				while (rs.next()) {
+					authors.add(new AuthorBean());
+					authors.get(ctr).set_id(rs.getInt(1));
+					ctr++;
+					authorQuery += "_id = ? OR ";
+				}
+				authorQuery = authorQuery
+						.substring(0, authorQuery.length() - 3);
+			}
+		}
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement(authorQuery);)
+
+		{
+			for (int i = 1; i <= ctr; i++) {
+				statement.setLong(i, authors.get(i - 1).get_id());
+			}
+			try (ResultSet rs = statement.executeQuery();) {
+				authors = new ArrayList<AuthorBean>();
+				while (rs.next()) {
+					AuthorBean temp = new AuthorBean();
+					temp.set_id(rs.getInt("_id"));
+					temp.setFirstname(rs.getString("firstname"));
+					temp.setLastname(rs.getString("lastname"));
+					authors.add(temp);
+				}
+			}
+
+		}
+		return authors;
+	}
+
+}

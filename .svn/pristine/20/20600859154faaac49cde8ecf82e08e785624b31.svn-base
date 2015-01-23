@@ -1,0 +1,112 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.ReportQueryBean;
+import g4w14.BookStore.beans.UserBean;
+import g4w14.BookStore.reports.TotalSalesReportActionBean;
+import g4w14.BookStore.reports.TotalSalesReportBean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Named("rqab")
+@RequestScoped
+public class ReportQueryActionBean implements Serializable {
+
+	/**
+	 * @author Polina Rolich
+	 */
+	private static final long serialVersionUID = -7769599064510802660L;
+
+	@Inject
+	ReportQueryBean rqb;
+
+	@Inject
+	NavigationBean navBean;
+
+	@Inject
+	TotalSalesReportBean tsrbean;
+
+	@Inject
+	TotalSalesReportActionBean tsraction;
+
+	public String processReportQuery(String reportType)
+			throws NullPointerException, IOException, SQLException {
+		System.out.println(reportType + " requested");
+
+		rqb.setReportType(reportType);
+		
+		switch (reportType) {
+		case "total sales":
+
+			if(checkDates()){
+				Timestamp start = new Timestamp(rqb.getStartDate().getTime());
+				Timestamp end = new Timestamp(rqb.getEndDate().getTime());
+				tsrbean = tsraction.getTotalSales(start, end);
+			} else if(!rqb.isError()){
+				tsrbean = tsraction.getTotalSales();
+			} else {
+				rqb.reset();
+				System.out.println("An error in dates.");
+			}
+			break;
+		case "sales by client":
+			break;
+		case "sales by author":
+			break;
+		case "sales by publisher":
+			break;
+		case "top sellers":
+			break;
+		case "top clients":
+			break;
+		case "zero sales":
+			break;
+		case "reorder report":
+			break;
+		case "stock report":
+			break;
+		default:
+			break;
+		}
+		
+		return navBean.toReports();
+	}
+
+	private boolean checkDates() {
+
+		if (rqb.getStartDate() != null && rqb.getEndDate() != null
+				&& rqb.getStartDate().compareTo(rqb.getEndDate()) <= 0) {
+			rqb.setError(false);
+			rqb.setErrorMessage("");
+			return true;
+		} else if (rqb.getStartDate() == null || rqb.getEndDate() == null) {
+			rqb.setError(false);
+			rqb.setErrorMessage("");
+			return false;
+		} else {
+			rqb.setError(true);
+			rqb.setErrorMessage("The dates specified are not in the appropriate range.");
+			return false;
+		}
+	}
+
+}

@@ -1,0 +1,339 @@
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import javax.ejb.DuplicateKeyException;
+
+import g4w14.BookStore.actionbeans.BookDAOImpl;
+import g4w14.BookStore.actionbeans.GenreDAOImpl;
+import g4w14.BookStore.beans.AuthorBean;
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.beans.GenreBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class BookManagerTest 
+{
+
+	
+	BookDAOImpl mngr;
+	BookBean b;
+	String url, user, password;
+
+	@Before
+	public void setUp() throws Exception 
+	{
+
+		mngr = new BookDAOImpl();
+		b = new BookBean();
+		String[] values = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+
+		/**
+		 * Here indentical test Tables are created to avoid modifying tables on
+		 * Production
+		 */
+		// DROP THE TABLES
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS authors_books_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS authors_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS inventory_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS genres_test");) {
+			statement.execute();
+		}
+		
+		
+		// CREATE ZE TABLES
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE genres_test ("
+								+ "_id INT(10) NOT NULL AUTO_INCREMENT, "
+								+ "genre VARCHAR(50) UNIQUE NOT NULL, "
+								+ "PRIMARY KEY (_id))");) {
+			statement.executeUpdate();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE inventory_test ("
+								+ "_id INT(5) NOT NULL AUTO_INCREMENT ,"
+								+ "isbn VARCHAR(20) UNIQUE NOT NULL,"
+								+ "title VARCHAR(100) NOT NULL default '',"
+								+ "publisher VARCHAR(100)  NOT NULL default '',"
+								+ "pages VARCHAR(8) NOT NULL default 0,"
+								+ "genre_id int(11) NOT NULL,"
+								+ "cover_big VARCHAR(255) NULL default '',"
+								+ "cover_small VARCHAR(255) NOT NULL default '',"
+								+ "book_type INT(1) NOT NULL default 0,"
+								+ "eformat VARCHAR(10) NOT NULL default '',"
+								+ "on_hand INT(10) NOT NULL default 0,"
+								+ "wholesale_price DECIMAL(10,2) NOT NULL default 0 ,"
+								+ "list_price DECIMAL(10,2) NOT NULL default 0,"
+								+ "sale_price DECIMAL(10,2) NOT NULL default 0,"
+								+ "weight DECIMAL(5,2) NOT NULL default 0,"
+								+ "dimensions VARCHAR(255) NOT NULL,"
+								+ "create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+								+ "removal_status INT(1) NOT NULL default 0, "
+								+ "link VARCHAR(255) NOT NULL default 'book.pdf',"
+								+ "PRIMARY KEY (_id),"
+								+ "CONSTRAINT genre_test_id_fk FOREIGN KEY(genre_id) REFERENCES genres_test(_id))");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+		//TODO CHECK UNIQUE
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE authors_test ( "
+								+ "_id int(10) NOT NULL auto_increment, "
+								+ "lastname varchar(35) NOT NULL, "
+								+ " firstname varchar(35) NOT NULL , "
+								+"PRIMARY KEY (_id), CONSTRAINT ab UNIQUE (lastname, firstname))");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE authors_books_test ( "
+							+"_id int(10) NOT NULL auto_increment, "
+							+"author_id int(10) NOT NULL, "
+							+"book_id int(10) NOT NULL, "
+							+ "PRIMARY KEY (_id), "
+							+ "CONSTRAINT _fk_test FOREIGN KEY (author_id) REFERENCES authors_test(_id)," 
+							+ "CONSTRAINT _fk_test2 FOREIGN KEY (book_id) REFERENCES inventory_test(_id) "
+							+ "	)");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testInsert() 
+	{
+
+		BookBean b = new BookBean();
+		b.setId(1);
+		b.setIsbn("1491945575");
+		b.setTitle("OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics");
+		b.setPublisher("O Reilly Media, Revised edition (Oct. 29 2013)");
+		b.setPages(422);
+		GenreBean gb = new GenreBean();
+		gb.setId(1);
+		gb.setGenre("fantasy");
+		b.setGenre(gb); 
+		b.setCover_big("1491945575_b.png");
+		b.setCover_small("1491945575_s.png");
+		b.setType(0);
+		b.setEformat("Physical");
+		b.setOn_hand(10);
+		b.setWholesale_price(new BigDecimal(26.30));
+		b.setList_price(new BigDecimal(41.99));
+		b.setSale_price(new BigDecimal(37.98));
+		b.setWeight(862);
+		b.setdimensions("22.1 x 17.8 x 2.5 cm");
+		b.setCreate_date(new Timestamp(System.currentTimeMillis()));
+		b.setStatus(0);
+		b.setLink("N/A");
+		ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+		AuthorBean ab = new AuthorBean();
+		ab.setFirstname("Steven");
+		ab.setLastname("Erikson");
+		authors.add(ab);
+		b.setAuthors(authors);
+
+		try 
+		{
+			//returns rows affected
+			assertTrue(mngr.insert(b) == 1);
+
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@Test//(expected = SQLException.class)
+	public void testDuplicateInsert()
+	{
+		BookBean b = new BookBean();
+		b.setId(1);
+		b.setIsbn("1491945575");
+		b.setTitle("OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics");
+		b.setPublisher("O Reilly Media, Revised edition (Oct. 29 2013)");
+		b.setPages(422);
+		GenreBean gb = new GenreBean();
+		gb.setId(1);
+		gb.setGenre("fantasy");
+		b.setGenre(gb); 
+		b.setCover_big("1491945575_b.png");
+		b.setCover_small("1491945575_s.png");
+		b.setType(0);
+		b.setEformat("Physical");
+		b.setOn_hand(10);
+		b.setWholesale_price(new BigDecimal(26.30));
+		b.setList_price(new BigDecimal(41.99));
+		b.setSale_price(new BigDecimal(37.98));
+		b.setWeight(862);
+		b.setdimensions("22.1 x 17.8 x 2.5 cm");
+		b.setCreate_date(new Timestamp(System.currentTimeMillis()));
+		b.setStatus(0);
+		b.setLink("N/A");
+		ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+		AuthorBean ab = new AuthorBean();
+		ab.setFirstname("Steven");
+		ab.setLastname("Erikson");
+		authors.add(ab);
+		b.setAuthors(authors);
+
+		try 
+		{
+			mngr.insert(b);
+			
+
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+
+	
+	@Test
+	public void testIdUpdate() 
+	{
+		b = new BookBean();
+		b.setId(5);
+		
+		
+		try {
+			assertTrue(mngr.update(b, 1) == 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testSearchByTitle()
+	{
+		ArrayList<BookBean> books = new ArrayList<BookBean>();
+		
+		BookBean b = new BookBean();
+		b.setId(1);
+		b.setIsbn("1491945575");
+		b.setTitle("OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics");
+		b.setPublisher("O Reilly Media, Revised edition (Oct. 29 2013)");
+		b.setPages(422);
+		GenreBean gb = new GenreBean();
+		gb.setId(1);
+		gb.setGenre("fantasy");
+		b.setGenre(gb);
+		b.setCover_big("1491945575_b.png");
+		b.setCover_small("1491945575_s.png");
+		b.setType(0);
+		b.setEformat("Physical");
+		b.setOn_hand(10);
+		b.setWholesale_price(new BigDecimal(26.30));
+		b.setList_price(new BigDecimal(41.99));
+		b.setSale_price(new BigDecimal(37.98));
+		b.setWeight(862);
+		b.setdimensions("22.1 x 17.8 x 2.5 cm");
+		b.setCreate_date(new Timestamp(System.currentTimeMillis()));
+		b.setStatus(0);
+		b.setLink("N/A");
+		ArrayList<AuthorBean> authors = new ArrayList<AuthorBean>();
+		AuthorBean ab = new AuthorBean();
+		ab.setFirstname("Steven");
+		ab.setLastname("Erikson");
+		authors.add(ab);
+		b.setAuthors(authors);
+		
+		
+	
+		
+		
+		try {
+			
+			mngr.insert(b);
+			books = mngr.getBooksByTitle(/*"OS 7"*/);
+			System.out.println("*** Books found searching title 'OS 7' ***");
+			assertTrue(books.size() == 1);
+			for (int i = 0; i < books.size(); i++)
+			{
+				System.out.println(books.get(i).getTitle());
+				System.out.println("***Book's GENRE ***");
+				System.out.println(books.get(i).getGenre().getId());
+				System.out.println(books.get(i).getGenre().getGenre());
+				System.out.println("***Book's AUTHOR ***");
+				System.out.println(books.get(i).getAuthors().get(0));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testDelete() 
+	{
+		b.setId(1);
+		try {
+			int recs = mngr.remove(b);
+			assertTrue(recs == 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception 
+	{
+		
+	}
+
+}

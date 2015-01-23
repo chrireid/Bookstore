@@ -1,0 +1,63 @@
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+
+import g4w14.BookStore.annotations.LoggedIn;
+import g4w14.BookStore.beans.Credentials;
+import g4w14.BookStore.beans.UserBean;
+
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+
+@Named
+@SessionScoped
+public class Login implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7050263240526226501L;
+
+	Credentials credentials;
+
+	/*@PersistenceContext
+	EntityManager userDatabase;*/
+
+	@Inject
+	private UserBean user;
+
+	public void login() throws SQLException, NullPointerException, IOException {
+
+		/*UserDAOImpl userDao = new UserDAOImpl();
+		ArrayList<UserBean> results = userDao.searchByForm(user);
+
+		if (!results.isEmpty()) {
+
+			user = results.get(0);
+
+		}*/
+
+	}
+
+	public void logout() {
+
+		user = null;
+
+	}
+
+	public boolean isLoggedIn() {
+		return user != null;
+	}
+
+	@Produces
+	@LoggedIn
+	UserBean getCurrentUser() {
+		return user;
+	}
+
+}

@@ -1,0 +1,119 @@
+package g4w14.BookStore.reports;
+
+import g4w14.BookStore.beans.OrdersBean;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+/**
+ * The bean for the Sales By Client Report
+ * 
+ * @author Chris
+ *
+ */
+
+@Named("salesByClientReport")
+@RequestScoped
+public class SalesByClientReportBean implements Serializable {
+
+	private static final long serialVersionUID = 1610941137273686086L;
+	private int totalNumSales;
+	private BigDecimal totalCost, totalProfit;
+	private ArrayList<OrdersBean> orders;
+	
+	public SalesByClientReportBean() {
+		super();
+		this.totalNumSales = 0;
+		this.totalCost = BigDecimal.ZERO;
+		this.totalProfit = BigDecimal.ZERO;
+		this.orders = new ArrayList<OrdersBean>();
+	}
+
+	public int getTotalNumSales() {
+		return totalNumSales;
+	}
+
+	public void setTotalNumSales(int totalNumSales) {
+		this.totalNumSales = totalNumSales;
+	}
+
+	public BigDecimal getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(BigDecimal totalCost) {
+		this.totalCost = totalCost;
+	}
+
+	public BigDecimal getTotalProfit() {
+		return totalProfit;
+	}
+
+	public void setTotalProfit(BigDecimal totalProfit) {
+		this.totalProfit = totalProfit;
+	}
+
+	public ArrayList<OrdersBean> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(ArrayList<OrdersBean> orders) {
+		this.orders = orders;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+		result = prime * result
+				+ ((totalCost == null) ? 0 : totalCost.hashCode());
+		result = prime * result + totalNumSales;
+		result = prime * result
+				+ ((totalProfit == null) ? 0 : totalProfit.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SalesByClientReportBean other = (SalesByClientReportBean) obj;
+		if (orders == null) {
+			if (other.orders != null)
+				return false;
+		} else if (!orders.equals(other.orders))
+			return false;
+		if (totalCost == null) {
+			if (other.totalCost != null)
+				return false;
+		} else if (!totalCost.equals(other.totalCost))
+			return false;
+		if (totalNumSales != other.totalNumSales)
+			return false;
+		if (totalProfit == null) {
+			if (other.totalProfit != null)
+				return false;
+		} else if (!totalProfit.equals(other.totalProfit))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SalesByClientReportBean [totalNumSales=" + totalNumSales
+				+ ", totalCost=" + totalCost + ", totalProfit=" + totalProfit
+				+ ", orders=" + orders + "]";
+	}
+	
+	
+	
+}

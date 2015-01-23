@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Management" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+					
+					<h:outputText value="Management Options" class="h2" /><br /><br />
+					<h:form><h:panelGrid class=" to_cart" columns="2" style="padding-top:25px;">
+						<h:commandLink class="management_list" action="#{navBean.toInventory}" value="Inventory Management" />
+						<h:outputText class="h6" value="Add a new book, search for a book to edit/remove." />
+						<h:commandLink class="management_list" action="#{navBean.toSale}" value="Set Sales Management" />
+						<h:outputText class="h6" value="Edit book's sale price." />
+						<h:commandLink class="management_list" action="#{navBean.toUser}" value="User Management" />
+						<h:outputText class="h6" value="Edit users." />
+						<h:commandLink class="management_list" action="#{navBean.toOrder}" value="Order Management" />
+						<h:outputText class="h6" value="Edit or remove orders." />
+						<h:commandLink class="management_list" action="#{navBean.toReview}" value="Review Management" />
+						<h:outputText class="h6" value="Approve pending reviews, edit/delete reviews." />
+						<h:commandLink class="management_list" action="#{navBean.toNews}" value="News Feed Management" />
+						<h:outputText class="h6" value="Define current news, add/edit/remove news." />
+						<h:commandLink class="management_list" action="#{navBean.toSurvey}" value="Survey Management" />
+						<h:outputText class="h6" value="Define the current surveys, add/edit/remove surveys." />
+						<h:commandLink class="management_list" action="#{navBean.toBanner}" value="Banner Management" />
+						<h:outputText class="h6" value="Add/edit/remove the banner." />
+						<h:commandLink class="management_list" action="#{navBean.toReports}" value="Reports" />
+						<h:outputText class="h6" value="Total sales, sales by author, sales by publisher..." />
+					</h:panelGrid>
+					<br />
+					<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

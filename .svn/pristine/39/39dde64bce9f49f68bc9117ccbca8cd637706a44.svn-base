@@ -1,0 +1,162 @@
+package g4w14.tests;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.sql.DataSource;
+
+import g4w14.BookStore.actionbeans.OrderDetailsActionBean;
+import g4w14.BookStore.actionbeans.OrdersActionBean;
+import g4w14.BookStore.beans.OrderDetailsBean;
+import g4w14.BookStore.beans.OrdersBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * The JUnit test cases for Users database methods.
+ * 
+ * @author Chris
+ */
+public class OrdersTest {
+	
+	OrdersBean ob;
+	OrdersActionBean oab;
+	ArrayList<OrderDetailsBean> orderDetails;
+	OrderDetailsActionBean odab;
+	DataSource ds;
+	
+	String url, user, password;
+	String sql;
+	
+	@Before
+	public void setUpDatabase() throws SQLException, IOException {
+		
+		// Instantiate ActionBeans
+		oab = new OrdersActionBean();
+		odab = new OrderDetailsActionBean();
+		
+		// JUnit testing stylez
+		String[] values = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		
+		
+		// Drop database tables
+		
+		sql = "DROP TABLE IF EXISTS order_details_test";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+		
+		sql = "DROP TABLE IF EXISTS orders_test";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+		
+		//Create database tables
+		sql = "CREATE TABLE orders_test( "
+				+ "_id int(10) NOT NULL AUTO_INCREMENT, "
+				+ "user_id INT(10) NOT NULL, "
+				+ "order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+				+ "PRIMARY KEY (_id)) ";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+		
+		sql = "CREATE TABLE order_details_test( "
+				+ "_id int(10) NOT NULL AUTO_INCREMENT, "
+				+ "book_id INT(10) NOT NULL, "
+				+ "order_id INT(10) NOT NULL, "
+				+ "quantity INT(4) NOT NULL, "
+				+ "price DECIMAL(10,2) NOT NULL, "
+				+ "PRIMARY KEY (_id), "
+				+ "CONSTRAINT orders_order_details_test_id_fk FOREIGN KEY(order_id) REFERENCES orders_test(_id)) ";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+		
+		
+		//Populate database tables
+		sql = "INSERT INTO orders_test (user_id)"
+				+ "VALUES('1'),('2')";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+		
+		sql = "INSERT INTO order_details_test (book_id, order_id, quantity, price) "
+				+ "VALUES ('1','1','2','15.50'), "
+				+ "('2','1','1','22.20'), "
+				+ "('2','2','4','88.80'), "
+				+ "('4','2','3','13.95')";
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+				PreparedStatement statement = connection.prepareStatement(sql)) {
+			
+			statement.execute();
+		}
+	}
+	
+	@Test(timeout = 1000) 
+	public void testInsertOrder() throws SQLException {
+		
+		ob = new OrdersBean();
+		ob.setUserId(91);
+		orderDetails = new ArrayList<OrderDetailsBean>();
+		OrderDetailsBean odb = new OrderDetailsBean();
+		odb.setBookId(993);
+		odb.setPrice(new BigDecimal("8.33"));
+		odb.setQuantity(55);
+		orderDetails.add(odb);
+		odb = new OrderDetailsBean();
+		odb.setBookId(911);
+		odb.setPrice(new BigDecimal("3141.22"));
+		odb.setQuantity(133);
+		orderDetails.add(odb);
+		ob.setOrderDetails(orderDetails);
+		
+		assertTrue(oab.insert(ob) == 1);
+	}
+	
+	@Test(timeout = 1000)
+	public void testSearchByOrderId() throws SQLException {
+		
+		ob = oab.searchByOrderId(1);
+		System.out.println("--------------------------- JUNIT TESTING -----------------------");
+		System.out.println(ob.getId());
+		System.out.println(ob.getUserId());
+		System.out.println(ob.getOrderDate());
+		
+		for (OrderDetailsBean odb : ob.getOrderDetails()) {
+
+			System.out.println("--Order details--");
+			System.out.println(odb.getId());
+			System.out.println(odb.getBookId());
+			System.out.println(odb.getOrderId());
+			System.out.println(odb.getQuantity());
+			System.out.println(odb.getPrice());
+			
+		}
+	}
+	
+	
+
+}

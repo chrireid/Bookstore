@@ -1,0 +1,128 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class CartTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#loadCookies()}.
+	 */
+	@Test
+	public void testLoadCookies() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getCookies()}.
+	 */
+	@Test
+	public void testGetCookies() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#updateCart(int, int)}.
+	 */
+	@Test
+	public void testUpdateCart() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#commitChanges()}.
+	 */
+	@Test
+	public void testCommitChanges() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#removeCookie(int)}.
+	 */
+	@Test
+	public void testRemoveCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#convertToOrderDetails()}.
+	 */
+	@Test
+	public void testConvertToOrderDetails() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getOrderDetails()}.
+	 */
+	@Test
+	public void testGetOrderDetails() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getQst()}.
+	 */
+	@Test
+	public void testGetQst() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getQstBigDecimal()}.
+	 */
+	@Test
+	public void testGetQstBigDecimal() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getTotalCost()}.
+	 */
+	@Test
+	public void testGetTotalCost() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getTotalCostBigDecimal()}.
+	 */
+	@Test
+	public void testGetTotalCostBigDecimal() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getSubTotalCost()}.
+	 */
+	@Test
+	public void testGetSubTotalCost() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#getSubTotalCostBigDecimal()}.
+	 */
+	@Test
+	public void testGetSubTotalCostBigDecimal() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CartAction#writeCookie(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public void testWriteCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

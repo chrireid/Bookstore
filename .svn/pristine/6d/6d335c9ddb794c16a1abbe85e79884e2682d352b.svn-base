@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class AuthorsBooksTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorsBooksActionBean#AuthorsBooksActionBean()}.
+	 */
+	@Test
+	public void testAuthorsBooksActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorsBooksActionBean#insert(int, int)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorsBooksActionBean#update(g4w14.BookStore.beans.BookBean)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorsBooksActionBean#searchByAuthor(g4w14.BookStore.beans.AuthorBean)}.
+	 */
+	@Test
+	public void testSearchByAuthor() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorsBooksActionBean#searchByBook(g4w14.BookStore.beans.BookBean)}.
+	 */
+	@Test
+	public void testSearchByBook() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

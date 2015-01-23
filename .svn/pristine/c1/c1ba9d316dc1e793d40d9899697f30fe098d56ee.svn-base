@@ -1,0 +1,151 @@
+package g4w14.BookStore.reports;
+
+
+/**
+ * Top Sellers Bean  is the bean for displaying the
+ * top sellers report by item.
+ * 
+ * New Commit Text
+ * 
+ * Consist of:
+ * 
+ * title			String, title of sold book
+ * id				long, the id of the book
+ * author_lastname	String, last name of the author of that book
+ * author_firstname	String, first name of the author of that book
+ * quantity			int, total quantity sold of that book
+ * sum				double, total sum (price by which the book was sold multiply by quantity)
+ * 
+ * @author Polina
+ *
+ */
+
+public class TopSellersBean {
+
+	String title = "";
+	long id = 0;
+	String author_lastname = "";
+	String author_firstname = "";
+	int quantity = 0;
+	double sum = 0.0;
+	
+	public TopSellersBean(){
+		super();
+		this.title = "";
+		this.id = 0;
+		this.author_lastname = "";
+		this.author_firstname = "";
+		this.quantity = 0;
+		this.sum = 0.0;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getAuthor_lastname() {
+		return author_lastname;
+	}
+
+	public void setAuthor_lastname(String author_lastname) {
+		this.author_lastname = author_lastname;
+	}
+
+	public String getAuthor_firstname() {
+		return author_firstname;
+	}
+
+	public void setAuthor_firstname(String author_firstname) {
+		this.author_firstname = author_firstname;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getSum() {
+		return sum;
+	}
+
+	public void setSum(double sum) {
+		this.sum = sum;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((author_firstname == null) ? 0 : author_firstname.hashCode());
+		result = prime * result
+				+ ((author_lastname == null) ? 0 : author_lastname.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + quantity;
+		long temp;
+		temp = Double.doubleToLongBits(sum);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TopSellersBean other = (TopSellersBean) obj;
+		if (author_firstname == null) {
+			if (other.author_firstname != null)
+				return false;
+		} else if (!author_firstname.equals(other.author_firstname))
+			return false;
+		if (author_lastname == null) {
+			if (other.author_lastname != null)
+				return false;
+		} else if (!author_lastname.equals(other.author_lastname))
+			return false;
+		if (id != other.id)
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		if (Double.doubleToLongBits(sum) != Double.doubleToLongBits(other.sum))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "TopSellersBean [title=" + title + ", id=" + id
+				+ ", author_lastname=" + author_lastname
+				+ ", author_firstname=" + author_firstname + ", quantity="
+				+ quantity + ", sum=" + sum + "]";
+	}
+	
+	
+	
+}

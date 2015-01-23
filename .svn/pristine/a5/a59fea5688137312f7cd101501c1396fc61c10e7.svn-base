@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+
+<h:form>
+	<div id="header">
+		<div class="container_12">
+
+			<div class="grid_13">
+				<h:link title="BookDepot" fragment="home.xhtml">
+					<div class="grid_2 alpha">
+						<h:graphicImage width="140" name="./images/logo.png" alt="image"
+							style="margin-top:19px;" />
+					</div>
+				</h:link>
+				<ul class="menu sf-menu">
+					<li><h:link outcome="home" value="#{msgs.homeMenu}" /></li>
+					<li><h:link outcome="contact">#{msgs.genreMenu}</h:link>
+						<ul>
+							<ui:repeat value="#{genreDAO.allGenres}" var="genre_list">
+								<li><h:commandLink value="#{genre_list.genre}"
+										action="genre">
+										<f:param name="genre_name" value="#{genre_list.genre}" />
+									</h:commandLink></li>
+							</ui:repeat>
+
+						</ul></li>
+					<li><h:link outcome="registration">#{msgs.registrationMenu}</h:link></li>
+					<li><h:link outcome="shopping_cart">#{msgs.shoppingCartMenu}</h:link></li>
+					<li><h:link outcome="single_book">One Book</h:link></li>
+					<li class="login-menu"><h:form id="newsletter-form">
+							<h:inputText id="user-login" required="true" label="user-login"
+								value="user-login" />
+							<h:outputText value="&#160;" />
+							<h:outputText value="&#160;" />
+							<h:commandButton class="button" value="Log in" action="#"></h:commandButton>
+							<br />
+							<h:inputText id="password" required="true" label="password"
+								value="password" />
+							<h:outputText value="&#160;" />
+							<h:outputText value="&#160;" />
+							<h:link outcome="contact">#{msgs.password}</h:link>
+							<br />
+							<br />
+						</h:form></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			<div class="shadow-down"></div>
+		</div>
+	</div>
+
+</h:form>
+
+</html>

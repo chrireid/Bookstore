@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+
+	<script type="text/javascript">
+		var visibleAdd = true;
+	
+
+		function showAdd() {
+			if (visibleAdd) {
+				document.getElementById("addBanner").style.display = "none";
+				visibleAdd = false;
+			} else if (!visibleAdd) {
+				
+				document.getElementById("addBanner").style.display = "block";
+				visibleAdd = true;
+			}
+		}
+	</script>
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Banners" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+					
+					<h:outputText value="Management Options" class="h2" /><br /><br />
+					
+					<h:commandButton class="management_list" onclick="showAdd()"
+						value="Hide/Display 'Add a new Banner'" />
+					<br />
+					
+					<h:form id="addBanner">
+					<h:panelGrid styleClass="grid_10 alpha" style="padding-left:200px">
+					
+					
+					
+					
+						<h:outputText value="Banner URL" />
+						<br/>
+						<h:inputText value="#{bannerBean.title}"/>
+						<br/>
+						
+						<h:outputText value="Active Status" />
+						<br/>
+						<h:inputText value="#{bannerBean.active}"/>
+						<br/>
+						
+						<h:outputText value="Image" />
+						<br/>
+						<rich:fileUpload fileUploadListener="#{fileUploadBean.bannerListener}"
+								id="upload" acceptedTypes="jpg, gif, png, bmp"
+								ontyperejected="alert('Only JPG, GIF, PNG and BMP files are accepted');"
+								maxFilesQuantity="5">
+
+						</rich:fileUpload>
+						
+							<br />
+						<h:commandButton action="#{bannerAction.insert(bannerBean)}" value="Submit" />
+						
+					</h:panelGrid>
+					</h:form>
+					
+					
+					
+					
+					
+					
+					<h:form>					
+					<h:dataTable 
+                    styleClass="order-table"
+    				headerClass="order-table-header"
+    				rowClasses="order-table-odd-row,order-table-even-row"
+                    width="700" border="0" value="#{bannerAction.allBanners}" var="banner">
+                	
+                	
+              
+    
+                   <h:column>
+	                   <f:facet name="header">
+	                   <h:outputText value="Banner Title" />
+	                   </f:facet>
+                  	 <h:outputText value="#{banner.title}"></h:outputText>     
+                    </h:column>
+                    
+                    <h:column>
+	                   <f:facet name="header">
+	                   <h:outputText value="Image"/>
+	                   </f:facet>
+                  	<h:graphicImage name="#{banner.image}" alt="image"
+								width="202" styleClass="shadow" />
+                    </h:column>
+                    
+                    <h:column>
+	                   <f:facet name="header">
+	                   <h:outputText value="Status"/>
+	                   </f:facet>
+                  	 <h:outputText value="#{banner.active}"></h:outputText>     
+                    </h:column>
+                    
+                     <h:column>
+	                   <f:facet name="header">
+	                   <h:outputText value="Action"/>
+	                   </f:facet>
+                  	 <h:commandButton value="Edit" action="#{bannerAction.editBanner(banner)}" /> 
+                    </h:column>
+					</h:dataTable>
+						
+					<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+		
+		
+				        	<h:form>	
+            <p:dialog visible="#{bannerAction.popup}" header="Edit Banner"
+						widgetVar="dlg3" showEffect="explode" hideEffect="bounce"
+						height="500" modal="true" resizable="false">
+						<p:ajax event="close" listener="#{bannerAction.popup}" />
+						
+				<h:panelGrid styleClass="grid_3 alpha" columns="2">
+
+                 
+	                   <h:outputText value="Banner URL" />
+	                  
+                  	 <h:inputText value="#{bannerAction.editBean.title}"></h:inputText>     
+                
+
+                   
+	                   <h:outputText value="Status"/>
+	            
+                  	 <h:inputText value="#{bannerAction.editBean.active}"></h:inputText>     
+
+                     
+	                   <h:outputText value="Action"/>
+	                 
+                  	 <h:commandButton value="Edit" action="#{bannerAction.updateBanner}" /> 
+				
+						</h:panelGrid>
+					</p:dialog>
+						</h:form>
+				
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+	<application>
+		<locale-config>
+			<default-locale>fr_CA</default-locale>
+			<supported-locale>en_CA</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<!-- package ending in the base name of the message bundle files -->
+			<base-name>bundle.messages</base-name>
+			<!-- The name to use in EL when referring to text in the bundle -->
+			<var>msgs</var>
+		</resource-bundle>
+	</application>
+	<managed-bean>
+		<managed-bean-name>userBean</managed-bean-name>
+		<managed-bean-class>g4w14.BookStore.beans.UserBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<!-- ALL navigations -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toHome</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toLogin</from-outcome>
+			<to-view-id>/login-test.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toSearch</from-outcome>
+			<to-view-id>/search.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toRegister</from-outcome>
+			<to-view-id>/register.xhtml?faces-redirect=true</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toBook</from-outcome>
+			<to-view-id>/single_book.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toCheckout</from-outcome>
+			<to-view-id>/shopping_cart.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toInfo</from-outcome>
+			<to-view-id>/info.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- Login test page -->
+	<navigation-rule>
+		<display-name>login-test.xhtml</display-name>
+		<from-view-id>/login-test.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>contact</from-outcome>
+			<to-view-id>/book.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>registration</from-outcome>
+			<to-view-id>/registration.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>shopping_cart</from-outcome>
+			<to-view-id>/shopping_cart.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>single_book</from-outcome>
+			<to-view-id>/single_book.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>genres</from-outcome>
+			<to-view-id>/book.xhtml</to-view-id>
+		</navigation-case>
+		<!-- Navigation from UserLoginActionBean -->
+		<navigation-case>
+			<from-outcome>authenticated</from-outcome>
+			<to-view-id>/home.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/login-test.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- end LOGIN test page -->
+
+	<!-- MENU redirect -->
+	<navigation-rule>
+		<display-name>home.xhtml</display-name>
+		<from-view-id>/home.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>single_book</from-outcome>
+			<to-view-id>/single_book.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>search.xhtml</display-name>
+		<from-view-id>/search.xhtml</from-view-id>
+		<navigation-case>
+			<to-view-id>/home.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- End MENU redirect -->
+
+</faces-config>

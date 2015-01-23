@@ -1,0 +1,132 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import java.math.BigDecimal;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+/**
+ * @author 1141649
+ *
+ */
+
+@Named("detailsBean")
+@RequestScoped
+
+
+public class OrderDetailsBean {
+
+	
+	private int _id;
+	private int books_id;
+	private int order_id;
+	private int quantity;
+	private BigDecimal price;
+	
+	public OrderDetailsBean ()
+	{
+		this._id = -1;
+		this.books_id = 0;
+		this.order_id = 0;
+		this.quantity = 0;
+		this.price = new BigDecimal(0);
+		
+	}
+	
+	public OrderDetailsBean (int _id, int books_id, int order_id,int quantity, BigDecimal price)
+	{
+		this._id = _id;
+		this.books_id = books_id;
+		this.order_id = order_id;
+		this.quantity = quantity;
+		this.price = price;
+	}
+
+	public int get_id() {
+		return _id;
+	}
+
+	public void set_id(int _id) {
+		this._id = _id;
+	}
+
+	public int getBooks_id() {
+		return books_id;
+	}
+
+	public void setBooks_id(int books_id) {
+		this.books_id = books_id;
+	}
+
+	public int getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(int order_id) {
+		this.order_id = order_id;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + _id;
+		result = prime * result + books_id;
+		result = prime * result + order_id;
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + quantity;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderDetailsBean other = (OrderDetailsBean) obj;
+		if (_id != other._id)
+			return false;
+		if (books_id != other.books_id)
+			return false;
+		if (order_id != other.order_id)
+			return false;
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
+		if (quantity != other.quantity)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderDetailsBean [_id=" + _id + ", books_id=" + books_id
+				+ ", order_id=" + order_id + ", quantity=" + quantity
+				+ ", price=" + price + "]";
+	}
+	
+}

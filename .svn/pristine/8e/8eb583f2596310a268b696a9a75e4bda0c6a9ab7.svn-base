@@ -1,0 +1,93 @@
+-------------------------------------------------------------------------------
+Test set: g4w14.BookStore.AppTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 2.589 sec <<< FAILURE! - in g4w14.BookStore.AppTest
+testInsertCustomerValid(g4w14.BookStore.CustomersTests)  Time elapsed: 0.165 sec  <<< ERROR!
+com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Column 'title' cannot be null
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1041)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4237)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4169)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2617)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2778)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2825)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2156)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2441)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2366)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2350)
+	at g4w14.BookStore.persistence.CustomersDAOImpl.insert(CustomersDAOImpl.java:89)
+	at g4w14.BookStore.CustomersTests.testInsertCustomerValid(CustomersTests.java:174)
+
+testDeleteCustomerInvalid(g4w14.BookStore.CustomersTests)  Time elapsed: 0.145 sec  <<< ERROR!
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'id' in 'where clause'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1054)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4237)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4169)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2617)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2778)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2825)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2156)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2441)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2366)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2350)
+	at g4w14.BookStore.persistence.CustomersDAOImpl.delete(CustomersDAOImpl.java:192)
+	at g4w14.BookStore.CustomersTests.testDeleteCustomerInvalid(CustomersTests.java:238)
+
+testDeleteCustomerValid(g4w14.BookStore.CustomersTests)  Time elapsed: 0.131 sec  <<< ERROR!
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'id' in 'where clause'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1054)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4237)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4169)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2617)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2778)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2825)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2156)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2441)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2366)
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2350)
+	at g4w14.BookStore.persistence.CustomersDAOImpl.delete(CustomersDAOImpl.java:192)
+	at g4w14.BookStore.CustomersTests.testDeleteCustomerValid(CustomersTests.java:208)
+
+testUpdateCustomerInvalid(g4w14.BookStore.CustomersTests)  Time elapsed: 0.134 sec  <<< ERROR!
+java.sql.SQLException: Parameter index out of range (27 > number of parameters, which is 26).
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1086)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:989)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:975)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:920)
+	at com.mysql.jdbc.PreparedStatement.checkBounds(PreparedStatement.java:3796)
+	at com.mysql.jdbc.PreparedStatement.setInternal(PreparedStatement.java:3778)
+	at com.mysql.jdbc.PreparedStatement.setInternal(PreparedStatement.java:3823)
+	at com.mysql.jdbc.PreparedStatement.setLong(PreparedStatement.java:3840)
+	at g4w14.BookStore.persistence.CustomersDAOImpl.update(CustomersDAOImpl.java:154)
+	at g4w14.BookStore.CustomersTests.testUpdateCustomerInvalid(CustomersTests.java:223)
+
+testUpdateCustomerValid(g4w14.BookStore.CustomersTests)  Time elapsed: 0.112 sec  <<< ERROR!
+java.sql.SQLException: Parameter index out of range (27 > number of parameters, which is 26).
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1086)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:989)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:975)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:920)
+	at com.mysql.jdbc.PreparedStatement.checkBounds(PreparedStatement.java:3796)
+	at com.mysql.jdbc.PreparedStatement.setInternal(PreparedStatement.java:3778)
+	at com.mysql.jdbc.PreparedStatement.setInternal(PreparedStatement.java:3823)
+	at com.mysql.jdbc.PreparedStatement.setLong(PreparedStatement.java:3840)
+	at g4w14.BookStore.persistence.CustomersDAOImpl.update(CustomersDAOImpl.java:154)
+	at g4w14.BookStore.CustomersTests.testUpdateCustomerValid(CustomersTests.java:193)
+

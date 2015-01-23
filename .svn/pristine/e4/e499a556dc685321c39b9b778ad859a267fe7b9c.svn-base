@@ -1,0 +1,51 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import g4w14.BookStore.beans.OrderDetailsBean;
+import g4w14.BookStore.beans.OrdersBean;
+
+/**
+ * @author 1141649
+ *
+ */
+public class OrdersActionBean {
+
+	
+	public void addDetail (OrdersBean ob, OrderDetailsBean odb)
+	{
+		ob.add(odb);
+	}
+	
+	public void removeDetail (OrdersBean ob, OrderDetailsBean odb)
+	{
+		ob.remove(odb);
+	}
+	
+	public BigDecimal calculateTax (OrdersBean ob)
+	{
+		return ob.getTotalPrice().multiply(new BigDecimal (0.05));
+	}
+	
+	public BigDecimal calculateCostOfBooks (OrdersBean ob) 
+	{
+		
+		return ob.getTotalPrice();
+	}
+	
+	public BigDecimal caluclateTotal (OrdersBean ob) 
+	{
+		
+		return calculateCostOfBooks(ob).add(calculateTax(ob));
+	}
+	
+	public void placeOrder (OrdersBean ob)
+	{
+	ob.setOrder_date(new Timestamp(System.currentTimeMillis()));
+	// stick in db or something? move on to the invoice?
+	}
+}

@@ -1,0 +1,188 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import g4w14.BookStore.beans.SurveyBean;
+import g4w14.BookStore.util.LoadProperties;
+
+/**
+ * @author Xander
+ * 
+ */
+
+@Named("surveyDAO")
+@RequestScoped
+public class SurveyDAOImpl {
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+	
+
+	/**
+	 * @throws IOException
+	 * @throws NullPointerException
+	 * 
+	 */
+	public SurveyDAOImpl() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		log.debug("CustomersDAOImpl instantiated");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.SurveyDAO#insert(g4w14.BookStore
+	 * .beans.SurveyBean)
+	 */
+	public int insert(SurveyBean sb) throws SQLException {
+		int affected = 0;
+		String preparedSQL = "INSERT INTO surveys (_id, question, answer_1, answer_2,answer_3,answer_4,answer_5,answer_6,answer_7,answer_8,answer_9,answer_10, answer_1_count,answer_2_count,answer_3_count,answer_4_count,answer_5_count,answer_6_count,answer_7_count,answer_8_count,answer_9_count,answer_10_count,active) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the SurveyBean object
+			ps.setLong(1, sb.getId());
+			ps.setString(2, sb.getQuestion());
+			ps.setString(3, sb.getAnswer_1());
+			ps.setString(4, sb.getAnswer_2());
+			ps.setString(5, sb.getAnswer_3());
+			ps.setString(6, sb.getAnswer_4());
+			ps.setString(7, sb.getAnswer_5());
+			ps.setString(8, sb.getAnswer_6());
+			ps.setString(9, sb.getAnswer_7());
+			ps.setString(10, sb.getAnswer_8());
+			ps.setString(11, sb.getAnswer_9());
+			ps.setString(12, sb.getAnswer_10());
+			ps.setInt(13, sb.getAnswer_1_count());
+			ps.setInt(14, sb.getAnswer_2_count());
+			ps.setInt(15, sb.getAnswer_3_count());
+			ps.setInt(16, sb.getAnswer_4_count());
+			ps.setInt(17, sb.getAnswer_5_count());
+			ps.setInt(18, sb.getAnswer_6_count());
+			ps.setInt(19, sb.getAnswer_7_count());
+			ps.setInt(20, sb.getAnswer_8_count());
+			ps.setInt(21, sb.getAnswer_9_count());
+			ps.setInt(22, sb.getAnswer_10_count());
+			ps.setBoolean(23, sb.isActive());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [insert]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.SurveyDAO#remove(g4w14.BookStore
+	 * .beans.SurveyBean)
+	 */
+	public int remove(SurveyBean sb) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see g4w14.BookStore.persistence.interfaces.SurveyDAO#getAllSurveys()
+	 */
+	public ArrayList<SurveyBean> getAllSurveys() throws SQLException {
+		ArrayList<SurveyBean> surveys = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM banners";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL);
+				ResultSet resultSet = ps.executeQuery()) {
+
+			while (resultSet.next()) {
+
+				SurveyBean sb = new SurveyBean();
+				sb.setId(resultSet.getLong("_id"));
+				sb.setQuestion(resultSet.getString("question"));
+				sb.setAnswer_1(resultSet.getString("answer_1"));
+				sb.setAnswer_2(resultSet.getString("answer_2"));
+				sb.setAnswer_3(resultSet.getString("answer_3"));
+				sb.setAnswer_4(resultSet.getString("answer_4"));
+				sb.setAnswer_5(resultSet.getString("answer_5"));
+				sb.setAnswer_6(resultSet.getString("answer_6"));
+				sb.setAnswer_7(resultSet.getString("answer_7"));
+				sb.setAnswer_8(resultSet.getString("answer_8"));
+				sb.setAnswer_9(resultSet.getString("answer_9"));
+				sb.setAnswer_10(resultSet.getString("answer_10"));
+				sb.setAnswer_1_count(resultSet.getInt("answer_1_count"));
+				sb.setAnswer_2_count(resultSet.getInt("answer_2_count"));
+				sb.setAnswer_3_count(resultSet.getInt("answer_3_count"));
+				sb.setAnswer_4_count(resultSet.getInt("answer_4_count"));
+				sb.setAnswer_5_count(resultSet.getInt("answer_5_count"));
+				sb.setAnswer_6_count(resultSet.getInt("answer_6_count"));
+				sb.setAnswer_7_count(resultSet.getInt("answer_7_count"));
+				sb.setAnswer_8_count(resultSet.getInt("answer_8_count"));
+				sb.setAnswer_9_count(resultSet.getInt("answer_9_count"));
+				sb.setAnswer_10_count(resultSet.getInt("answer_10_count"));
+				sb.setActive(resultSet.getBoolean("active"));
+
+				surveys.add(sb);
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [getAllSurveys]=" + surveys.size());
+		return surveys;
+	}
+
+}

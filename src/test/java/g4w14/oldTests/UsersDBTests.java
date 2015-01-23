@@ -1,0 +1,356 @@
+package g4w14.oldTests;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import g4w14.BookStore.actionbeans.GenreActionBean;
+import g4w14.BookStore.actionbeans.UserActionBean;
+import g4w14.BookStore.beans.UserBean;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.FileAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**v
+ * The JUnit test cases for Users database methods.
+ * 
+ * @author Christopher Reid
+ */
+
+@RunWith(Arquillian.class)
+public class UsersDBTests {
+
+	//private UserDAOImpl users;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+
+	/**
+	 * This method executes before each test is run. It drops the table, creates
+	 * the table and fills the table with records for destructive testing.
+	 * 
+	 * @throws SQLException
+	 */
+	
+	
+	@Deployment
+	public static WebArchive deploy() {
+		return ShrinkWrap
+				.create(WebArchive.class)
+				.addAsWebInfResource(EmptyAsset.INSTANCE,
+						ArchivePaths.create("beans.xml"))
+				.addAsManifestResource(
+						new FileAsset(new File(
+								"src/main/webapp/META-INF/context.xml")),
+						"context.xml").addClasses(GenreActionBean.class);
+	}
+	
+	@Inject
+	private UserActionBean users;
+	
+	
+	@Before
+	public void dropCreatePopulateUserTable() throws SQLException {
+
+		// Database connection information
+		final String url = "jdbc:mysql://waldo2.dawsoncollege.qc.ca:3306/g4w14";
+		final String user = "g4w14";
+		final String password = "handle2parrot";
+
+		// MySQL statement to drop the table
+		String sql = "DROP TABLE IF EXISTS users_test";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+
+		// MySQL statement to create the table
+		sql = "CREATE TABLE users_test ("
+				+ "_id INT(10) NOT NULL AUTO_INCREMENT, "
+				+ "login VARCHAR(50) UNIQUE NOT NULL, "
+				+ "password VARCHAR(255) NOT NULL, "
+				+ "title VARCHAR(20) NOT NULL default '', "
+				+ "last_name VARCHAR(50) NOT NULL default '', "
+				+ "first_name VARCHAR(50) NOT NULL default '', "
+				+ "company VARCHAR(50) NOT NULL default '', "
+				+ "address1 VARCHAR(50) NOT NULL default '', "
+				+ "address2 VARCHAR(50) NOT NULL default '', "
+				+ "city VARCHAR(50) NOT NULL default '', "
+				+ "province VARCHAR(50) NOT NULL default '', "
+				+ "country VARCHAR(50) NOT NULL default '', "
+				+ "postal_code VARCHAR(50) NOT NULL default '', "
+				+ "shipping_title VARCHAR(50) NOT NULL default '', "
+				+ "shipping_last_name VARCHAR(50) NOT NULL default '', "
+				+ "shipping_first_name VARCHAR(50) NOT NULL default '', "
+				+ "shipping_company VARCHAR(50) NOT NULL default '', "
+				+ "shipping_address1 VARCHAR(50) NOT NULL default '', "
+				+ "shipping_address2 VARCHAR(50) NOT NULL default '', "
+				+ "shipping_city VARCHAR(50) NOT NULL default '', "
+				+ "shipping_province VARCHAR(50) NOT NULL default '', "
+				+ "shipping_country VARCHAR(50) NOT NULL default '', "
+				+ "shipping_postal_code VARCHAR(50) NOT NULL default '', "
+				+ "phone VARCHAR(50) NOT NULL default '', "
+				+ "cellphone VARCHAR(50) NOT NULL default '', "
+				+ "email VARCHAR(255) NOT NULL default '', "
+				+ "last_genre INT(10) NOT NULL default '-1', "
+				+ "manager INT(1) NOT NULL default 0,"
+				+ "PRIMARY KEY (_id) "
+				+ ") ENGINE=InnoDB;";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+
+		// MySQL statement to populate the table
+		sql = "INSERT INTO users_test (login, password, last_name, first_name, country, email) "
+				+ "VALUES ('gangstaman','test', 'Reid', 'Christopher', 'Canada', 'viking_man@bookdepot.com'), "
+				+ "('what', 'test', 'Rolich', 'Polina', 'Canada', 'the_angry_icelander@bookdepot.com')";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+		
+		// Instantiate the UserDAOImpl object
+		try {
+			users = new UserActionBean();
+		} catch (IOException e) {
+			
+			// Log the exception
+			log.error("UserDAOImpl instantiation failed", e);
+			
+		} catch (NullPointerException e) {
+			
+			// Log the exception
+			log.error("UserDAOImpl instantiation failed", e);
+			
+		}
+	}
+	
+	/**
+	 * Tests the insert method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testInsertUserNull() throws SQLException {
+		users.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid UserBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testInsertUserValid() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setLastName("Perrin");
+		ub.setFirstName("Matthieu");
+		ub.setEmail("vive_la_france@bookdepot.com");
+		
+		int result = users.insert(ub);
+		assertEquals("1 row affected: ", 1, result);
+	}
+	
+	/**
+	 * Tests the update method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testUpdateUserNull() throws SQLException {
+		users.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid UserBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testUpdateUserValid() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setId(1);
+		ub.setLastName("Reid");
+		ub.setFirstName("Chris");
+		ub.setEmail("the_bearded_viking@bookdepot.com");
+		
+		int result = users.update(ub);
+		assertEquals("1 row affected: ", 1, result);
+	}
+	
+	/**
+	 * Tests the update method with an invalid UserBean (doesn't exist).
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testUpdateUserInvalid() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setId(4);
+		
+		int result = users.update(ub);
+		assertEquals("0 row affected: ", 0, result);
+	}
+	
+	/**
+	 * Tests the delete method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testDeleteUserNull() throws SQLException {
+		users.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid UserBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testDeleteUserValid() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setId(1);
+		
+		int result = users.delete(ub);
+		assertEquals("1 row affected: ", 1, result);
+	}
+	
+	/**
+	 * Tests the delete method with an invalid UserBean (doesn't exist).
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testDeleteUserInvalid() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setId(4);
+		
+		int result = users.delete(ub);
+		assertEquals("0 row affected: ", 0, result);
+	}
+	
+	/**
+	 * Tests the searchByForm method with a null value
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testSearchByFormNull() throws SQLException {
+		
+		ArrayList<UserBean> beans = users.searchByForm(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/**
+	 * Tests the searchByForm method with a valid value that will return 1 result
+	 */
+	@Test(timeout = 1000)
+	public void testSearchByFormValidSingleResult() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setLastName("Reid");
+		ArrayList<UserBean> beans = users.searchByForm(ub);
+		
+		assertEquals("1 row affected: ", 1, beans.size());
+		
+	}
+	
+	/**
+	 * Tests the searchByForm method with a valid value that will return multiple results
+	 */
+	@Test(timeout = 1000)
+	public void testSearchByFormValidMultipleResults() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setCountry("Canada");
+		ArrayList<UserBean> beans = users.searchByForm(ub);
+		
+		assertEquals("2 row affected: ", 2, beans.size());
+		
+	}
+	
+	/**
+	 * Tests the searchByForm method with a valid value
+	 */
+	@Test(timeout = 1000)
+	public void testSearchByFormValidSingleResultAllFields() throws SQLException {
+		
+		UserBean ub = new UserBean();
+		ub.setLogin("swag");
+		ub.setPassword("420");
+		ub.setTitle("Mr");
+		ub.setLastName("Charette");
+		ub.setFirstName("Tristan");
+		ub.setCompany("BookDepot");
+		ub.setAddress1("1337 Elite Avenue");
+		ub.setAddress2("Gangster Room");
+		ub.setCity("Heaven");
+		ub.setProvince("Not A province");
+		ub.setCountry("Canada");
+		ub.setPostalCode("H0H0H0");
+		ub.setShippingTitle("Mr");
+		ub.setShippingLastName("Charette");
+		ub.setShippingFirstName("Tristan");
+		ub.setShippingCompany("BookDepot");
+		ub.setShippingAddress1("1337 Elite Avenue");
+		ub.setShippingAddress2("Gangster Room");
+		ub.setShippingCity("Heaven");
+		ub.setShippingProvince("Not A province");
+		ub.setShippingCountry("Canada");
+		ub.setShippingPostalCode("H0H0H0");
+		ub.setPhone("5142552555");
+		ub.setCellphone("5142452431");
+		ub.setEmail("emailhere@depotbook.com");
+		ub.setLastGenre(2);
+		ub.setManager(true);
+		
+		users.insert(ub);
+		
+		ArrayList<UserBean> beans = users.searchByForm(ub);
+		
+		assertEquals("1 row affected: ", 1, beans.size());
+		
+	}
+}

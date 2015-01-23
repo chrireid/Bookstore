@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<script type="text/javascript">
+		var visible = false;
+
+		function showForm(param) {
+
+			if (param == "total_sales") {
+				document.getElementById("total_sales").style.display = "block";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "sales_by_client") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "block";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "sales_by_author") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "block";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "sales_by_publisher") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "block";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "top_sellers") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "block";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "top_clients") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "block";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "zero_sales") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "block";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "reorder_report") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "block";
+				document.getElementById("stock_report").style.display = "none";
+			} else if (param == "stock_report") {
+				document.getElementById("total_sales").style.display = "none";
+				document.getElementById("sales_by_client").style.display = "none";
+				document.getElementById("sales_by_author").style.display = "none";
+				document.getElementById("sales_by_publisher").style.display = "none";
+				document.getElementById("top_sellers").style.display = "none";
+				document.getElementById("top_clients").style.display = "none";
+				document.getElementById("zero_sales").style.display = "none";
+				document.getElementById("reorder_report").style.display = "none";
+				document.getElementById("stock_report").style.display = "block";
+			}
+		}
+	</script>
+
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Reports" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="select the report" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:panelGrid class="to_cart" style="padding-top:25px;" columns="2" rendered="#{reportQueryBean.requested}">
+						<h:outputText value="Requested fields:" /><br />
+						<h:outputText value="Report type:" /><h:outputText value="#{reportQueryBean.reportType}" />
+						<h:outputText value="From:" /><h:outputText value="#{reportQueryBean.startDate}" />
+						<h:outputText value="To:" /><h:outputText value="#{reportQueryBean.endDate}" />
+						<h:outputText value="Summary / Detailed" /><h:outputText value="#{reportQueryBean.summary}" />
+					</h:panelGrid>
+					<br />
+					<h:panelGrid class="to_cart" style="padding-top:25px;" columns="2">
+
+						<h:commandButton class="management_list"
+							onclick="showForm('total_sales')" value="Total Sales" />
+						<h:form id="total_sales" style="display:none"
+							value="#{reportQueryBean.reportType}">
+							<h:panelGrid class="to_cart" style="padding-top:25px;"
+								columns="2">
+								<h:outputLabel for="startDate" value="Start Date:" />
+								<rich:calendar value="#{reportQueryBean.startDate}"
+									locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+									datePattern="#{calendarBean.pattern}" cellWidth="24px"
+									cellHeight="22px" style="width:200px" showInput="true"
+									id="startDate" />
+								<h:outputLabel for="endDate" value="End Date:" />
+								<rich:calendar value="#{reportQueryBean.endDate}"
+									locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+									datePattern="#{calendarBean.pattern}" cellWidth="24px"
+									cellHeight="22px" style="width:200px" showInput="true"
+									id="endDate" />
+								<h:outputLabel value="Detailed:" for="detailed" />
+								<h:selectBooleanCheckbox id="detailed" value="#{reportQueryBean.detailed}" />
+								<br />
+								<h:commandButton value="Total Sales" 
+									action="#{reportQueryActionBean.totalSales}" outcome="/secured/reports.xhtml" />
+									Currently requested: #{reportQueryBean.requested}
+							</h:panelGrid>
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('sales_by_client')" value="Sales by Client" />
+						<h:form id="sales_by_client" style="display:none">
+							sales by client<br />
+							<rich:panel style="width:220px;display:none;" id="select_client" >
+							<f:facet name="header">
+								<h:outputText value="Client"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.client_id}"
+								defaultLabel="Select the client">
+								<f:selectItems value="#{userAction.allUsers}" var="client"
+									itemValue="#{client.id}"
+									itemLabel="#{client.lastName} #{client.firstName}" />
+							</rich:select>
+						</rich:panel>
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('sales_by_author')" value="Sales by Author" />
+						<h:form id="sales_by_author" style="display:none">
+						by author<br />
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Author"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.author_id}"
+								defaultLabel="Select the author">
+								<f:selectItems value="#{authorAction.allAuthors}" var="author"
+									itemValue="#{author.id}"
+									itemLabel="#{author.lastname} #{author.firstname}" />
+							</rich:select>
+						</rich:panel>
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('sales_by_publisher')"
+							value="Sales by Publisher" />
+						<h:form id="sales_by_publisher" style="display:none">
+						by publisher<br />
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Publisher"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.publisher}"
+								defaultLabel="Select the publisher">
+								<f:selectItems value="#{bookAction.allPublishers}" var="publisher"
+									itemValue="#{book.publisher}" itemLabel="#{publisher}" />
+							</rich:select>
+						</rich:panel>
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('top_sellers')" value="Top Sellers" />
+						<h:form id="top_sellers" style="display:none">
+						top sellers
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('top_clients')" value="Top Clients" />
+						<h:form id="top_clients" style="display:none">
+						top clients
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('zero_sales')" value="Zero Sales" />
+						<h:form id="zero_sales" style="display:none">
+						zero sales
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('reorder_report')" value="Reorder Report" />
+						<h:form id="reorder_report" style="display:none">
+						reorder report
+						</h:form>
+						<h:commandButton class="management_list"
+							onclick="showForm('stock_report')" value="Stock Report" />
+						<h:form id="stock_report" style="display:none">
+						stock report
+						</h:form>
+
+					</h:panelGrid>
+
+					<br />
+
+					<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+					<br /> <br />
+
+
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

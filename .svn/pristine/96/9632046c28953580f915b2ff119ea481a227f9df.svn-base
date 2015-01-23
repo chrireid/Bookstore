@@ -1,0 +1,64 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class AuthorTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#AuthorActionBean()}.
+	 */
+	@Test
+	public void testAuthorActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#insert(g4w14.BookStore.beans.AuthorBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#update(g4w14.BookStore.beans.AuthorBean, int)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#getAuthorsByBook(g4w14.BookStore.beans.BookBean)}.
+	 */
+	@Test
+	public void testGetAuthorsByBook() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#getAuthorByString(java.lang.String)}.
+	 */
+	@Test
+	public void testGetAuthorByString() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.AuthorActionBean#getAllAuthors()}.
+	 */
+	@Test
+	public void testGetAllAuthors() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

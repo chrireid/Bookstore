@@ -1,0 +1,137 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import java.util.ArrayList;
+
+/**
+ * @author Xander
+ *
+ */
+public class SurveyBean {
+
+	private long id;
+	private String question;
+	private ArrayList<String> answers;
+	private ArrayList<Integer> answers_count;
+	private boolean active;
+	
+	
+	public SurveyBean()
+	{
+		super();
+		this.id = 0;
+		this.answers = new ArrayList<String>();
+		this.answers_count = new ArrayList<Integer>();
+		this.active = false;
+		
+	}
+	
+	public SurveyBean(long id, String question, ArrayList<String> answers, ArrayList<Integer> answers_count, boolean active)
+	{
+		super();
+		this.id = id;
+		this.question = question;
+		this.answers = answers;
+		this.answers_count = answers_count;
+		this.active = active;
+		
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public ArrayList<String> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(ArrayList<String> answers) {
+		this.answers = answers;
+	}
+
+	public ArrayList<Integer> getAnswers_count() {
+		return answers_count;
+	}
+
+	public void setAnswers_count(ArrayList<Integer> answers_count) {
+		this.answers_count = answers_count;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + ((answers == null) ? 0 : answers.hashCode());
+		result = prime * result
+				+ ((answers_count == null) ? 0 : answers_count.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((question == null) ? 0 : question.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SurveyBean other = (SurveyBean) obj;
+		if (active != other.active)
+			return false;
+		if (answers == null) {
+			if (other.answers != null)
+				return false;
+		} else if (!answers.equals(other.answers))
+			return false;
+		if (answers_count == null) {
+			if (other.answers_count != null)
+				return false;
+		} else if (!answers_count.equals(other.answers_count))
+			return false;
+		if (id != other.id)
+			return false;
+		if (question == null) {
+			if (other.question != null)
+				return false;
+		} else if (!question.equals(other.question))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SurveyBean [id=" + id + ", question=" + question + ", answers="
+				+ answers + ", answers_count=" + answers_count + ", active="
+				+ active + "]";
+	}
+	
+	
+	
+	
+}

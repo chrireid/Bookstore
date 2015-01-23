@@ -1,0 +1,157 @@
+package g4w14.BookStore.actionbeans;
+
+/*
+ * author Matthieu
+ * author chris
+ */
+import g4w14.BookStore.beans.BookBean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIOutput;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+@Named("searchAction")
+@SessionScoped
+public class SearchAction implements Serializable {
+
+	private BookActionBean bookAction;
+	private static final long serialVersionUID = 2224795403686510660L;
+
+	private String string, search; // value from the input search
+	private String type_search;
+	//list for the client search
+	private ArrayList<BookBean> list_books;
+	//list for the manager search
+	private ArrayList<BookBean> list_booksMt;
+	private ArrayList<BookBean> list_booksMt2;
+
+	@Inject
+	NavigationBean navBean;
+	@Inject
+	CookieAction cookieA;
+
+	/**
+	 * @throws SQLException 
+	 * 
+	 */
+	public SearchAction() throws NullPointerException, IOException, SQLException {
+		bookAction = new BookActionBean();
+		list_books = new ArrayList<>();
+		list_booksMt = new ArrayList<BookBean>();
+		list_booksMt2 = bookAction.getAllBooks();
+		type_search = "by_title";
+	}
+
+	/*
+	 * Main method called when search button clicked
+	/ * @author Matthieu
+	 */
+	public String searchAction() throws SQLException {
+		/**
+		 * Get the id from facesContext
+		 */
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Map<String, String> params = fc.getExternalContext()
+				.getRequestParameterMap();
+
+		// if the search made by genre
+		if (params.containsKey("genre_id")) {
+			System.out.println("id?? " + params.get("genre_id"));
+			long id = Long.parseLong(params.get("genre_id"));
+
+			// fill the cookie for genre
+			cookieA.editCookie("user_genre", Long.toString(id));
+			// execute search method
+			list_books = bookAction.getBooksByGenre(id);
+		}
+		// if the search made by one of 4 types in the listbox
+		else if (params.containsKey("genre_id") == false) {
+			if (type_search.equals("by_title")) {
+				list_books = bookAction.getBooksByTitle(string);
+			} else if (type_search.equals("by_publisher")) {
+				list_books = bookAction.getBooksByPublisher(string);
+			} else if (type_search.equals("by_author")) {
+				list_books = bookAction.getBooksByAuthor(string);
+			} else if (type_search.equals("by_isbn")) {
+				list_books = bookAction.getBooksByISBN(string);
+			}
+		}
+		return navBean.redirectToSearch();
+	}
+	
+	/* Special search for management side
+	 *  @author Matthieu
+	 */
+	public void searchActionMt() throws SQLException {
+
+		if (!(string.equals(null)) && !(string.equals(""))) {
+			if (type_search.equals("by_title")) {
+				list_booksMt = bookAction.getBooksByTitle(string);
+			} else if (type_search.equals("by_publisher")) {
+				list_booksMt = bookAction.getBooksByPublisher(string);
+			} else if (type_search.equals("by_author")) {
+				list_booksMt = bookAction.getBooksByAuthor(string);
+			} else if (type_search.equals("by_isbn")) {
+				list_booksMt = bookAction.getBooksByISBN(string);
+			}
+		} else {
+			list_booksMt = bookAction.getAllBooks();
+		}
+	}
+
+
+	public String getString() {
+		return string;
+	}
+
+	public void setString(String string) {
+		this.string = string;
+	}
+	
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public ArrayList<BookBean> getList_books() {
+		return list_books;
+	}
+	
+	public ArrayList<BookBean> getList_booksMt() {
+		return list_booksMt;
+	}
+
+	public ArrayList<BookBean> getListBooksMt2() {
+		return list_booksMt2;
+	}
+
+	public void setListBooksMt2(ArrayList<BookBean> list_booksMt2) {
+		this.list_booksMt2 = list_booksMt2;
+	}
+
+	public void updateTypeSearch(AjaxBehaviorEvent event) {
+		type_search = (String) ((UIOutput) event.getSource()).getValue();
+	}
+
+	public void setType_search(String type_search) {
+		this.type_search = type_search;
+	}
+
+}

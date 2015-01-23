@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+	<script type="text/javascript">
+		var visible = false;
+
+		function showForm(param) {
+
+			if (visible) {
+				if (param == "add") {
+					document.getElementById("addBook").style.display = "none";
+					visible = false;
+				} else if (param == "search") {
+					document.getElementById("doSearch").style.display = "none";
+				}
+
+			} else if (visible == false) {
+				if (param == "add") {
+					document.getElementById("addBook").style.display = "block";
+					visible = true;
+				} else if (param == "search") {
+					document.getElementById("doSearch").style.display = "block";
+				}
+
+			}
+		}
+	</script>
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Inventory" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:outputText value="Management Options" class="h2" />
+					<br /> <br />
+
+
+
+					<h:panelGrid class="to_cart" columns="2">
+
+						<h:commandButton class="management_list" onclick="showForm('add')"
+							value="Add a new book" />
+
+						<h:form id="addBook" style="display:none">
+							<h:panelGrid class="box-style" columns="2">
+								<h:outputText class="h2" value="Add a new book"
+									style="text-decoration:underline;" />
+								<br />
+								<h:outputText class="h6" value="Title:" />
+								<h:inputText value="#{bookBean.title}" />
+
+								<h:outputText for="isbn" class="h6" value="ISBN:" />
+								<h:inputText id="isbn" value="#{bookBean.isbn}">
+									<f:validateRegex pattern="[0-9]+" />
+									<f:ajax event="keyup" render="isbnerror" />*
+								</h:inputText>
+								<h:message id="isbnerror" for="isbn" errorStyle="color:red;" />
+
+								<h:outputText class="h6" value="Publisher:" />
+								<h:selectOneMenu value="#{bookBean.publisher}">
+									<f:selectItems value="#{bookAction.allPublishers}" var="pub"
+										itemLabel="#{pub}" itemValue="#{pub}" />
+								</h:selectOneMenu>
+								<h:outputText class="h6" value="Number of pages:" />
+								<h:inputText value="#{bookBean.pages}"></h:inputText>
+
+								<h:outputText class="h6" value="Genre:" />
+								<h:selectOneMenu value="#{bookBean.genre}">
+									<f:selectItems value="#{genreAction.allGenres}" var="genre"
+										itemLabel="#{genre.genre}" itemValue="#{genre.id}" />
+								</h:selectOneMenu>
+
+								<h:outputText class="h6" value="Book type:" />
+								<h:selectOneMenu value="#{bookBean.type}">
+									<f:selectItem itemLabel="Soft Cover" itemValue="0" />
+									<f:selectItem itemLabel="Hard Cover" itemValue="1" />
+									<f:selectItem itemLabel="EBook" itemValue="2" />
+								</h:selectOneMenu>
+
+								<h:outputText class="h6" value="Eformat:" />
+								<h:selectOneMenu value="#{bookBean.eformat}">
+									<f:selectItem itemLabel="Not applicable" itemValue="0" />
+									<f:selectItem itemLabel="LIT" itemValue="1" />
+									<f:selectItem itemLabel="PDF" itemValue="2" />
+									<f:selectItem itemLabel="ODF" itemValue="3" />
+									<f:selectItem itemLabel="EPUB" itemValue="4" />
+
+								</h:selectOneMenu>
+
+								<h:outputText class="h6" value="On hand :" />
+								<h:inputText value="#{bookBean.on_hand}"></h:inputText>
+
+								<h:outputText class="h6" value="Wholesale price:" />
+								<h:inputText value="#{bookBean.wholesale_price}"></h:inputText>
+
+								<h:outputText class="h6" value="List price:" />
+								<h:inputText value="#{bookBean.list_price}"></h:inputText>
+
+								<h:outputText class="h6" value="Sale price:" />
+								<h:inputText value="#{bookBean.sale_price}"></h:inputText>
+
+								<h:outputText class="h6" value="Weight:" />
+								<h:inputText value="#{bookBean.weight}"></h:inputText>
+
+								<h:outputText class="h6" value="Dimensions:" />
+								<h:inputText value="#{bookBean.dimensions}"></h:inputText>
+
+								<h:outputText class="h6" value="Create date:" />
+								<rich:calendar value="#{calendarBean.selectedDate}"
+									locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+									datePattern="#{calendarBean.pattern}" cellWidth="24px"
+									cellHeight="22px" style="width:200px" showInput="true" />
+
+								<h:outputText class="h6" value="Status:" />
+								<h:selectOneMenu value="#{bookBean.status}">
+									<f:selectItem itemLabel="Not available" itemValue="0" />
+									<f:selectItem itemLabel="Sale" itemValue="1" />
+									<f:selectItem itemLabel="Liquidation" itemValue="2" />
+									<f:selectItem itemLabel="Backorder" itemValue="3" />
+									<f:selectItem itemLabel="Discontinued" itemValue="4" />
+								</h:selectOneMenu>
+
+								<h:commandButton action="#{bookAction.newBook}" value="Submit" />
+							</h:panelGrid>
+						</h:form>
+					</h:panelGrid>
+
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

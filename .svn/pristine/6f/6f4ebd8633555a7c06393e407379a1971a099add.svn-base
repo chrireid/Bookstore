@@ -1,0 +1,43 @@
+package g4w14.BookStore.actionbeans;
+
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+@Named("cookieAction")
+@SessionScoped
+public class CookieAction implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4188270403412619452L;
+
+	public void createGCookie() {
+		Cookie c = new Cookie("user_genre", "");
+
+		HttpServletResponse resp = (HttpServletResponse) FacesContext
+				.getCurrentInstance().getExternalContext().getResponse();
+		resp.addCookie(c);
+	}
+
+	public void writeCookie(Cookie c) {
+		c.setPath("/");
+		HttpServletResponse resp = (HttpServletResponse) FacesContext
+				.getCurrentInstance().getExternalContext().getResponse();
+		resp.addCookie(c);
+
+	}
+
+	public Cookie readCookie(String name) {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		Cookie c = (Cookie) context.getExternalContext().getRequestCookieMap()
+				.get(name);
+		return c;
+	}
+}

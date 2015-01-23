@@ -1,0 +1,531 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<!--  Tristan Charette -->
+	<!--  Christopher Reid -->
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tablestyle.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<br />
+	<br />
+	<br />
+
+	<h:panelGroup styleClass="grid_3 alpha">
+		<h:outputText styleClass="h1 left-outline" value="User Management" />
+	</h:panelGroup>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+
+					<br /> <br /> <br /> <br /> <br />
+
+					<center>
+						<h:outputText value="Links can go here" />
+						<p style="color: #f2f2f2;">______________________________________________________________________________________________________________________</p>
+					</center>
+
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+					<h:form>
+						<div class="grid_4 alpha">
+
+							<h:outputText value="Search for a user:" />
+							<br /> <br />
+
+							<h:inputText value="#{searchAction.search}" size="32"
+								style="padding:7px;" />
+							<h:outputText value="&#160;" />
+							<br />
+
+							<h:commandButton style="margin-left:3px;"
+								styleClass="small-button" type="submit" value="#{msgs.search}"
+								action="#">
+
+							</h:commandButton>
+							<br /> <br />
+
+						</div>
+
+					</h:form>
+
+					<h:panelGrid styleClass="grid_7 alpha" style="padding-top:25px;">
+						<h:form>
+							<rich:dataTable value="#{userAction.allUsers}"
+								styleClass="order-table" var="user">
+
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.id}" />
+									</f:facet>
+									<h:outputText value="#{user.id}"></h:outputText>
+
+								</h:column>
+
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.login}" />
+									</f:facet>
+									<h:outputText value="#{user.login}"></h:outputText>
+
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.name}" />
+									</f:facet>
+									<h:outputText
+										value="#{user.title} #{user.firstName} #{user.lastName}"></h:outputText>
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.phoneNum}" />
+									</f:facet>
+									<h:outputText value="#{user.phone}"></h:outputText>
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.cell}" />
+									</f:facet>
+									<h:outputText value="#{user.cellphone}"></h:outputText>
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.email}" />
+									</f:facet>
+									<h:outputText value="#{user.email}"></h:outputText>
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.manager}" />
+									</f:facet>
+									<h:outputText value="#{user.manager}"></h:outputText>
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{msgs.remove}" />
+									</f:facet>
+									<center>
+										<h:commandButton styleClass="small-button" value="Edit"
+											action="#{userAction.editUser(user.id)}" update="@form" />
+										<h:commandButton styleClass="small-button" value="X"
+											action="#{userAction.delete(user)}" update="@form" />
+									</center>
+								</h:column>
+
+								<f:facet name="footer">
+
+								</f:facet>
+
+							</rich:dataTable>
+						</h:form>
+					</h:panelGrid>
+
+
+
+					<!-- Popup Form -->
+					<h:form>
+						<p:dialog visible="#{userAction.popup}" header="Edit User 2.0"
+							widgetVar="dlg3" showEffect="explode" hideEffect="explode"
+							width="700" height="600" modal="true" resizable="false"
+							style="background-color: #E5E5E5;">
+							<p:ajax event="close" listener="#{userAction.popup}" />
+
+							<h:panelGroup>
+
+								<center>
+
+									<!-- HEADER SECTION -->
+									<h:outputText styleClass="h2" value="#{msgs.userInfo}: '#{userAction.mub.login}'" />
+									
+									<br /> <br /> <br />
+
+									<!-- CONTACT INFORMATION SECTION -->
+									<h:outputText styleClass="h3"
+										value="#{msgs.contact} #{msgs.info}" />
+									<br />
+									<p style="color: #f2f2f2;">_____________________________________________</p>
+
+									<!-- Phone / Cell / Email -->
+									<h:panelGrid columns="3" style="text-align: center;">
+
+										<h:outputLabel for="phone" value="#{msgs.phoneNum}: " />
+										<h:outputLabel for="cell" value="#{msgs.cell}: " />
+										<h:outputLabel for="email" value="#{msgs.email}: " />
+
+										<p:inputMask id="phone" label="#{msgs.phoneNum}"
+											value="#{userAction.mub.phone}" 
+											mask="(999) 999-9999"
+											style="text-align: center;">
+											<f:validateRegex pattern="^([+]?[0-9]+$)" />
+											<f:convertNumber pattern="###-###-####" />
+											<f:ajax event="keyup" render="phoneError" />
+										</p:inputMask>
+
+										<p:inputMask id="cell" label="#{msgs.cell}"
+											value="#{userAction.mub.cellphone}" 
+											mask="(999) 999-9999"
+											style="text-align: center;">
+											<f:validateRegex pattern="^([+]?[0-9]+$)" />
+											<f:ajax event="keyup" render="cellError" />
+										</p:inputMask>
+
+										<p:inputMask id="email" label="#{msgs.email}"
+											value="#{userAction.mub.email}">
+											<f:validateRegex
+												pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+											<f:ajax event="keyup" render="emailError" />
+										</p:inputMask>
+
+										<h:message id="cellError" for="cell" errorStyle="color:red;" />
+										<h:message id="phoneError" for="phone" errorStyle="color:red;" />
+										<h:message id="emailError" for="email" errorStyle="color:red;" />
+
+									</h:panelGrid>
+
+
+									<br /> <br /> <br />
+
+
+									<!-- ADDRESS SECTION -->
+									<h:outputText styleClass="h3" value="#{msgs.address}" />
+									<br />
+									<p style="color: #f2f2f2;">_____________________________________________</p>
+
+									<!-- Title / First / Last Name -->
+									<h:panelGrid columns="3" style="text-align: center;">
+
+										<h:outputLabel for="title" value="#{msgs.title}: " />
+										<h:outputLabel for="fname" value="#{msgs.fname}: " />
+										<h:outputLabel for="lname" value="#{msgs.lname}: " />
+
+										<p:inputMask label="#{msgs.title}" id="title"
+											value="#{userAction.mub.title}" style="text-align:center;"
+											onload='getBeanInfo("title")'>
+											<f:validateLength minimum="2" />
+											<f:validateRegex pattern="^[a-zA-Z]+" />
+											<f:ajax event="keyup" render="titleError" />
+										</p:inputMask>
+
+										<p:inputMask id="fname" label="#{msgs.fname}"
+											value="#{userAction.mub.firstName}"
+											style="text-align:center;"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="2" />
+											<f:validateRegex pattern="^[a-zA-Z]+" />
+											<f:ajax event="keyup" render="fnameError" />
+										</p:inputMask>
+
+										<p:inputMask id="lname" label="#{msgs.lname}"
+											value="#{userAction.mub.lastName}" style="text-align:center;"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="2" />
+											<f:validateRegex pattern="^[a-zA-Z]+" />
+											<f:ajax event="keyup" render="lnameError" />
+										</p:inputMask>
+
+										<h:message id="titleError" for="title" errorStyle="color:red;" />
+										<h:message id="lnameError" for="lname" errorStyle="color:red;" />
+										<h:message id="fnameError" for="fname" errorStyle="color:red;" />
+
+									</h:panelGrid>
+
+									<br />
+
+									<!--  Address line 1 / Line 2 / City -->
+									<h:panelGrid columns="3" style="text-align: center;">
+
+										<h:outputLabel for="address1" value="#{msgs.address}: " />
+										<h:outputLabel for="address2"
+											value="#{msgs.address} #{msgs.secondLine}: " />
+										<h:outputLabel for="city" value="#{msgs.city}: " />
+
+										<p:inputMask id="address1" label="#{msgs.address}"
+											style="text-align:center;" value="#{userAction.mub.address1}">
+											<f:validateRegex pattern="[0-9a-zA-Z -]+" />
+											<f:validateLength minimum="6" />
+											<f:ajax event="keyup" render="ad1Error" />
+										</p:inputMask>
+
+										<p:inputMask id="address2" label="#{msgs.address}"
+											style="text-align:center;" value="#{userAction.mub.address2}"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="6" />
+											<f:ajax event="keyup" render="ad2Error" />
+										</p:inputMask>
+
+										<p:inputMask id="city" label="#{msgs.city}"
+											style="text-align:center;" value="#{userAction.mub.city}"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="6" />
+											<f:validateRegex pattern="^[a-zA-Z -]+" />
+											<f:ajax event="keyup" render="cityError" />
+										</p:inputMask>
+
+										<h:message id="ad1Error" for="address1"
+											errorStyle="color:red;" />
+										<h:message id="ad2Error" for="address2"
+											errorStyle="color:red;" />
+										<h:message id="cityError" for="city" errorStyle="color:red;" />
+
+									</h:panelGrid>
+
+									<br />
+
+									<!-- Province / Country / Postal Code -->
+									<h:panelGrid columns="3" style="text-align: center;">
+
+										<h:outputLabel for="province" value="Province: " />
+										<h:outputLabel for="country" value="#{msgs.country}: " />
+										<h:outputLabel for="postal" value="#{msgs.postal}: " />
+
+										<h:selectOneMenu id="province"
+											value="#{userAction.mub.province}">
+											<f:selectItem id="ab" itemLabel="AB" itemValue="Alberta" />
+											<f:selectItem id="bc" itemLabel="BC"
+												itemValue="British Columbia" />
+											<f:selectItem id="mb" itemLabel="MB" itemValue="Manitoba" />
+											<f:selectItem id="nb" itemLabel="NB"
+												itemValue="New Brunswick" />
+											<f:selectItem id="nl" itemLabel="NL" itemValue="NewfoundLand" />
+											<f:selectItem id="ns" itemLabel="NS" itemValue="Nova Scotia" />
+											<f:selectItem id="nt" itemLabel="NT"
+												itemValue="Northwest Territories" />
+											<f:selectItem id="nu" itemLabel="NU" itemValue="Nunavut" />
+											<f:selectItem id="on" itemLabel="ON" itemValue="Ontario" />
+											<f:selectItem id="pe" itemLabel="PE"
+												itemValue="Prince Edward Island" />
+											<f:selectItem id="qc" itemLabel="QC" itemValue="Quebec" />
+											<f:selectItem id="ks" itemLabel="SK" itemValue="Saskatchewan" />
+											<f:selectItem id="yt" itemLabel="YT" itemValue="Yukon" />
+										</h:selectOneMenu>
+
+										<h:selectOneMenu id="country"
+											value="#{userAction.mub.country}">
+											<f:selectItem id="canada" itemLabel="Canada"
+												itemValue="Canada" />
+										</h:selectOneMenu>
+
+										<p:inputMask id="postal" size="4" label="#{msgs.postal}"
+											style="text-align:center; text-transform: uppercase;"
+											mask="a9a 9a9"
+											value="#{userAction.mub.postalCode}"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:ajax event="keyup" render="postalError" />
+										</p:inputMask>
+
+										<h:message id="postalError" for="postal"
+											errorStyle="color:red;" />
+
+									</h:panelGrid>
+
+									<br />
+
+									<!--  Company -->
+									<h:panelGrid columns="1" style="text-align: center;">
+										<h:outputLabel for="company" value="#{msgs.company}: " />
+										<p:inputMask id="company" label="#{msgs.company}"
+											value="#{userAction.mub.company}"
+											style="text-align:center;"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="2" />
+											<f:ajax event="keyup" render="companyNameError" />
+										</p:inputMask>
+										<h:message id="companyNameError" for="company"
+											errorStyle="color:red;" />
+									</h:panelGrid>
+
+									<br /> <br /> <br />
+
+									<!--  SHIPPING ADDRESS SECTION -->
+									<h:outputText styleClass="h3" value="#{msgs.shippingAddress}" />
+									<br />
+									<p style="color: #f2f2f2;">_____________________________________________</p>
+
+									<!--  Shipping Title / First Name / Last Name  -->
+									<h:panelGrid columns="3" style="text-align: center;">
+										<h:outputLabel for="s_title" value="#{msgs.title}: " />
+										<h:outputLabel for="s_fname" value="#{msgs.lname}: " />
+										<h:outputLabel for="s_lname" value="#{msgs.lname}: " />
+										
+										<p:inputMask id="s_title"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingTitle}">
+											<f:validateLength minimum="2" />
+											<f:validateRegex pattern="^[a-zA-Z]+" />
+											<f:ajax event="keyup" render="s_titleError" />
+										</p:inputMask>
+										
+										<p:inputMask id="s_fname"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingFirstName}">
+											<f:validateLength minimum="3" />
+										</p:inputMask>
+										
+										<p:inputMask id="s_lname"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingLastName}">
+											<f:validateLength minimum="3" />
+										</p:inputMask>
+										
+										<h:message id="s_titleError" for="s_title" errorStyle="color:red;" />
+										<h:message id="s_fnameError" for="s_lname" errorStyle="color:red;" />
+										<h:message id="s_lnameError" for="s_fname" errorStyle="color:red;" />
+										
+									</h:panelGrid>
+
+									<br />
+									
+									<!-- Address Line 1 / Line 2 / City -->
+									<h:panelGrid columns="3" style="text-align: center;">
+									
+										<h:outputText for="s_addrs" value="Shipping Address: " />
+										<h:outputText for="s_addrs2" value="Shipping Address (Line 2): " />
+										<h:outputLabel for="scity" value="#{msgs.city}: " />
+										
+										<p:inputMask id="s_addrs"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingAddress1}">
+											<f:validateLength minimum="6" />
+										</p:inputMask>
+										
+										<p:inputMask id="s_addrs2"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingAddress2}" >
+										</p:inputMask>
+											
+										<p:inputMask id="scity" label="#{msgs.city}"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingCity}"
+											validator="#{userBean.validateAlphanumeric}">
+											<f:validateLength minimum="6" />
+											<f:validateRegex pattern="^[a-zA-Z -]+" />
+											<f:ajax event="keyup" render="scityError" />
+										</p:inputMask>
+										
+										<h:message id="s_ad1Error" for="s_addrs" errorStyle="color:red;" />
+										<h:message id="s_ad2Error" for="s_addrs2" errorStyle="color:red;" />
+										<h:message id="scityError" for="scity" errorStyle="color:red;" />
+										
+									</h:panelGrid>
+									
+									<br />
+
+									<!-- Province / Country / Postal Code -->
+									<h:panelGrid columns="3" style="text-align: center;">
+									
+										<h:outputLabel for="s_province" value="Province: " />
+										<h:outputLabel for="s_country" value="Country: " />
+										<h:outputLabel for="s_postal" value="Postal Code: " />
+										
+										<h:selectOneMenu id="s_province"
+											value="#{userAction.mub.shippingProvince}">
+											<f:selectItem id="s_ab" itemLabel="AB" itemValue="Alberta" />
+											<f:selectItem id="s_bc" itemLabel="BC"
+												itemValue="British Columbia" />
+											<f:selectItem id="s_mb" itemLabel="MB" itemValue="Manitoba" />
+											<f:selectItem id="s_nb" itemLabel="NB"
+												itemValue="New Brunswick" />
+											<f:selectItem id="s_nl" itemLabel="NL"
+												itemValue="Newfoundland" />
+											<f:selectItem id="s_ns" itemLabel="NS" itemValue="Nova Scotia" />
+											<f:selectItem id="s_nt" itemLabel="NT"
+												itemValue="Northwest Territories" />
+											<f:selectItem id="s_nu" itemLabel="NU" itemValue="Nunavut" />
+											<f:selectItem id="s_on" itemLabel="ON" itemValue="Ontario" />
+											<f:selectItem id="s_pe" itemLabel="PE"
+												itemValue="Prince Edward Island" />
+											<f:selectItem id="s_qc" itemLabel="QC" itemValue="Quebec" />
+											<f:selectItem id="s_sk" itemLabel="SK"
+												itemValue="Saskatchewan" />
+											<f:selectItem id="s_yt" itemLabel="YT" itemValue="Yukon" />
+										</h:selectOneMenu>
+										
+										<h:selectOneMenu id="s_country"
+											value="#{userAction.mub.shippingCountry}">
+											<f:selectItem id="s_canada" itemLabel="Canada"
+												itemValue="Canada" />
+										</h:selectOneMenu>
+									
+										<p:inputMask id="s_postal" size="4"
+											style="text-align:center; text-transform: uppercase;"
+											mask="a9a 9a9"
+											value="#{userAction.mub.shippingPostalCode}">
+										</p:inputMask>
+										
+										<h:message id="s_postalError" for="s_postal" errorStyle="color:red;" />
+										
+									</h:panelGrid>
+
+									<br />
+
+									<!--  Company -->
+									<h:panelGrid columns="1" style="text-align: center;">
+									
+										<h:outputLabel for="s_company" value="Company Name: " />
+										
+										<p:inputMask id="s_company"
+											style="text-align:center;"
+											value="#{userAction.mub.shippingCompany}">
+											<f:validateLength minimum="2" />
+										</p:inputMask>
+										
+										<h:message id="s_companyError" for="s_company" errorStyle="color:red;" />
+										
+									</h:panelGrid>
+
+									<br /> 
+									
+									<p style="color: #f2f2f2;">_____________________________________________</p>
+									<h:commandButton value="Save" style="margin-right:10px;"
+										action="#{userAction.updateManager}" />
+										
+								</center>
+
+							</h:panelGroup>
+						</p:dialog>
+
+					</h:form>
+
+
+					<center>
+						<p style="color: #f2f2f2;">______________________________________________________________________________________________________________________</p>
+					</center>
+
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+</h:body>
+</html>

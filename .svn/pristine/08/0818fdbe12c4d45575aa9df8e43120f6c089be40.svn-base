@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<body class="">
+	
+	<h:form>
+
+		<div class="main-content">
+			<div class="grid_3 omega" id="bookdepot-sidebar">
+				<div id="sidebar">
+					<div class="sideblock">
+						<div class="menu">
+							<h:form>
+								
+								<h:inputText value="" size="32" />
+								<h:outputText value="&#160;" /> <br />
+								
+								<h:selectOneMenu id="searchby"
+								value="#">
+								
+								<f:selectItem id="by_publisher" itemLabel="By publisher" itemValue="#" />
+								<f:selectItem id="by_author" itemLabel="By author" itemValue="#" />
+								<f:selectItem id="by_title" itemLabel="By title" itemValue="#" />
+								
+							</h:selectOneMenu>  
+								<h:commandButton style="margin-left:3px;"  styleClass="small-button" type="submit" value="#{msgs.search}" action="#" />
+								<br /><br />
+							</h:form>
+						</div>
+
+						<ul class="menu">
+							<h:outputText>#{msgs.searchGenre}</h:outputText>
+							<ui:repeat value="#{genreDAO.allGenres}" var="genre_list">
+								<li><h:commandLink value="#{genre_list.genre}"></h:commandLink></li>
+							</ui:repeat>
+						</ul>
+						<div class="clear"></div>
+					</div>
+
+					<div class="sideblock">
+						<h3 class="title">(BANNER)</h3>
+						<h:commandLink fragment="home.xhtml">
+							<h:graphicImage name="./images/banner.jpg" alt="image" width="202"
+								styleClass="shadow" />
+						</h:commandLink>
+						<div class="clear"></div>
+					</div>
+
+					<div class="sideblock last">
+						<h3 class="title">SURVEY</h3>
+						<h:form>
+
+							<h:selectOneRadio value="bla bla" layout="pageDirection">
+								<h6 style="color: #EB540A;">What does the fox say?
+									(#{survey.question})</h6>
+								<f:selectItem itemValue="piupiupiu" itemLabel="piu piu piu" />
+								<f:selectItem itemValue="wiuwiuwiu" itemLabel="wiu wiu wiu" />
+								<f:selectItem itemValue="wagawagawaga"
+									itemLabel="waga waga waga" />
+							</h:selectOneRadio>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+							<div class="clear"></div>
+						</h:form>
+					</div>
+
+				</div>
+				<!-- Sidebar End -->
+			</div>
+			<!-- Grid 3 End -->
+		</div>
+
+	</h:form>
+
+</body>
+</html>

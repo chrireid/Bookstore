@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	
+    >
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+	<ui:insert name="content">
+		
+		<h:dataTable 
+                    onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                    onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                    cellpadding="0" cellspacing="0" 
+                    width="700" border="0" value="#{ordersActionBean.allOrders}" var="order">>
+                
+                    <f:facet name="header">
+                 
+                            <h:column row ="2">
+                              
+                            </h:column>
+                         
+                            <h:column row ="2">
+                                <h:outputText value="subtotals" />
+                            </h:column>
+                            <h:column breakBefore="true">
+                                <h:outputText value="Customer Id" />
+                            </h:column>
+                  						<h:column>
+                                <h:outputText value="Size of Order" />
+                                     </h:column>
+                            <h:column>
+                                <h:outputText value="Date" />
+                            </h:column>
+                  
+                    </f:facet>
+    
+           
+                    
+               
+          		
+                        <h:column>
+                            <h:outputText value="#{order.orderDetails.priceString}"></h:outputText>
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{order.user_id}"></h:outputText>
+                          
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{order.orderDetails.quantity}"></h:outputText>
+                           
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{order.orderDate}"></h:outputText>
+                        </h:column>
+                              
+                 
+            
+        
+                    <f:facet name="footer">
+                
+                 
+                
+                  
+                    </f:facet>
+        
+                </h:dataTable>
+	</ui:insert>
+
+	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

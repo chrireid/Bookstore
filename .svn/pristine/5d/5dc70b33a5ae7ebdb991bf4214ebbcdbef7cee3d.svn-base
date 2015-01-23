@@ -1,0 +1,93 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.BookBean;
+
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIOutput;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+@Named("searchManagementAction")
+@SessionScoped
+public class SearchManagementAction implements Serializable {
+
+	
+	private static final long serialVersionUID = -5040831461188322535L;
+	private String search; // value from the input search
+	private String type_search;
+	private ArrayList<BookBean> books;
+
+	@Inject
+	BookActionBean bookAction;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+	
+	public SearchManagementAction() throws SQLException {
+		super();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		
+		books = bookAction.getAllBooks();
+	}
+	
+	public ArrayList<BookBean> getBooks() {
+		return books;
+	}
+	public void setBooks(ArrayList<BookBean> books) {
+		this.books = books;
+	}
+
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	/*
+	 * Main method called when search button clicked
+	 */
+	public ArrayList<BookBean> searchAction() throws SQLException {
+		
+		if (!type_search.equals("")) {
+			if (type_search.equals("by_title")) {
+				books = bookAction.getBooksByTitle(search);
+			} else if (type_search.equals("by_publisher")) {
+				books = bookAction.getBooksByPublisher(search);
+			} else if (type_search.equals("by_author")) {
+				books = bookAction.getBooksByAuthor(search);
+			} else if (type_search.equals("by_isbn")) {
+				books = bookAction.getBooksByISBN(search);
+			}
+		} else {
+			books = bookAction.getAllBooks();
+		}
+		
+		
+		return books;
+	}
+	
+	public void updateTypeSearch(AjaxBehaviorEvent event) {
+
+		type_search = (String) ((UIOutput) event.getSource()).getValue();
+
+	}
+}

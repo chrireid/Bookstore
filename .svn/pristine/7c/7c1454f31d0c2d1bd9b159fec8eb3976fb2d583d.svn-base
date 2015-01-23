@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<!--  Christopher Reid -->
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<br />
+	<br />
+	<br />
+
+	<h:panelGroup styleClass="grid_3 alpha">
+		<h:outputText styleClass="h1 left-outline" value="Survey Management" />
+	</h:panelGroup>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+
+					<br /> <br /> <br /> <br /> <br />
+
+					<center>
+						<h:outputText value="Links can go here" />
+						<p style="color: #f2f2f2;">______________________________________________________________________________________________________________________</p>
+					</center>
+
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+					
+					<div class="grid_4 alpha">
+						<h:form>
+
+							<h:outputText value="Search for a Survey" />
+							<br /> <br />
+
+							<h:inputText value="#" size="32" style="padding:7px;" />
+							<h:outputText value="&#160;" />
+							<br />
+
+							<h:selectOneMenu id="searchby" value="#" immediate="true">
+
+								<f:selectItem id="by_title" itemLabel="By title"
+									itemValue="by_title" />
+								<f:selectItem id="by_publisher" itemLabel="By publisher"
+									itemValue="by_publisher" />
+								<f:selectItem id="by_author" itemLabel="By author"
+									itemValue="by_author" />
+								<f:selectItem id="by_isbn" itemLabel="By isbn"
+									itemValue="by_isbn" />
+								<f:ajax execute="searchby" listener="#" />
+							</h:selectOneMenu>
+
+							<h:commandButton style="margin-left:3px;"
+								styleClass="small-button" type="submit" value="#{msgs.search}"
+								action="#">
+
+							</h:commandButton>
+							
+							<br /> <br /> 
+							
+							<h:outputText value="Or alternatively, add a survey: " />
+							<br />
+							<h:commandButton value="Add Survey" action="#{surveyManagementSearchAction.add}" />
+					
+						</h:form>
+					</div>
+
+
+					<h:panelGrid styleClass="grid_7 alpha" style="padding-top:25px;">
+					
+						<h:form>
+							<rich:dataTable id="surveys"
+								value="#{surveyManagementSearchAction.surveys}" var="survey">
+
+								<!-- ID Column -->
+								<h:column style="width:30px;">
+									<f:facet name="header">
+										<h:outputText value="ID" id="id" />
+									</f:facet>
+									<center>
+										<h:outputText value="#{survey.id}" />
+									</center>
+								</h:column>
+								
+								<!-- Question Column -->
+								<h:column style="width:300px;">
+									<f:facet name="header">
+										<h:outputText value="Question" id="question" />
+									</f:facet>
+									<h:outputText value="#{survey.question}" />
+								</h:column>
+								
+								<!-- Answers Column -->
+								<h:column style="width:30px;">
+									<f:facet name="header">
+										<h:outputText value="Answers" id="answerCount" />
+									</f:facet>
+									<center>
+										<h:outputText value="#{survey.answersCount}" />
+									</center>
+								</h:column>
+								
+								<!-- Actions Column -->
+								<h:column style="width:50px;">
+									<f:facet name="header">
+										<h:outputText value="Active" id="active" />
+									</f:facet>
+									<center>
+										<h:commandButton value="Make Active" rendered="#{!survey.active}"
+											action="#{surveyManagementSearchAction.makeActive(survey)}">
+										</h:commandButton>
+										<h:commandButton value="Deactivate" rendered="#{survey.active}"
+											action="#{surveyManagementSearchAction.makeInactive(survey)}">
+										</h:commandButton>
+									</center>
+								</h:column>
+								
+								<!-- Edit / Remove Column -->
+								<h:column style="width:120px;">
+									<f:facet name="header">
+										<h:outputText value="Actions" id="actions" />
+									</f:facet>
+									<center>
+										<h:commandButton value="Edit" style="margin-right:2px;"
+											action="#{surveyManagementSearchAction.edit(survey)}">
+										</h:commandButton>
+										<h:commandButton value="x"
+											action="#{surveyManagementSearchAction.remove(survey)}">
+										</h:commandButton>
+									</center>
+								</h:column>
+
+							</rich:dataTable>
+						</h:form>
+
+					</h:panelGrid>
+
+					
+
+					<center>
+						<p style="color: #f2f2f2;">______________________________________________________________________________________________________________________</p>
+					</center>
+					
+					<p:dialog visible="#{surveyManagementSearchAction.popup}" 
+						resizable="false" width="500" height="500"
+						modal="true" header="Survey Management 2.0">
+
+						<p:ajax event="close"
+							listener="#{surveyManagementSearchAction.closePopup}" />
+						
+						<h:form>
+							<h:outputText value="Question: " />
+							<br />
+							<p:inputTextarea value="#{surveyManagementAction.question}"
+								cols="56" rows="5" maxlength="255" />
+
+							<br />
+
+
+							<h:outputText value="Answer(s):" />
+							<!-- Survey Answers -->
+							<!-- Dynamically adds/removes  -->
+							<rich:dataTable id="authorlist"
+								value="#{surveyManagementAction.answers}" var="answer">
+
+								<!-- Answer Column -->
+								<h:column>
+									<p:inputMask value="#{answer.answer}" style="width:50ch;"
+										maxlength="50" />
+								</h:column>
+
+								<!-- Remove Column -->
+								<h:column>
+									<h:commandButton value="Remove"
+										action="#{surveyManagementAction.onButtonRemoveAnswerClick(answer)}">
+									</h:commandButton>
+								</h:column>
+
+							</rich:dataTable>
+
+							<h:commandButton value="Add Answer" style="margin-left:10px;"
+								action="#{surveyManagementAction.onButtonAddAnswerClick}">
+
+							</h:commandButton>
+							
+							<br /> <br />
+							
+							<h:commandButton value="Save Changes"
+								action="#{surveyManagementSearchAction.submit}" />
+						</h:form>
+						
+					</p:dialog>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+</h:body>
+</html>

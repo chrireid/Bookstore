@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="g4w14.tests.AppTest" time="38.587" tests="24" errors="0" skipped="0" failures="1">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.7.0_45\jre\bin"/>
+    <property name="java.vm.version" value="24.45-b08"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\Xander\workspace\g4w14"/>
+    <property name="java.runtime.version" value="1.7.0_45-b18"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\Xander\AppData\Local\Temp\"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="classworlds.conf" value="C:\Users\Xander\workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf8648694704734991539.tmp"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.7.0_45\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\AMD APP\bin\x86_64;C:\Program Files (x86)\AMD APP\bin\x86;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\Windows Live\Shared;."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="51.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\Xander"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.7"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="Xander"/>
+    <property name="java.class.path" value="/I:/Downloads/eclipse-jee-kepler-SR1-win32-x86_64/eclipse/configuration/org.eclipse.osgi/bundles/531/1/.cp/jars/plexus-classworlds-2.4.jar"/>
+    <property name="java.vm.specification.version" value="1.7"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.7.0_45\jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.7.0_45"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.7.0_45\jre\lib\resources.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\rt.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jce.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.7.0_45\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.7.0_45\jre\classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="C:\Users\Xander\workspace\g4w14\EMBEDDED"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="maven.bootclasspath" value="/I:/Downloads/eclipse-jee-kepler-SR1-win32-x86_64/eclipse/configuration/org.eclipse.osgi/bundles/531/1/.cp/jars/plexus-classworlds-2.4.jar"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase name="testInsertUserValid" classname="g4w14.tests.UsersDBTests" time="1.723"/>
+  <testcase name="testUpdateUserInvalid" classname="g4w14.tests.UsersDBTests" time="1.433"/>
+  <testcase name="testSearchByFormValidSingleResultAllFields" classname="g4w14.tests.UsersDBTests" time="1.774"/>
+  <testcase name="testUpdateUserNull" classname="g4w14.tests.UsersDBTests" time="1.396"/>
+  <testcase name="testSearchByFormValidMultipleResults" classname="g4w14.tests.UsersDBTests" time="1.409"/>
+  <testcase name="testDeleteUserInvalid" classname="g4w14.tests.UsersDBTests" time="1.395"/>
+  <testcase name="testInsertUserNull" classname="g4w14.tests.UsersDBTests" time="1.354"/>
+  <testcase name="testSearchByFormNull" classname="g4w14.tests.UsersDBTests" time="1.046"/>
+  <testcase name="testDeleteUserNull" classname="g4w14.tests.UsersDBTests" time="1.358"/>
+  <testcase name="testDeleteUserValid" classname="g4w14.tests.UsersDBTests" time="1.368"/>
+  <testcase name="testUpdateUserValid" classname="g4w14.tests.UsersDBTests" time="1.391"/>
+  <testcase name="testSearchByFormValidSingleResult" classname="g4w14.tests.UsersDBTests" time="1.372"/>
+  <testcase name="testUpdateCustomerReviewInvalid" classname="g4w14.tests.CustomerReviewDBTests" time="1.372"/>
+  <testcase name="testDeleteCustomerReviewNull" classname="g4w14.tests.CustomerReviewDBTests" time="1.344"/>
+  <testcase name="testInsertCustomerReviewValid" classname="g4w14.tests.CustomerReviewDBTests" time="1.378"/>
+  <testcase name="testDeleteCustomerReviewValid" classname="g4w14.tests.CustomerReviewDBTests" time="1.348"/>
+  <testcase name="testDeleteCustomerReviewInvalid" classname="g4w14.tests.CustomerReviewDBTests" time="1.356"/>
+  <testcase name="testUpdateCustomerReviewValid" classname="g4w14.tests.CustomerReviewDBTests" time="1.387"/>
+  <testcase name="testInsertCustomerReviewNull" classname="g4w14.tests.CustomerReviewDBTests" time="1.331"/>
+  <testcase name="testUpdateCustomerReviewNull" classname="g4w14.tests.CustomerReviewDBTests" time="1.328"/>
+  <testcase name="testInsertGenreNull" classname="g4w14.tests.GenresDBTests" time="1.356"/>
+  <testcase name="testInsertGenreValid" classname="g4w14.tests.GenresDBTests" time="1.358"/>
+  <testcase name="testInsert" classname="g4w14.tests.BookManagerTest" time="4.903">
+    <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:86)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.junit.Assert.assertTrue(Assert.java:52)
+	at g4w14.tests.BookManagerTest.testInsert(BookManagerTest.java:185)
+</failure>
+    <system-out><![CDATA[fantasy
+ABOUT TO CALL GET GENRE BY GENRE
+com.mysql.jdbc.JDBC4PreparedStatement@2110876: SELECT * FROM genres_test WHERE genre = 'fantasy'
+0 monkeys
+CALLING INSERT GENRE
+affected? 1
+com.mysql.jdbc.JDBC4PreparedStatement@2e6f5fe7: INSERT INTO inventory_test (isbn,title,publisher,pages,genre_id,cover_big,cover_small,book_type,eformat,on_hand,wholesale_price,list_price,sale_price,weight,dimensions,create_date,removal_status,link) VALUES ('1491945575','OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics','O Reilly Media, Revised edition (Oct. 29 2013)',422,1,'1491945575_b.png','1491945575_s.png',0,'Physical',10,26.300000000000000710542735760100185871124267578125,41.99000000000000198951966012828052043914794921875,37.97999999999999687361196265555918216705322265625,862.0,'22.1 x 17.8 x 2.5 cm','2014-02-22 15:22:48',0,'N/A')
+1
+HOWMANYTIMES
+out of loop
+]]></system-out>
+    <system-err><![CDATA[Feb 22, 2014 3:22:45 PM org.apache.openejb.assembler.classic.Assembler destroyApplication
+INFO: Undeploying app: C:\Users\Xander\AppData\Local\Temp\arquillian-tomee-app-working-dir\1\4e56543d-cd4d-4579-8751-4e18e6cbe8bb
+Feb 22, 2014 3:22:45 PM org.apache.openejb.assembler.classic.Assembler destroyResource
+INFO: Closing DataSource: 4e56543d-cd4d-4579-8751-4e18e6cbe8bb/jdbc/genres
+]]></system-err>
+  </testcase>
+  <testcase name="testGetAuthorsByBook" classname="g4w14.tests.TestAuthor" time="3.107"/>
+</testsuite>

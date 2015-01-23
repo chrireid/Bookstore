@@ -1,0 +1,32 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class RssTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.RSSActionBean#RSSActionBean()}.
+	 */
+	@Test
+	public void testRSSActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.RSSActionBean#getFeed()}.
+	 */
+	@Test
+	public void testGetFeed() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

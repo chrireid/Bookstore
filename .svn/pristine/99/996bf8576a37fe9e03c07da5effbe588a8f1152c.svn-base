@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Reports" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:outputText value="Management Options" class="h2" />
+					<br /> <br />
+					<h:form>
+						<br />
+
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Report Type"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean}">
+								<f:selectItem itemValue="total_sales" itemLabel="Total Sales" />
+								<f:selectItem itemValue="sales_by_client"
+									itemLabel="Sales by Client" />
+								<f:selectItem itemValue="sales_by_author"
+									itemLabel="Sales by Author" />
+								<f:selectItem itemValue="sales_by_publisher"
+									itemLabel="Sales by Publisher" />
+								<f:selectItem itemValue="top_sellers" itemLabel="Top Sellers" />
+								<f:selectItem itemValue="top_clients" itemLabel="Top Clients" />
+								<f:selectItem itemValue="zero_sales" itemLabel="Zero Sales" />
+								<f:selectItem itemValue="reorder_report"
+									itemLabel="Reorder Report" />
+								<f:selectItem itemValue="stock_report" itemLabel="Stock Report" />
+							</rich:select>
+						</rich:panel>
+						<br />
+						For a certain Period of Time
+						<br />
+						<label for="startCalendar">Calendar</label>
+						<rich:calendar id="startCalendar" value="#{reportQueryBean.startDate}"
+							timeZone="#{bb.timeZone}" datePattern="#{msgs.datePattern}">
+						</rich:calendar>
+						<br />
+						<label for="endCalendar">Calendar</label>
+						<rich:calendar id="endCalendar" value="#{reportQueryBean.endDate}"
+							timeZone="#{bb.timeZone}" datePattern="#{msgs.datePattern}">
+						</rich:calendar>
+						<br />
+						<h:selectOneRadio id="sumary_detailed"
+							value="#{reportQueryBean.summary}">
+							<f:selectItem id="summary" itemLabel="Summary" itemValue="true" /><br />
+							<f:selectItem id="detailed" itemLabel="Detailed" itemValue="false" />
+						</h:selectOneRadio>
+						<br />
+						List of clients
+						
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Client"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.client_id}"
+								defaultLabel="Select the client">
+								<f:selectItems value="#{userAction.allUsers}" var="user"
+									itemValue="#{user.id}"
+									itemLabel="#{user.lastName} #{user.firstName}" />
+							</rich:select>
+						</rich:panel>
+
+						<br />
+						List of authors
+						<br />
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Author"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.author_id}"
+								defaultLabel="Select the author">
+								<f:selectItems value="#{authorAction.allAuthors}" var="author"
+									itemValue="#{author.id}"
+									itemLabel="#{author.lastname} #{author.firstname}" />
+							</rich:select>
+						</rich:panel>
+						<br />
+						List of publishers
+						<br />
+						<br />
+
+						<rich:panel style="width:220px;">
+							<f:facet name="header">
+								<h:outputText value="Publisher"></h:outputText>
+							</f:facet>
+							<rich:select value="#{reportQueryBean.publisher}"
+								defaultLabel="Select the publisher">
+								<f:selectItems value="#{book.publisher}"
+									var="publisher" itemValue="#{book.publisher}"
+									itemLabel="#{publisher}" />
+							</rich:select>
+						</rich:panel>
+
+						<br />
+						<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+						<br />
+						<br />
+
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

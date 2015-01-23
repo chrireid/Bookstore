@@ -1,0 +1,191 @@
+package g4w14.BookStore.beans;
+
+import java.sql.Timestamp;
+import java.util.GregorianCalendar;
+
+/**
+ * @author Christopher Reid
+ */
+
+public class CustomerReviewBean  {
+
+	private int _id;
+	private int book_id;
+	private int user_id;
+	private int invoice_id;
+	private String name;
+	private Timestamp review_date;
+	private int rating;
+	private String review;
+	private boolean approval;
+	
+	public CustomerReviewBean() {
+		super();
+		this._id = -1;
+		this.book_id = -1;
+		this.user_id = -1;
+		this.invoice_id = -1;
+		this.name = "";
+		GregorianCalendar cal = new GregorianCalendar();
+		this.review_date = new Timestamp(cal.getTimeInMillis());
+		rating = 3;
+		review = "";
+		approval = false;
+	}
+	
+	public CustomerReviewBean(int _id, int book_id, int user_id,
+			int invoice_id, String name, Timestamp review_date, int rating,
+			String review, boolean approval) {
+		super();
+		this._id = _id;
+		this.book_id = book_id;
+		this.user_id = user_id;
+		this.invoice_id = invoice_id;
+		this.name = name;
+		this.review_date = review_date;
+		this.rating = rating;
+		this.review = review;
+		this.approval = approval;
+	}
+
+	public int getId() {
+		return _id;
+	}
+
+	public void setId(int _id) {
+		this._id = _id;
+	}
+
+	public int getBookId() {
+		return book_id;
+	}
+
+	public void setBookId(int book_id) {
+		this.book_id = book_id;
+	}
+
+	public int getUserId() {
+		return user_id;
+	}
+
+	public void setUserId(int user_id) {
+		this.user_id = user_id;
+	}
+
+	public int getInvoiceId() {
+		return invoice_id;
+	}
+
+	public void setInvoiceId(int invoice_id) {
+		this.invoice_id = invoice_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Timestamp getReviewDate() {
+		return review_date;
+	}
+
+	public void setReviewDate(Timestamp review_date) {
+		this.review_date = review_date;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
+	public String getReview() {
+		return review;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public boolean isApproval() {
+		return approval;
+	}
+
+	public void setApproval(boolean approval) {
+		this.approval = approval;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + _id;
+		result = prime * result + (approval ? 1231 : 1237);
+		result = prime * result + book_id;
+		result = prime * result + invoice_id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + rating;
+		result = prime * result + ((review == null) ? 0 : review.hashCode());
+		result = prime * result
+				+ ((review_date == null) ? 0 : review_date.hashCode());
+		result = prime * result + user_id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerReviewBean other = (CustomerReviewBean) obj;
+		if (_id != other._id)
+			return false;
+		if (approval != other.approval)
+			return false;
+		if (book_id != other.book_id)
+			return false;
+		if (invoice_id != other.invoice_id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (rating != other.rating)
+			return false;
+		if (review == null) {
+			if (other.review != null)
+				return false;
+		} else if (!review.equals(other.review))
+			return false;
+		if (review_date == null) {
+			if (other.review_date != null)
+				return false;
+		} else if (!review_date.equals(other.review_date))
+			return false;
+		if (user_id != other.user_id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomerReviewBean [_id=" + _id + ", book_id=" + book_id
+				+ ", user_id=" + user_id + ", invoice_id=" + invoice_id
+				+ ", name=" + name + ", review_date=" + review_date
+				+ ", rating=" + rating + ", review=" + review + ", approval="
+				+ approval + "]";
+	}
+	
+	
+	
+
+}

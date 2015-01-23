@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class CookieTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CookieAction#editCookie(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public void testEditCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CookieAction#removeCookie(java.lang.String)}.
+	 */
+	@Test
+	public void testRemoveCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CookieAction#createGCookie()}.
+	 */
+	@Test
+	public void testCreateGCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CookieAction#writeCookie(javax.servlet.http.Cookie)}.
+	 */
+	@Test
+	public void testWriteCookie() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

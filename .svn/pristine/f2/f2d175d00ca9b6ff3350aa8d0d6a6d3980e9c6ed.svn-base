@@ -1,0 +1,156 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import g4w14.BookStore.beans.OrderDetailsBean;
+import g4w14.BookStore.beans.OrdersBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author Chris
+ * 
+ */
+public class OrdersActionBean {
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url, user, password;
+	
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	public OrdersActionBean() {
+		super();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Inserts an OrdersBean (and associated ArrayList<OrderDetailsBean> beans) into db
+	 * 
+	 * @param order
+	 * @return
+	 * @throws SQLException
+	 */
+	public long insert(OrdersBean order) throws SQLException {
+		
+		long orderId = -1;
+		int records;
+		
+//		validate(order);
+		
+		if (order == null) {
+			return 0;
+		}
+		
+		// Using Java 1.7 try with resources to create JDBC Connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement orderPS = connection
+						.prepareStatement("INSERT INTO orders(user_id) VALUES (?)");) {
+			orderPS.setLong(1, order.getUserId());
+			
+			records = orderPS.executeUpdate();
+			
+			// Check if record was inserted
+			if (records == 1) {
+				// Success, grab the Id of the order inserted
+				try (ResultSet orderRS = orderPS.executeQuery("SELECT last_insert_id()")) {
+					orderRS.next();
+					orderId = orderRS.getLong(1);
+				}
+				
+				// Instantiation needed to insert into order_details table
+				OrderDetailsActionBean odab = new OrderDetailsActionBean();
+				
+				// Insert each of the OrderDetailsBeans into the order_details table
+				for (OrderDetailsBean odb : order.getOrderDetails()) {
+				
+					// Change the OrderId in the OrderDetailsBean to point to correct db row
+					odb.setOrderId(orderId);
+					
+					// Insert the OrderDetailsBean into table
+					int result = odab.insert(odb);
+					
+					if (result != 1) {
+						log.debug("Insert failed with bean: " + odb.toString());
+						throw new SQLException("Insert failed on order_details");
+					}
+				}
+				
+			} else {
+				log.debug("Insert failed with bean: " + order);
+				
+			}
+
+		} catch (SQLException sqlex) {
+			// Log the exception
+			log.error("Connection failed", sqlex);
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		return orderId;
+	}
+	
+	public OrdersBean searchByOrderId(long orderId) throws SQLException, NullPointerException, IOException {
+		
+		// If orderId is not greater than 1, invalid id, return 0
+		if (orderId < 1) {
+			return null;
+		}
+		
+		OrdersBean ob = new OrdersBean();
+		
+		// Using Java 1.7 try with resources to create JDBC Connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ordersPS = connection.prepareStatement(
+						"SELECT * FROM orders WHERE _id = ?")) {
+			
+			ordersPS.setLong(1, orderId);
+			
+			try (ResultSet ordersRS = ordersPS.executeQuery()) {
+				
+				while(ordersRS.next()) {
+					
+					ob.setId(ordersRS.getLong("_id"));
+					ob.setUserId(ordersRS.getLong("user_id"));
+					ob.setOrderDate(ordersRS.getTimestamp("order_date"));
+
+					OrderDetailsActionBean odab = new OrderDetailsActionBean();
+					ob.setOrderDetails(odab.searchByOrderId(orderId));
+					
+					
+				}
+			}
+		} catch (SQLException sqlex) {
+			// Log the exception
+			log.error("Connection failed", sqlex);
+			// Re-throw the exception
+			throw sqlex;
+		}
+		
+		return ob;
+	}
+}

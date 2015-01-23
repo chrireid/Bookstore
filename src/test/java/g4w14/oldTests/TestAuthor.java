@@ -1,0 +1,295 @@
+package g4w14.oldTests;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import g4w14.BookStore.actionbeans.AuthorActionBean;
+
+import g4w14.BookStore.beans.AuthorBean;
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * 
+ * @author Tristan
+ */
+public class TestAuthor {
+
+	
+	AuthorActionBean mngr;
+	AuthorBean a;
+	String url, user, password;
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		mngr = new AuthorActionBean();
+		a = new AuthorBean();
+		String[] values = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		
+		// DROP THE TABLES
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS authors_books_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS authors_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS inventory_test");) {
+			statement.execute();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("DROP TABLE IF EXISTS genre_test");) {
+			statement.execute();
+		}
+		
+		
+		// CREATE ZE TABLES
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE genre_test ("
+								+ "_id INT(5) NOT NULL AUTO_INCREMENT, "
+								+ "genre VARCHAR(50) UNIQUE NOT NULL, "
+								+ "PRIMARY KEY (_id))");) {
+			statement.executeUpdate();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE inventory_test ("
+								+ "_id INT(5) NOT NULL AUTO_INCREMENT ,"
+								+ "isbn VARCHAR(20) UNIQUE NOT NULL,"
+								+ "title VARCHAR(100) NOT NULL default '',"
+								+ "publisher VARCHAR(100)  NOT NULL default '',"
+								+ "pages INT(8) NOT NULL default 0,"
+								+ "genre_id int NOT NULL  default 0,"
+								+ "cover_big VARCHAR(255) NULL default '',"
+								+ "cover_small VARCHAR(255) NOT NULL default '',"
+								+ "book_type INT(1) NOT NULL default 0,"
+								+ "eformat VARCHAR(10) NOT NULL default '',"
+								+ "on_hand INT(10) NOT NULL default 0,"
+								+ "wholesale_price DECIMAL(10,2) NOT NULL default 0 ,"
+								+ "list_price DECIMAL(10,2) NOT NULL default 0,"
+								+ "sale_price DECIMAL(10,2) NOT NULL default 0,"
+								+ "weight DECIMAL(5,2) NOT NULL default 0,"
+								+ "dimensions VARCHAR(255) NOT NULL,"
+								+ "create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+								+ "removal_status INT(1) NOT NULL default 0, "
+								+ "link VARCHAR(255) NOT NULL default 'book.pdf',"
+								+ "PRIMARY KEY (_id),"
+								+ "CONSTRAINT genre_test_id_fk FOREIGN KEY(genre_id) REFERENCES genre_test(_id))");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+		//TODO CHECK UNIQUE
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE authors_test ( "
+								+ " _id int(10) NOT NULL auto_increment, "
+								+ " lastname varchar(35) NOT NULL default '', "
+								+ " firstname varchar(35) NOT NULL default '', "
+								+"PRIMARY KEY (_id), CONSTRAINT ab_Unique UNIQUE (lastname, firstname)) ; ");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection
+						.prepareStatement("CREATE TABLE authors_books_test ( "
+							+"_id int(10) NOT NULL auto_increment, "
+							+"author_id int(10) NOT NULL, "
+							+"book_id int(10) NOT NULL, "
+							+ "PRIMARY KEY (_id), "
+							+ "CONSTRAINT _fk_test FOREIGN KEY (author_id) REFERENCES authors_test(_id)," 
+							+ "CONSTRAINT _fk_test2 FOREIGN KEY (book_id) REFERENCES inventory_test(_id) "
+							+ "	);");) {
+			statement.execute();
+		} catch (SQLException sqlex) {
+			sqlex.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetAuthorsByBook()
+	{
+		BookBean b = new BookBean();
+		b.setId(1);
+		b.setIsbn("1491945575");
+		b.setTitle("OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics");
+		b.setPublisher("O Reilly Media, Revised edition (Oct. 29 2013)");
+		b.setPages(422);
+		//b.setGenre(6);
+		b.setCover("1491945575_b.png");
+		b.setType(0);
+		b.setEformat("Physical");
+		b.setOn_hand(10);
+		b.setWholesale_price(new BigDecimal(26.30));
+		b.setList_price(new BigDecimal(41.99));
+		b.setSale_price(new BigDecimal(37.98));
+		b.setWeight(862);
+		b.setDimensions("22.1 x 17.8 x 2.5 cm");
+		b.setCreate_date(new Timestamp(System.currentTimeMillis()));
+		b.setStatus(0);
+		b.setLink("N/A");
+		
+		AuthorBean a = new AuthorBean();
+		a = new AuthorBean();
+		a.setId(1);
+		a.setFirstname("Steven");
+		a.setLastname("Erikson");
+		
+		ArrayList<AuthorBean> authors;
+		
+		
+		try {
+			AuthorActionBean mngr = new AuthorActionBean();
+			//BookDAOImpl bmngr = new BookDAOImpl();
+			mngr.insert(a);
+			
+			
+			authors = mngr.getAuthorsByBook(b);
+			for (int i = 0; i < authors.size(); i++)
+			{
+				System.out.println(authors.get(i).getFirstname());
+			}
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
+	
+//	@Test
+//	public void testSearchStringWithGibberish()
+//	{
+//		//Something someone would search
+//		String searchString = "Steven I like cheese Banana King";
+//		AuthorBean author = new AuthorBean();
+//		try
+//		{
+//		a = new AuthorBean();
+//		a.set_id(1);
+//		a.setFirstname("Steven");
+//		a.setLastname("Erikson");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(2);
+//		a.setFirstname("Steven");
+//		a.setLastname("King");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(3);
+//		a.setFirstname("Laurie");
+//		a.setLastname("King");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(4);
+//		a.setFirstname("HeWhoShallNotBeFound");
+//		a.setLastname("DontFindMe");
+//		mngr.insert(a);
+//		
+//		author = mngr.getAuthorByString(searchString);
+//		}
+//		catch (SQLException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		
+//		
+//		System.out.println("Printing author from search");
+//		System.out.println(author.getFirstname());
+//		System.out.println(author.getLastname());
+//		assertEquals("Steven",author.getLastname());
+//		assertEquals("King",author.getFirstname());
+//		
+//	}
+//	
+//	@Test
+//	public void testSearchStringInverted()
+//	{
+//		//Something someone would search
+//		String searchString = "King Steven";
+//		AuthorBean author = new AuthorBean();
+//		try
+//		{
+//		a = new AuthorBean();
+//		a.set_id(1);
+//		a.setFirstname("Steven");
+//		a.setLastname("Erikson");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(2);
+//		a.setFirstname("Steven");
+//		a.setLastname("King");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(3);
+//		a.setFirstname("Laurie");
+//		a.setLastname("King");
+//		mngr.insert(a);
+//		a = new AuthorBean();
+//		a.set_id(4);
+//		a.setFirstname("HeWhoShallNotBeFound");
+//		a.setLastname("DontFindMe");
+//		mngr.insert(a);
+//		
+//		author = mngr.getAuthorByString(searchString);
+//		}
+//		catch (SQLException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		
+//		
+//		System.out.println("Printing authors from search inverted");
+//		System.out.println("Printing author from search");
+//		System.out.println(author.getFirstname());
+//		System.out.println(author.getLastname());
+//		assertEquals("Steven",author.getLastname());
+//		assertEquals("King",author.getFirstname());
+//	}
+	
+	
+
+
+}

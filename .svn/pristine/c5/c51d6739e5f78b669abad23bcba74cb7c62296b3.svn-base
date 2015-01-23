@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+
+					<H1>BookDepot Help</H1>
+<br /><br /><br />
+					<h:link value="Jump to Home" fragment="HomePage" /><br />
+					<h:link value="Jump to Cart" fragment="CartPage" /><br />
+					<h:link value="Jump to Profile" fragment="ProfilePage" /><br />
+					<h:link value="Jump to Search" fragment="SearchPage" /><br />
+					<h:link value="Jump to Book" fragment="BookPage" /><br />
+					<h:link value="Jump to Checkout" fragment="CheckoutPage" /><br />
+					<h:link value="Jump to Invoice" fragment="InvoicePage" /><br />
+
+<br /></div>
+					<div id="HomePage">
+						
+						<H1>HOME</H1>
+						<div class="main-content"> 
+							<H4>Top panel</H4>
+					
+							The top panel contains links to different parts of the
+							BookDepot web site<br /> Home page, Genres drop down menu,
+							shopping cart and login area which allows access to your profile
+							when logged in<br /> <br />
+							<div>
+								<h5>Home</h5>
+								 The home button will redirect you to the main home page
+								of our web site.<br /> <br />
+							</div>
+							<div>
+								<H5>Genre menu</H5>
+								 The genre drop down menu allows for quick access to the
+								genre of your choice.<br /> <br />
+							</div>
+							<div>
+								<H5>Shopping cart</H5>
+								The cart button will redirect you to your shopping cart
+								and allow you to review your selection of books,<br /> modify
+								your selection by adding or removing books, proceed with buying
+								one or multiple books, as well as <br /> simply reviewing the
+								cost of your order. <br /> <br />
+							</div>
+							<div>
+								<H5>Login area</H5>
+								The login area will allow you to log into your account
+								or create one. <br />
+							</div>
+						</div> </div>
+						<div class="main-content">
+							<H4>Right panel</H4>
+							
+							The right panel contains the search with the criteria you
+							would like to search - publisher, author, title or ISBN number.<br />
+							It also contains a simplified search by genres that are currently
+							available, <br /> a zone for banner ads to generate revenue for
+							the web site and a survey available to everybody who visit the
+							web site<br /> to voice their opinion. <br /> <br />
+
+							<div>
+								<H5>Search</H5>
+								The search allows you to find the book you are looking
+								for. <br /> Can search by many criteria including publisher,
+								title, author and ISBN numbers. <br /> <br /> 
+							</div>
+							<div>
+								<H5>Genre list</H5>
+								The genre menu allows for quick access to the genre of
+								your choice. <br /> <br /> 
+							</div>
+							<div>
+								<H5>Banner</H5>
+								A space for banners to advertise on our site, if you
+								would like to be a partner or advertise with us- <br /> please
+								contact one of the site managers. <br /> <br /> 
+							</div>
+							<div>
+								<H5>Survey</H5>
+								A simple survey to voice your opinions on current site
+								matters <br /> Please take the time to choose carefully as you
+								will not be able to withdraw your vote. <br />
+							</div>
+
+						</div>
+						<div class="main-content">
+							<H4>Central panel</H4>
+							The central area of the web site provides you with three
+							randomly picked books from our vast selection,<br /> some news
+							and a small section for recently added books to our site.<br /> <br /> 
+
+							<div>
+								<H5>Books</H5>
+								This area contains three randomly selected books for you
+								to read, they're all great!<br /> <br /> 
+							</div>
+							<div>
+								<H5>News</H5>
+								 This section contains some book reviews, if you are
+								interested click to read the entire article<br /> <br /> 
+							</div>
+							<div>
+								<H5>Recently added</H5>
+								 This part contains 4 of the most recently added books to
+								our already vast selection!
+							</div>
+
+<div class="main-content"> 
+						</div>
+						<H4>Bottom panel</H4>
+			
+						The bottom of the page contains the subscription to our
+						newsletter and contact details<br /> <br /> 
+
+						<div>
+							<H5>Newsletter</H5>
+							Subscribe to our newsletter! Simply enter your name and
+							email address!<br /> <br /> 
+						</div>
+
+						<div>
+							<H5>Contact</H5>
+							Contact information to get in touch with us!<br /> <br /> 
+						</div>
+			
+				</div>
+
+				<div id="CartPage">
+				<H1>CART</H1>
+					<div class="main-content">
+						<H4>For surrounding panels</H4>
+						For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" />
+					</div>
+					<div class="main-content">
+					<H4>Central panel</H4>
+					 The central area here contains your shopping cart and allows you to modify it by adding, removing or updating quantities<br /> <br /> 
+					<div>
+						<H5>Shopping cart</H5>
+						Here you will find tools that allow you to remove the book from your order, modify the quantity of each book,<br />
+						review the price and see how much it will cost before proceeding to checkout
+					</div>
+</div>
+				</div>
+
+
+
+
+				<div id="ProfilePage">
+				<H1>PROFILE</H1>
+				<div class="main-content">
+					<div>
+						<H4>For surrounding panels</H4>
+						 For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" />
+					</div>
+					<br /> 
+					<H4>Central panel</H4>
+					If you are logged in you will be able to access this page and update your personal information or even change your password <br /> <br /> 
+
+					<div>
+						<H5>Profile</H5>
+						In this section you will be able to access and change details such as your password,<br />
+						location, address and any other personal information which is stored in your profile. <br /> <br /> 
+					</div>
+</div>
+				</div>
+
+			
+
+				<div id="SearchPage">
+				<H1>SEARCH</H1>
+				<div class="main-content">
+					<div>
+						<H4>For surrounding panels</H4>
+						
+						 For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" />
+					</div><br /> 
+					<H4>Central panel</H4>
+					 Upon performing a search you will be presented with a list of books that match your criteria<br /> <br />
+
+					<div>
+						<H5>Search results</H5>
+						The search results will show the books that matched the search criteria.<br />
+						Each result will present the cover for the book, the title and the price at which it is being sold currently.<br /> <br /> 
+					</div>
+</div>
+				</div>
+
+			
+
+				<div id="BookPage">
+				<H1>BOOK</H1>
+				<div class="main-content">
+					<div>
+						<H4>For surrounding panels</H4>
+						For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" />
+					</div><br /> 
+					<H4>Central panel</H4>
+					The book page will be shown upon selecting a book and will present all the information regarding the selected book<br /> <br /> 
+
+					<div>
+						<H5>Selected book</H5>
+						This section will present all the information about the book that was chosen and will allow to:<br />
+						review information and reviews about the book, choose the quantity and add to cart as well as write reviews about the book.<br /> <br /> 
+					</div>
+</div>
+				</div>
+
+			
+
+				<div id="CheckoutPage">
+				<H1>CHECKOUT</H1>
+				<div class="main-content">
+					<div><br /> 
+						<H4>For surrounding panels</H4>
+						 For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" />
+					</div><br />
+					<H4>Central panel</H4>
+					This page will allow you to enter payment information and complete your purchase<br /> <br /> 
+
+					<div>
+						<H5>Payment</H5>
+						This section will allow you to enter payment information for your credit card<br /><br /> 
+					</div>
+					<div>
+						<H5>Details</H5>
+						This section will allow you to review your order details and make sure you are getting exactly what you ordered<br /><br /> 
+					</div>
+</div>
+				</div>
+
+	
+
+				<div id="InvoicePage">
+				<H1>INVOICE</H1>
+				<div class="main-content">
+					<div>
+						<H4>For surrounding panels</H4>
+						 For the surrounding panels please refer to the appropriate
+						sections in
+						<h:link value="this section" fragment="HomePage" /><br /> 
+					</div><br /> 
+					<H4>Central panel</H4>
+					 This page will allow you to review your invoice after completing the purchase and to send yourself a copy<br /> <br /> 
+
+					<div>
+						<H5>Invoice</H5>
+						This section will show information regarding the order such as the order id,<br />
+						the taxes, total price and date of purchase. <br />
+						<br />
+						It also allows you to send a copy to yourself
+					</div>
+</div>
+				</div>
+
+			
+
+
+
+
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

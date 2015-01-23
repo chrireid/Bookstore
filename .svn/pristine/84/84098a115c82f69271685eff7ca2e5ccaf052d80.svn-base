@@ -1,0 +1,80 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class InvoiceTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#InvoiceActionBean()}.
+	 */
+	@Test
+	public void testInvoiceActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#insert(g4w14.BookStore.beans.InvoiceBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getAllInvoices()}.
+	 */
+	@Test
+	public void testGetAllInvoices() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getInvoicesByDate(java.sql.Timestamp, java.sql.Timestamp)}.
+	 */
+	@Test
+	public void testGetInvoicesByDate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getInvoicesByUser(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testGetInvoicesByUser() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getInvoicesByUserAndDate(g4w14.BookStore.beans.UserBean, java.sql.Timestamp, java.sql.Timestamp)}.
+	 */
+	@Test
+	public void testGetInvoicesByUserAndDate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getInvoiceById(long)}.
+	 */
+	@Test
+	public void testGetInvoiceById() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.InvoiceActionBean#getInvoiceByOrderId(long)}.
+	 */
+	@Test
+	public void testGetInvoiceByOrderId() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

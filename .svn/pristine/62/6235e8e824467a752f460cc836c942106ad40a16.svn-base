@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Book title</title>
+	<h:outputStylesheet name="colorbox.css" library="css" target="head" />
+	<h:outputStylesheet name="styles.css" library="css" target="head" />
+	<h:outputStylesheet name="colorbox.css" library="css" target="head" />
+	<h:outputStylesheet name="superfish.css" library="css" target="head" />
+	<h:outputStylesheet name="tipTip.css" library="css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+	
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+			<h:panelGroup class="container_12">
+				<h:panelGroup class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="BOOKDEPOT" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page"
+							 value="#{param['genre_name']}" />
+					</h:panelGroup>
+
+				</h:panelGroup>
+
+			</h:panelGroup>
+
+		</h:panelGroup>
+
+	</ui:insert>
+
+	<h:form>
+		<h:panelGroup class="container_12">
+			<h:panelGroup class="grid_4 omega">
+				<span id="current-date"></span>
+			</h:panelGroup>
+
+			<h:panelGroup class="clear"></h:panelGroup>
+			<h:panelGroup class="separator"></h:panelGroup>
+
+			<h:panelGroup class="main-content">
+
+				<h:panelGroup class="grid_9 alpha">
+					<h1 class="title">PRODUCT PAGE</h1>
+					<h:panelGroup class="product-page">
+						<h:panelGroup class="grid_4 alpha">
+							<h:panelGroup class="product-gallery">
+								<h:panelGroup class="big_image">
+									<a href="./images/img-05.jpg" rel="colorbox"></a>
+								</h:panelGroup>
+								<ul class="thumbs">
+									<li><a href="./images/img-05.jpg" rel="colorbox"></a></li>
+									<li><a href="./images/img-05.jpg" rel="colorbox"></a></li>
+									<li><a href="./images/img-05.jpg" rel="colorbox"></a></li>
+								</ul>
+								<h:panelGroup class="clear"></h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup class="grid_5 omega">
+							<h:panelGroup class="main-data">
+								<p class="name">iMac 27"</p>
+								<p>
+									<strong>SKU:</strong> #95846; / <strong>In Stock:</strong>
+									5pcs.
+								</p>
+								<p class="small_desc">Class aptent taciti sociosqu ad litora
+									torquent per conubia nostra, per inceptos himenaeos. Curabitur
+									sodales ligula in libero. Sed dignissim lacinia nunc.</p>
+								<p class="regular_price">
+									Regular Price: <span>$1200</span>
+								</p>
+								<p class="price">
+									<span>$1056</span> <a href="#" class="to_wishlist">Add to
+										wishlist &larr;</a>
+								</p>
+								<p>
+									You Save: <strong>$144.00 (12%)</strong>
+								</p>
+								<h:panelGroup class="to_cart">
+									<h:panelGroup class="quantitiy">
+										<label for="qty">Quantity:</label> <select name="qty" id="qty">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+										</select>
+									</h:panelGroup>
+									<a href="#" class="addtocart">ADD TO CART</a>
+									<h:panelGroup class="clear"></h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+							<!-- end main data -->
+						</h:panelGroup>
+						<h:panelGroup class="clear"></h:panelGroup>
+						<h:panelGroup class="space30"></h:panelGroup>
+
+						<h:panelGroup id="simple-tabs">
+							<ul class="tabs">
+								<li><a href="#tab1">Description</a></li>
+								<li><a href="#tab2">Specifications</a></li>
+								<li><a href="#tab3">Shipping</a></li>
+							</ul>
+
+							<h:panelGroup class="tab_container">
+								<h:panelGroup id="tab1" class="tab_content">
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+										Integer nec odio. Praesent libero. Sed cursus ante dapibus
+										diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+										Duis sagittis ipsum. <strong>Lorem ipsum dolor sit
+											amet, consectetur adipiscing elit</strong>. Praesent mauris. Fusce nec
+										tellus sed augue semper porta. Mauris massa. <strong>Lorem
+											ipsum dolor sit amet, consectetur adipiscing elit</strong>. Vestibulum
+										lacinia arcu eget nulla.
+									</p>
+
+									<p>
+										Class aptent taciti sociosqu ad litora torquent per conubia
+										nostra, per inceptos himenaeos. Curabitur sodales ligula in
+										libero. Sed dignissim lacinia nunc. Curabitur tortor.
+										Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. <strong>Mauris
+											massa</strong>. Maecenas mattis. Sed convallis tristique sem. Proin ut
+										ligula vel nunc egestas porttitor. <strong>Curabitur
+											tortor</strong>. Morbi lectus risus, iaculis vel, suscipit quis,
+										luctus non, massa. Fusce ac turpis quis ligula lacinia
+										aliquet. Mauris ipsum.
+									</p>
+								</h:panelGroup>
+								<h:panelGroup id="tab2" class="tab_content">
+									<table cellpadding="0" cellspacing="0" border="0" width="100%"
+										class="zebra-style">
+										<thead>
+											<tr>
+												<th scope="col">Title</th>
+												<th scope="col">Specifications</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="40%">Class aptent taciti</td>
+												<td width="60%">Sociosqu ad litora torquent per conubia
+													nostra</td>
+											</tr>
+											<tr>
+												<td>Sed dignissim</td>
+												<td>Isque nisl felis, venenatis tristique, dignissim
+													in, ultrices.</td>
+											</tr>
+											<tr>
+												<td>Nulla metus</td>
+												<td>Quisque cursus, metus vitae pharetra auctor, sem
+													massa mattis.</td>
+											</tr>
+											<tr>
+												<td>Nam nec ante</td>
+												<td>Vestibulum ante ipsum primis in faucibus orci
+													luctus vitae.</td>
+											</tr>
+											<tr>
+												<td>Urna non tincidunt</td>
+												<td>Nostra sociosqu ad litora torquent per conubia</td>
+											</tr>
+											<tr>
+												<td>Ut fringilla</td>
+												<td>Isque nisl felis, venenatis tristique, dignissim
+													in, ultrices.</td>
+											</tr>
+											<tr>
+												<td>Suspendisse potenti</td>
+												<td>Sed vulputate eleifend neque sed porttitor</td>
+											</tr>
+											<tr>
+												<td>Inceptos himenaeos</td>
+												<td>Curabitur dignissim placerat nisl, ut accumsan
+													neque gravida eget.</td>
+											</tr>
+										</tbody>
+									</table>
+								</h:panelGroup>
+								<h:panelGroup id="tab3" class="tab_content">
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+										Integer nec odio. Praesent libero. Sed cursus ante dapibus
+										diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+										Duis sagittis ipsum. <strong>Lorem ipsum dolor sit
+											amet, consectetur adipiscing elit</strong>. Praesent mauris. Fusce nec
+										tellus sed augue semper porta. Mauris massa. <strong>Lorem
+											ipsum dolor sit amet, consectetur adipiscing elit</strong>. Vestibulum
+										lacinia arcu eget nulla.
+									</p>
+
+									<p>
+										Class aptent taciti sociosqu ad litora torquent per conubia
+										nostra, per inceptos himenaeos. Curabitur sodales ligula in
+										libero. Sed dignissim lacinia nunc. Curabitur tortor.
+										Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. <strong>Mauris
+											massa</strong>. Maecenas mattis. Sed convallis tristique sem. Proin ut
+										ligula vel nunc egestas porttitor. <strong>Curabitur
+											tortor</strong>. Morbi lectus risus, iaculis vel, suscipit quis,
+										luctus non, massa. Fusce ac turpis quis ligula lacinia
+										aliquet. Mauris ipsum.
+									</p>
+								</h:panelGroup>
+							</h:panelGroup>
+							<!-- End Tabs -->
+						</h:panelGroup>
+					</h:panelGroup>
+
+				</h:panelGroup>
+				<!-- Grid 9 end -->
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:form>
+
+</h:body>
+</html>

@@ -1,0 +1,201 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.faces.bean.ManagedBean;
+
+/**
+ * @author Xander
+ * 
+ */
+
+public class InvoiceBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1716181774077081725L;
+	private long _id;
+	private long sale_num;
+	private Timestamp sale_date;
+	private long client_id;
+	private BigDecimal total_value;
+	private BigDecimal pst;
+	private BigDecimal gst;
+	private BigDecimal hst;
+	private BigDecimal total_gross;
+
+	// BigDecimals cause money stuff
+
+	public InvoiceBean() {
+		super();
+		this._id = -1;
+	}
+
+	public InvoiceBean(long _id, long sale_num, Timestamp sale_date,
+			long client_id, BigDecimal total_value, BigDecimal pst,
+			BigDecimal gst, BigDecimal hst, BigDecimal total_gross) {
+		this._id = _id;
+		this.sale_num = sale_num;
+		this.sale_date = sale_date;
+		this.client_id = client_id;
+		this.total_value = total_value;
+		this.pst = pst;
+		this.gst = gst;
+		this.hst = hst;
+		this.total_gross = total_gross;
+	}
+
+	public long get_id() {
+		return _id;
+	}
+
+	public void set_id(long _id) {
+		this._id = _id;
+	}
+
+	public long getSale_num() {
+		return sale_num;
+	}
+
+	public void setSale_num(long sale_num) {
+		this.sale_num = sale_num;
+	}
+
+	public Timestamp getSale_date() {
+		return sale_date;
+	}
+
+	public void setSale_date(Timestamp sale_date) {
+		this.sale_date = sale_date;
+	}
+
+	public long getClient_id() {
+		return client_id;
+	}
+
+	public void setClient_id(long client_id) {
+		this.client_id = client_id;
+	}
+
+	public BigDecimal getTotal_value() {
+		return total_value;
+	}
+
+	public void setTotal_value(BigDecimal total_value) {
+		this.total_value = total_value;
+	}
+
+	public BigDecimal getPst() {
+		return pst;
+	}
+
+	public void setPst(BigDecimal pst) {
+		this.pst = pst;
+	}
+
+	public BigDecimal getGst() {
+		return gst;
+	}
+
+	public void setGst(BigDecimal gst) {
+		this.gst = gst;
+	}
+
+	public BigDecimal getHst() {
+		return hst;
+	}
+
+	public void setHst(BigDecimal hst) {
+		this.hst = hst;
+	}
+
+	public BigDecimal getTotal_gross() {
+		return total_gross;
+	}
+
+	public void setTotal_gross(BigDecimal total_gross) {
+		this.total_gross = total_gross;
+	}
+
+	@Override
+	public String toString() {
+		return "InvoiceBean [_id=" + _id + ", sale_num=" + sale_num
+				+ ", sale_date=" + sale_date + ", client_id=" + client_id
+				+ ", total_value=" + total_value + ", pst=" + pst + ", gst="
+				+ gst + ", hst=" + hst + ", total_gross=" + total_gross + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (_id ^ (_id >>> 32));
+		result = prime * result + (int) (client_id ^ (client_id >>> 32));
+		result = prime * result + ((gst == null) ? 0 : gst.hashCode());
+		result = prime * result + ((hst == null) ? 0 : hst.hashCode());
+		result = prime * result + ((pst == null) ? 0 : pst.hashCode());
+		result = prime * result
+				+ ((sale_date == null) ? 0 : sale_date.hashCode());
+		result = prime * result + (int) (sale_num ^ (sale_num >>> 32));
+		result = prime * result
+				+ ((total_gross == null) ? 0 : total_gross.hashCode());
+		result = prime * result
+				+ ((total_value == null) ? 0 : total_value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InvoiceBean other = (InvoiceBean) obj;
+		if (_id != other._id)
+			return false;
+		if (client_id != other.client_id)
+			return false;
+		if (gst == null) {
+			if (other.gst != null)
+				return false;
+		} else if (!gst.equals(other.gst))
+			return false;
+		if (hst == null) {
+			if (other.hst != null)
+				return false;
+		} else if (!hst.equals(other.hst))
+			return false;
+		if (pst == null) {
+			if (other.pst != null)
+				return false;
+		} else if (!pst.equals(other.pst))
+			return false;
+		if (sale_date == null) {
+			if (other.sale_date != null)
+				return false;
+		} else if (!sale_date.equals(other.sale_date))
+			return false;
+		if (sale_num != other.sale_num)
+			return false;
+		if (total_gross == null) {
+			if (other.total_gross != null)
+				return false;
+		} else if (!total_gross.equals(other.total_gross))
+			return false;
+		if (total_value == null) {
+			if (other.total_value != null)
+				return false;
+		} else if (!total_value.equals(other.total_value))
+			return false;
+		return true;
+	}
+
+}

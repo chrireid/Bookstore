@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<body class="">
+
+	
+
+		<div class="main-content">
+			<div class="grid_3 omega" id="bookdepot-sidebar">
+				<div id="sidebar">
+				<h:form>
+					<div class="sideblock">
+						<div class="menu">
+
+
+							<h:inputText value="#{searchAction.string}" size="32" style="padding:7px;" />
+							<h:outputText value="&#160;" />
+							<br /> 
+
+							<h:selectOneMenu id="searchby" value="#" immediate="true">
+
+								<f:selectItem id="by_publisher" itemLabel="By publisher"
+									itemValue="by_publisher" />
+								<f:selectItem id="by_author" itemLabel="By author"
+									itemValue="by_author" />
+								<f:selectItem id="by_title" itemLabel="By title"
+									itemValue="by_title" />
+								<f:selectItem id="by_isbn" itemLabel="By isbn"
+									itemValue="by_isbn" />
+								<f:ajax execute="searchby"
+									listener="#{searchAction.updateTypeSearch}" />
+							</h:selectOneMenu>
+
+							<h:commandButton style="margin-left:3px;"
+								styleClass="small-button" type="submit" value="#{msgs.search}"
+								action="#{searchAction.searchAction}">
+
+							</h:commandButton>
+							<br /> <br />
+
+						</div>
+
+						<ul class="menu">
+							<h:outputText>#{msgs.searchGenre}</h:outputText>
+							<ui:repeat value="#{genreAction.allGenres}" var="genre_list">
+								<li><h:commandLink value="#{genre_list.genre}"
+										action="#{searchAction.searchAction}">
+										<f:param name="genre_id" value="#{genre_list.id}" />
+									</h:commandLink></li>
+							</ui:repeat>
+						</ul>
+						<div class="clear"></div>
+					</div>
+
+					<div class="sideblock">
+						<h3 class="title">(BANNER)</h3>
+						<h:commandLink fragment="home.xhtml">
+							<h:graphicImage name="./images/banner.jpg" alt="image"
+								width="202" styleClass="shadow" />
+						</h:commandLink>
+						<div class="clear"></div>
+					</div>
+
+</h:form>
+						
+								<h:form rendered="#{surveyBean.voted == false}">
+					<div class="sideblock last" id="questionaire">
+
+						<h3 class="title">SURVEY</h3>
+						
+						<ui:repeat value="#{surveyAction.oneSurvey}" var="survey">
+						
+							<h:outputText  value="#{survey.question}" />
+							<h:selectOneRadio layout="pageDirection" value ="#{surveyAction.selected}" >
+									<f:selectItems value="#{survey.answers}" 
+									var="answers" 
+									itemLabel="#{answers.answer}" 
+									itemValue="#{answers.answer}" />
+									
+							</h:selectOneRadio>
+							<br></br>
+
+							<h:commandButton value="Submit" id="survey_submit" action="#{surveyAction.setVoted}">
+							
+							</h:commandButton>
+							<br></br>
+							
+							
+						</ui:repeat>
+						</div>
+
+							</h:form>
+							<div class="sideblock last" id="answerBlock"> 
+								<h:form rendered="#{surveyBean.voted == true}">
+
+									<h:panelGrid id="display">
+									<br></br>
+									<h3 class="title">Current Poll Results:</h3>
+									
+									<ui:repeat value="#{surveyAction.oneSurvey.answers}" var="answers">
+									<h:outputText value="Answer '#{answers.answer}' has #{answers.answerCount} votes" />
+									<br></br>
+									</ui:repeat>
+									</h:panelGrid>
+									
+								</h:form>
+								</div>
+								
+						
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+						<div class="clear"></div>
+					
+
+				</div>
+				<!-- Sidebar End -->
+			</div>
+			<!-- Grid 3 End -->
+		</div>
+
+
+</body>
+</html>

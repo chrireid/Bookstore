@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: g4w14.tests.BookManagerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.794 sec <<< FAILURE! - in g4w14.tests.BookManagerTest
+testInsert(g4w14.tests.BookManagerTest)  Time elapsed: 4.793 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:86)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.junit.Assert.assertTrue(Assert.java:52)
+	at g4w14.tests.BookManagerTest.testInsert(BookManagerTest.java:185)
+

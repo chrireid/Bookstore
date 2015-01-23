@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="BOOKS" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page" value="" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:panelGroup class="grid_5 alpha"
+						style="padding:10px 10px 10px 10px;">
+						<h:outputText styleClass="h2" value="#{bookBean.title}"
+							style="color:#EB540A;" />
+						<br />
+						<br />
+						<h:outputText styleClass="h6" value="Author: " />
+						<h:outputText styleClass="h6" value="Robin Davis"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="ISBN: " />
+						<h:outputText styleClass="h6" value="811821846"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Publisher: " />
+						<h:outputText styleClass="h6" value="Chronicle Books"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Pages: " />
+						<h:outputText styleClass="h6" value="132" style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Genre: " />
+						<h:outputText styleClass="h6" value="Cookbook"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Type: " />
+						<h:outputText styleClass="h6" value="Soft Cover"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Price: " />
+						<h:outputText styleClass="h6" value="$ 1.99"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Weight: " />
+						<h:outputText styleClass="h6" value="363 g"
+							style="color: #a23a07;" />
+						<br />
+						<h:outputText styleClass="h6" value="Dimentions: " />
+						<h:outputText styleClass="h6" value="30.5 x 20.3 x 5.1 cm"
+							style="color: #a23a07;" />
+						<br />
+						<br />
+						<h:outputText styleClass="h6" value="Desciption: " />
+						<h:outputText styleClass="h6"
+							value="Boba Fett-Uccine and Princess Leia Danish Dos are just the beginning when the Force is with you in the kitchen. Wookiee Cookies is your invitation to fine culinary experiences in the Star Wars frame of mind. From C-3PO Pancakes to Jedi Juice Bars, this intergalactic Star Wars cookbook features healthy snacks, delicious dishes, sweet treats, and easy main courses no Rebel can resist. With hilarious photos and safety tips for cooking on Earth as well as in most space stations, Wookiee Cookies even includes a sheet of shiny Star Wars stickers. Age is no issue when it comes to Star Wars cuisine-kids as well as adults will have a great time with this book. Whether you drove to your first Star Wars flick or just had your fifth birthday, there's no reason you can't whip up some Crazy Cantina Chili at near light speed."
+							style="color: #a23a07;" />
+						<br />
+
+
+
+					</h:panelGroup>
+					<h:panelGroup class="grid_4"
+						style="padding:10px 10px 10px 10px;">
+						<br />
+						<h:graphicImage name="./images/books/0811821846.jpg" alt="image" 
+							styleClass="shadow" />
+						<br />
+						<br />
+						<div class="to_cart">
+							<div class="quantitiy">
+								<label for="qty">Quantity:</label> <select name="qty" id="qty">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+								</select>
+							</div>
+							<a href="shopping_cart.xhtml" class="addtocart">ADD TO CART</a>
+						</div>
+
+					</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+					<h:outputText styleClass="h2" value="REVIEWS:"
+						style="color:#EB540A;" />
+					<h:panelGroup>
+						<br />
+						<br />
+						<h:graphicImage name="./images/star.png" alt="star1" />
+						<h:graphicImage name="./images/star.png" alt="star1" />
+						<h:graphicImage name="./images/star.png" alt="star1" />
+						<h:graphicImage name="./images/star.png" alt="star1" />
+						<h:graphicImage name="./images/star.png" alt="star1" />
+						<h:outputText styleClass="h3" value="Awesome recipes"
+							style="margin-left:10px;" />
+						<h:outputText styleClass="h6" value="/ 19 Feb 2014 /"
+							style="color: #a23a07;margin-left:25px;" />
+						<h:outputText value="By" style="color: #a23a07;margin-left:25px;" />
+						<h:outputText value="Anonymous" style="margin-left:10px;" />
+						<br />
+						<br />
+						<h:outputText id="blockquote"
+							value="Have a little fun with your cooking. This cookbook is a Star Wars fan dream
+							 come true. I'd buy them for all my friends.">
+						</h:outputText>
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

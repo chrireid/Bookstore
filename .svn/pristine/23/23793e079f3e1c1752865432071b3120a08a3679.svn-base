@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class GenreTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#GenreActionBean()}.
+	 */
+	@Test
+	public void testGenreActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#insert(g4w14.BookStore.beans.GenreBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#update(g4w14.BookStore.beans.GenreBean)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#remove(g4w14.BookStore.beans.GenreBean)}.
+	 */
+	@Test
+	public void testRemove() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#getAllGenres()}.
+	 */
+	@Test
+	public void testGetAllGenres() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#getGenreById(g4w14.BookStore.beans.GenreBean)}.
+	 */
+	@Test
+	public void testGetGenreById() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.GenreActionBean#getGenresByGenre(g4w14.BookStore.beans.GenreBean)}.
+	 */
+	@Test
+	public void testGetGenresByGenre() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:form>
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="#{msgs.checkout}" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+					
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+
+					<h:panelGrid class="box-style grid_10 omega" columns="4" style="padding-top:25px;">
+						<h:outputText styleClass="h2" value="#{msgs.payment} " />
+						<h:outputText styleClass="h2" value="Information" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						
+					
+						<!--  Last Name fields -->
+							<h:outputLabel for="lname" value="#{msgs.lname}: " />
+								<h:inputText id="lname" label="#{msgs.lname}" value="#{userBean.lastName}" validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="2"/>
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="lnameError"/>
+							</h:inputText>
+							<h:message id="lnameError" for = "lname" errorStyle="color:red;" />
+							<br /> 
+							
+							<!--  First Name fields -->
+							<h:outputLabel for="fname" value="#{msgs.fname}: "  />
+							<h:inputText id="fname" label="#{msgs.fname}" value="#{userBean.firstName}" validator="#{userBean.validateAlphanumeric}">
+								<f:validateLength minimum="2"/>
+								<f:validateRegex pattern="[a-zA-Z]+" />
+								<f:ajax event="keyup" render="fnameError"/>
+							</h:inputText>
+							<h:message id="fnameError" for = "fname" errorStyle="color:red;"/>
+							<br /> 
+						
+						<!--  Credit Card fields -->
+							<h:outputLabel for="cc" value="#{msgs.creditcard}: " />
+								<h:inputText id="cc" label="#{msgs.creditcard}">
+								<f:validateLength minimum="19"/>
+								<f:validator validatorId="creditCardValidator" />
+								<f:ajax event="keyup" render="ccError"/>
+							</h:inputText>
+							<h:message id="ccError" for = "cc" errorStyle="color:red;" />
+							<br /> 
+							
+							<h:outputLabel for="securitycode" value="#{msgs.securitycode}: "  />
+							<h:inputText id="securitycode" label="#{msgs.securitycode}"
+							 >
+								<f:validateLength minimum="3"/>
+								<f:validateLength maximum="3"/>
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="securitycodeError"/>
+							</h:inputText>
+							<h:message id="securitycodeError" for = "securitycode" errorStyle="color:red;"/>
+							<br /> 
+							
+						
+					
+					
+					</h:panelGrid>
+					
+				
+					<h:panelGrid class="box-style grid_10 omega" columns="5"
+						style="padding-top:25px;">
+						
+						<h:outputText styleClass="h2" value="#{msgs.orderdetails} " style="width:300px;"  />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160; &#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						
+						<h:outputText value="Book Title"></h:outputText>
+						<h:outputText value="Price" />
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						
+		<ui:repeat value="#{cartAction.orderDetails}" var="od">
+					<h:outputText value="&#160;" />
+						<h:outputText value="#{od.bookTitle}" styleClass="h4"></h:outputText>
+						<h:outputText value="#{od.price}">$</h:outputText>
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						<br />
+						
+						
+		</ui:repeat>
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+						<br />
+						<h:outputText><h3>SUBTOTAL:</h3></h:outputText>
+						<h:outputText value="#{cartAction.subTotalCost}">$</h:outputText>
+						
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160; &#160; &#160; &#160;" />
+						<h:outputText><h3>P.S.T./Q.S.T.:</h3></h:outputText>
+						<h:outputText value="#{cartAction.qst}">$</h:outputText>
+						
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160;" />
+						<h:outputText value="&#160; &#160; &#160; &#160; &#160;" />
+						<h:outputText><h3 style="color:#eb540a;">#{msgs.totaltopay}:</h3></h:outputText>
+						<h:outputText value="$#{cartAction.totalCost}" styleClass="h3" />
+
+					</h:panelGrid>
+					
+					<h:panelGroup class="grid_10 to_cart alpha">
+					
+					<h:commandButton action="#{checkoutAction.validateOrder(cartAction.orderDetails)}" class="addtocart" value="#{msgs.placeorder}"/>
+				
+					</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					
+				</h:form>
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

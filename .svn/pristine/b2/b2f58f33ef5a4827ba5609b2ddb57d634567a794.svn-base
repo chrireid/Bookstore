@@ -1,0 +1,178 @@
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import g4w14.BookStore.beans.CustomerReviewBean;
+import g4w14.BookStore.util.LoadProperties;
+
+/**
+ * The implementation class for Users table database queries.
+ * 
+ * @author Christopher Reid
+ */
+
+@Named("customerReviewAction")
+@RequestScoped
+public class CustomerReviewActionBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1551521561739117266L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	/*
+	 * Constructor with superclass
+	 */
+	public CustomerReviewActionBean() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		log.debug("CustomersDAOImpl instantiated");
+	}
+
+	/**
+	 * Inserts a customer review into the CustomerReview table by using a
+	 * CustomerReviewBean object.
+	 * 
+	 * @param crb
+	 */
+	public int insert(CustomerReviewBean crb) throws SQLException {
+
+		String preparedSQL = "INSERT INTO customer_reviews_test("
+				+ "book_id, user_id, invoice_id, name, rating, "
+				+ "review, approval) VALUES(?,?,?,?,?,?,?);";
+		int affected = 0;
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			ps.setInt(1, crb.getBookId());
+			ps.setInt(2, crb.getUserId());
+			ps.setInt(3, crb.getInvoiceId());
+			ps.setString(4, crb.getName());
+			ps.setInt(5, crb.getRating());
+			ps.setString(6, crb.getReview());
+			ps.setBoolean(7, crb.isApproval());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection Failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [delete]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+	/**
+	 * Updates a customer review from the Customer Review table that matches the
+	 * id.
+	 * 
+	 * @param crb
+	 */
+	public int update(CustomerReviewBean crb) throws SQLException {
+		String preparedSQL = "UPDATE customer_reviews_test SET "
+				+ "book_id = ?, user_id= ?, invoice_id = ?, name= ?, "
+				+ "review_date= ?, rating= ?, review= ?, approval= ? "
+				+ "WHERE _id = ?";
+		int affected = 0;
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+			ps.setInt(1, crb.getBookId());
+			ps.setInt(2, crb.getUserId());
+			ps.setInt(3, crb.getInvoiceId());
+			ps.setString(4, crb.getName());
+			ps.setTimestamp(5, crb.getReviewDate());
+			ps.setInt(6, crb.getRating());
+			ps.setString(7, crb.getReview());
+			ps.setBoolean(8, crb.isApproval());
+			ps.setInt(9, crb.getId());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection Failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [delete]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+	/**
+	 * Deletes a customer review from the CustomerReviews table that matches the
+	 * id.
+	 * 
+	 * @param crb
+	 */
+	public int delete(CustomerReviewBean crb) throws SQLException {
+
+		String preparedSQL = "DELETE FROM customer_reviews_test WHERE _id = ?";
+		int affected = 0;
+
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			ps.setInt(1, crb.getId());
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection Failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [delete]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+}

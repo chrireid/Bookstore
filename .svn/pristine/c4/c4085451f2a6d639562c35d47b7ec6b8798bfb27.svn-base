@@ -1,0 +1,5 @@
+package g4w14.BookStore.controller;
+
+public class GenreController {
+
+}

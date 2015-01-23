@@ -1,0 +1,232 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import g4w14.BookStore.beans.SurveyBean;
+import g4w14.BookStore.util.LoadProperties;
+
+/**
+ * @author Xander
+ * 
+ */
+
+@Named("surveyAction")
+@RequestScoped
+public class SurveyActionBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7470223548556650314L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+	
+
+	/**
+	 * @throws IOException
+	 * @throws NullPointerException
+	 * 
+	 */
+	public SurveyActionBean() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		log.debug("CustomersDAOImpl instantiated");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.SurveyDAO#insert(g4w14.BookStore
+	 * .beans.SurveyBean)
+	 */
+	public int insert(SurveyBean sb) throws SQLException {
+		int records = 0;
+		int surveyId = -1;
+		
+		if (sb == null) {
+			return 0;
+		}
+		
+		String preparedSQL = "INSERT INTO survey_answers (question, active) VALUES (?,?)";
+		
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the SurveyBean object
+			statement.setString(1, sb.getQuestion());
+			statement.setBoolean(2, sb.isActive());
+
+			records = statement.executeUpdate();
+			
+			// must be 1 because ID is unique
+			if (records != 1)
+				surveyId = -1;
+			ResultSet rs = null;
+			// returns id of last book inserted
+			rs = statement.executeQuery("SELECT last_insert_id()");
+			rs.next();
+			surveyId = rs.getInt("_id");
+			
+			// Assign correct ID to survey bean
+			sb.setId(surveyId);
+			
+			/* 
+			 * Now that the survey question is inserted into SQL, the answers
+			 * must also be inserted with the corresponding question_id.
+			 */
+
+			int answers = addQuestions(sb);
+			
+			if (answers != sb.getAnswers().size()) {
+				log.error("number of answers inserted does not equal number of answers in array list");
+				throw new SQLException();
+			}
+			
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [insert]=" + records);
+
+		// Return result
+		return records;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.SurveyDAO#remove(g4w14.BookStore
+	 * .beans.SurveyBean)
+	 */
+	public int remove(SurveyBean sb) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see g4w14.BookStore.persistence.interfaces.SurveyDAO#getAllSurveys()
+	 */
+	public ArrayList<SurveyBean> getAllSurveys() throws SQLException {
+		ArrayList<SurveyBean> surveys = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM survey_questions";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL);
+				ResultSet resultSet = ps.executeQuery()) {
+
+			while (resultSet.next()) {
+
+				SurveyBean sb = new SurveyBean();
+				sb.setId(resultSet.getLong("_id"));
+				sb.setQuestion(resultSet.getString("question"));
+				sb.setActive(resultSet.getBoolean("active"));
+				
+				ArrayList<String> answers = new ArrayList<String>();
+				preparedSQL = "SELECT * FROM survey_answers WHERE _id = ?";
+				try (Connection connectionQuestions = DriverManager.getConnection(url, user, password);
+					PreparedStatement statement = connection.prepareStatement(preparedSQL);
+					ResultSet resultSetQuestions = ps.executeQuery()) {
+					
+						while(resultSetQuestions.next()) {
+							answers.add(resultSetQuestions.getString("answer"));	
+						}
+				}
+
+				sb.setAnswers(answers);
+				surveys.add(sb);
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [getAllSurveys]=" + surveys.size());
+		return surveys;
+	}
+	
+	public int addQuestions(SurveyBean sb) throws SQLException {
+		int records = 0;
+		long id = sb.getId();
+		ArrayList<String> answers = sb.getAnswers(); 
+		
+		String preparedSQL = "INSERT INTO survey_questions (question_id, answer) VALUES (?,?)";
+		
+		
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement statement = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the SurveyBean object
+			for (String s : answers) {
+				statement.setLong(1, id);
+				statement.setString(2, s);
+				
+				records += statement.executeUpdate();
+			}
+			
+			
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [addQuestion]=" + records);
+
+		// Return result
+		return records;
+	}
+
+}

@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class OrderDetailsTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.OrderDetailsActionBean#OrderDetailsActionBean()}.
+	 */
+	@Test
+	public void testOrderDetailsActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.OrderDetailsActionBean#insert(g4w14.BookStore.beans.OrderDetailsBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.OrderDetailsActionBean#searchByOrderId(long)}.
+	 */
+	@Test
+	public void testSearchByOrderId() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.OrderDetailsActionBean#searchByBookId(long)}.
+	 */
+	@Test
+	public void testSearchByBookId() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

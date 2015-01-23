@@ -1,0 +1,40 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class UserLoginTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserLoginActionBean#UserLoginActionBean()}.
+	 */
+	@Test
+	public void testUserLoginActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserLoginActionBean#authenticate()}.
+	 */
+	@Test
+	public void testAuthenticate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserLoginActionBean#logout()}.
+	 */
+	@Test
+	public void testLogout() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

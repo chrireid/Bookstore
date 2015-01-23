@@ -1,0 +1,190 @@
+package g4w14.BookStore.reports;
+
+import g4w14.BookStore.actionbeans.InvoiceActionBean;
+import g4w14.BookStore.actionbeans.OrdersActionBean;
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.beans.InvoiceBean;
+import g4w14.BookStore.beans.OrderDetailsBean;
+import g4w14.BookStore.beans.OrdersBean;
+import g4w14.BookStore.beans.UserBean;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The action bean for the SalesByClientReportBean
+ * 
+ * @author Chris
+ */
+@Named("salesByClientReportAction")
+@RequestScoped
+public class SalesByClientReportActionBean {
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+
+	public SalesByClientReportActionBean() {
+		super();
+
+		log.debug("SalesByClientReportActionBean instantiated");
+	}
+
+	/**
+	 * Creates a SalesByClientReportBean for a given user (userId).
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public SalesByClientReportBean getTotalSalesForClient(long userId)
+			throws NullPointerException, IOException, SQLException {
+
+		SalesByClientReportBean report = new SalesByClientReportBean();
+
+		// Find invoices between these dates by client
+		InvoiceActionBean iab = new InvoiceActionBean();
+		UserBean ub = new UserBean();
+		ub.setId(userId);
+		ArrayList<InvoiceBean> invoices = iab.getInvoicesByUser(ub);
+
+		if (invoices.size() > 0) {
+
+			// Get orders from returned invoices
+			ArrayList<OrdersBean> orders = getOrdersFromInvoices(invoices);
+
+			// Create Sales Report from the array list of orders
+			report = getSalesByClientReportFromOrders(orders);
+
+		} else {
+
+			// No invoices found within the dates
+			report.setTotalNumSales(0);
+			report.setTotalCost(new BigDecimal("0"));
+			report.setTotalProfit(new BigDecimal("0"));
+			report.setOrders(new ArrayList<OrdersBean>());
+		}
+
+		return report;
+	}
+
+	/**
+	 * Creates a SalesByClientReportBean for a given user (userId) and date
+	 * range.
+	 * 
+	 * @param userId
+	 * @param start
+	 * @param end
+	 * @return
+	 * @throws NullPointerException
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public SalesByClientReportBean getTotalSalesForClient(long userId,
+			Timestamp start, Timestamp end) throws NullPointerException,
+			SQLException, IOException {
+
+		SalesByClientReportBean report = new SalesByClientReportBean();
+
+		// Find invoices between these dates by client
+		InvoiceActionBean iab = new InvoiceActionBean();
+		UserBean ub = new UserBean();
+		ub.setId(userId);
+		ArrayList<InvoiceBean> invoices = iab.getInvoicesByUserAndDate(ub,
+				start, end);
+
+		if (invoices.size() > 0) {
+
+			// Get orders from returned invoices
+			ArrayList<OrdersBean> orders = getOrdersFromInvoices(invoices);
+
+			// Create Sales Report from the array list of orders
+			report = getSalesByClientReportFromOrders(orders);
+
+		} else {
+
+			// No invoices found within the dates
+			report.setTotalNumSales(0);
+			report.setTotalCost(new BigDecimal("0"));
+			report.setTotalProfit(new BigDecimal("0"));
+			report.setOrders(new ArrayList<OrdersBean>());
+		}
+
+		return report;
+	}
+
+	private ArrayList<OrdersBean> getOrdersFromInvoices(
+			ArrayList<InvoiceBean> invoices) throws SQLException,
+			NullPointerException, IOException {
+
+		ArrayList<OrdersBean> orders = new ArrayList<OrdersBean>();
+
+		// Find the Orders associated with the invoices
+		for (InvoiceBean ib : invoices) {
+
+			// Search for order based on id from invoice
+			OrdersActionBean oab = new OrdersActionBean();
+			OrdersBean ob = new OrdersBean();
+			ob = oab.searchByOrderId(ib.getId());
+
+			orders.add(ob);
+		}
+
+		return orders;
+
+	}
+
+	private SalesByClientReportBean getSalesByClientReportFromOrders(
+			ArrayList<OrdersBean> orders) {
+
+		SalesByClientReportBean report = new SalesByClientReportBean();
+
+		int totalNumSales = 0;
+		BigDecimal totalCost = BigDecimal.ZERO;
+		BigDecimal totalProfit = BigDecimal.ZERO;
+
+		// Go through each order
+		for (OrdersBean ob : orders) {
+
+			// Go through each order details for each order
+			for (OrderDetailsBean odb : ob.getOrderDetails()) {
+
+				BookBean bb = odb.getBook();
+
+				// Calculate the cost and profits of the order details line
+				BigDecimal costOfLine = bb.getWholesale_price().multiply(
+						new BigDecimal(odb.getQuantity()));
+				BigDecimal profitOfLine = odb.getPrice()
+						.multiply(new BigDecimal(odb.getQuantity()))
+						.subtract(costOfLine);
+
+				// Add cost/profit to report
+				totalCost = totalCost.add(costOfLine);
+				totalProfit = totalProfit.add(profitOfLine);
+
+				// Not sure if total sales is based on quantity of books or
+				// number of orders **** ASK
+				totalNumSales += odb.getQuantity();
+			}
+		}
+
+		// Set the report variables
+		report.setTotalNumSales(totalNumSales);
+		report.setTotalCost(totalCost);
+		report.setTotalProfit(totalProfit);
+		report.setOrders(orders);
+
+		return report;
+
+	}
+}

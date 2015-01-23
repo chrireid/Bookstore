@@ -1,0 +1,298 @@
+package g4w14.BookStore.reports;
+
+import g4w14.BookStore.actionbeans.InvoiceActionBean;
+import g4w14.BookStore.actionbeans.OrderDetailsActionBean;
+import g4w14.BookStore.actionbeans.OrdersActionBean;
+import g4w14.BookStore.beans.InvoiceBean;
+import g4w14.BookStore.beans.OrderDetailsBean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The action bean for the TotalSalesReportBean
+ * 
+ * @author Chris
+ */
+@Named("totalSalesReportAction")
+@RequestScoped
+public class TotalSalesReportActionBean implements Serializable {
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	
+	@Inject
+	OrderDetailsActionBean odab;
+	@Inject
+	InvoiceActionBean iab;
+	@Inject
+	OrdersActionBean oab;
+	@Inject
+	ReportLineBean rlb;
+
+	public TotalSalesReportActionBean() {
+		super();
+
+		log.debug("TotalSalesReportActionBean instantiated");
+	}
+
+	
+	/**
+	 * Returns a TotalSalesReportBean with the all the ReportLineBeans
+	 * associated with all invoices.
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public TotalSalesReportBean getTotalSales() throws NullPointerException,
+			IOException, SQLException {
+		System.out.println("inside getTotalSales()");
+		// Instantiate TotalSalesReportBean
+		TotalSalesReportBean report = new TotalSalesReportBean();
+
+		// Find all invoices
+		ArrayList<InvoiceBean> invoices = iab.getAllInvoices();
+
+		System.out.println("invoice arraylist size: " + invoices.size());
+
+		// Check size of invoice array list
+		if (invoices.size() > 0) {
+
+			// Invoices found
+			ArrayList<OrderDetailsBean> orderDetails = new ArrayList<OrderDetailsBean>();
+
+			// Go through the ArrayList of Invoices
+			for (InvoiceBean ib : invoices) {
+				System.out.println(odab.searchByOrderId(ib.getOrderId()).size());
+				// Add the order detail bean to the order details array list
+				for (OrderDetailsBean odb : odab.searchByOrderId(ib
+						.getOrderId())) {
+					
+					orderDetails.add(odb);
+				}
+			}
+
+			// Go through the order details and add them to the report,
+			// comparing if the
+			// report already exists and modifying it if it does by adding the
+			// new values
+			// to the currently existing values.
+
+			for (OrderDetailsBean odb : orderDetails) {
+
+				if (report.getReportLines().size() > 0) {
+
+					boolean reportLineExists = false;
+
+					// One or more report lines already exist, must validate to
+					// avoid duplication
+					for (ReportLineBean rlb : report.getReportLines()) {
+
+						// Check if the book from the order details already is
+						// in the report
+						if (odb.getBook().getId() == rlb.getBookId()) {
+
+							// If it is, modify the fields instead of creating a
+							// new one
+							reportLineExists = true;
+
+							// Add the quantities
+							rlb.setQuantity(rlb.getQuantity()
+									+ odb.getQuantity());
+
+							// Add the total prices
+							rlb.setTotalPrice(rlb.getTotalPrice().add(
+									odb.getPrice().multiply(
+											new BigDecimal(odb.getQuantity()))));
+
+							// If date is more recent
+							if (rlb.getLastSoldDate().before(
+									oab.searchByOrderId(odb.getOrderId())
+											.getOrderDate())) {
+
+								// Set the new date
+								rlb.setLastSoldDate(oab.searchByOrderId(
+										odb.getOrderId()).getOrderDate());
+							}
+						}
+					}
+
+					if (!reportLineExists) {
+
+						rlb.setBookId(odb.getBook().getId());
+						rlb.setBookTitle(odb.getBook().getTitle());
+						rlb.setLastSoldDate(oab.searchByOrderId(
+								odb.getOrderId()).getOrderDate()); // **
+																	// validate
+																	// if >0
+						rlb.setQuantity(odb.getQuantity());
+						rlb.setTotalPrice(odb.getPrice().multiply(
+								new BigDecimal(odb.getQuantity())));
+
+						report.getReportLines().add(rlb);
+					}
+
+				} else {
+					// First report line, just create a new report line
+
+					rlb.setBookId(odb.getBook().getId());
+					rlb.setBookTitle(odb.getBook().getTitle());
+					rlb.setLastSoldDate(oab.searchByOrderId(odb.getOrderId())
+							.getOrderDate()); // ** validate if >0
+					rlb.setQuantity(odb.getQuantity());
+					rlb.setTotalPrice(odb.getPrice().multiply(
+							new BigDecimal(odb.getQuantity())));
+
+					report.getReportLines().add(rlb);
+				}
+
+			}
+
+		} else {
+			// No invoices found
+			report.setTotalNumSales(0);
+			report.setTotalCost(new BigDecimal("0"));
+			report.setTotalProfit(new BigDecimal("0"));
+
+		}
+
+		return report;
+	}
+
+	/**
+	 * Returns a TotalSalesReportBean with the all the ReportLineBeans
+	 * associated with all invoices dated between the dates provided.
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public TotalSalesReportBean getTotalSales(Timestamp start, Timestamp end)
+			throws NullPointerException, IOException, SQLException {
+
+		// Instantiate TotalSalesReportBean
+		TotalSalesReportBean report = new TotalSalesReportBean();
+
+		// Find all invoices
+		ArrayList<InvoiceBean> invoices = iab.getInvoicesByDate(start, end);
+
+		// Check size of invoice array list
+		if (invoices.size() > 0) {
+
+			// Invoices found
+			ArrayList<OrderDetailsBean> orderDetails = new ArrayList<OrderDetailsBean>();
+
+			// Go through the ArrayList of Invoices
+			for (InvoiceBean ib : invoices) {
+
+				// Grab the order details from each order that is invoiced
+
+				// Add the order detail bean to the order details array list
+				for (OrderDetailsBean odb : odab.searchByOrderId(ib
+						.getOrderId())) {
+					orderDetails.add(odb);
+				}
+			}
+
+			// Go through the order details and add them to the report,
+			// comparing if the
+			// report already exists and modifying it if it does by adding the
+			// new values
+			// to the currently existing values.
+
+			for (OrderDetailsBean odb : orderDetails) {
+
+				if (report.getReportLines().size() > 0) {
+
+					boolean reportLineExists = false;
+
+					// One or more report lines already exist, must validate to
+					// avoid duplication
+					for (ReportLineBean rlb : report.getReportLines()) {
+
+						// Check if the book from the order details already is
+						// in the report
+						if (odb.getBook().getId() == rlb.getBookId()) {
+
+							// If it is, modify the fields instead of creating a
+							// new one
+							reportLineExists = true;
+
+							// Add the quantities
+							rlb.setQuantity(rlb.getQuantity()
+									+ odb.getQuantity());
+
+							// Add the total prices
+							rlb.setTotalPrice(rlb.getTotalPrice().add(
+									odb.getPrice().multiply(
+											new BigDecimal(odb.getQuantity()))));
+
+							// If date is more recent
+							if (rlb.getLastSoldDate().before(
+									oab.searchByOrderId(odb.getOrderId())
+											.getOrderDate())) {
+
+								// Set the new date
+								rlb.setLastSoldDate(oab.searchByOrderId(
+										odb.getOrderId()).getOrderDate());
+							}
+						}
+					}
+
+					if (!reportLineExists) {
+
+						rlb.setBookId(odb.getBook().getId());
+						rlb.setBookTitle(odb.getBook().getTitle());
+						rlb.setLastSoldDate(oab.searchByOrderId(
+								odb.getOrderId()).getOrderDate()); // **
+																	// validate
+																	// if >0
+						rlb.setQuantity(odb.getQuantity());
+						rlb.setTotalPrice(odb.getPrice().multiply(
+								new BigDecimal(odb.getQuantity())));
+
+						report.getReportLines().add(rlb);
+					}
+
+				} else {
+					// First report line, just create a new report line
+
+					rlb.setBookId(odb.getBook().getId());
+					rlb.setBookTitle(odb.getBook().getTitle());
+					rlb.setLastSoldDate(oab.searchByOrderId(odb.getOrderId())
+							.getOrderDate()); // ** validate if >0
+					rlb.setQuantity(odb.getQuantity());
+					rlb.setTotalPrice(odb.getPrice().multiply(
+							new BigDecimal(odb.getQuantity())));
+
+					report.getReportLines().add(rlb);
+				}
+
+			}
+
+		} else {
+			// No invoices found
+			report.setTotalNumSales(0);
+			report.setTotalCost(new BigDecimal("0"));
+			report.setTotalProfit(new BigDecimal("0"));
+
+		}
+
+		return report;
+	}
+}

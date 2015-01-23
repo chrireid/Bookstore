@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13928259239140" configfile="/g4w14/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="./home.xhtml" x="122" y="178" id="pf13928586563640" referenceLink="//@navigationRule.0/@fromViewId|" path="./home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="./book.xhtml" x="122" y="562" id="pf13928586563642" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="./book.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" x="122" y="946" id="pf13928622455393" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13928622455394 pf13928625728147 pf13932543398440 pf13932543398441 pf13932543398442 pf13934333407920" path="/home.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="book.xhtml" x="986" y="735" id="pf13928622455395" referenceLink="//@navigationRule.3/@navigationCase.4/@toViewId|" inlinks="pf13928622455394 pf13928625728147 pf13932629672066 pf13932629672067 pf13932629672068 pf13932629672069 pf139326296720610 pf139326296720611 pf13934333407920" path="/book.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="registration.xhtml" x="770" y="723" id="pf13932543398443" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" outlinks="pf13932629672066 pf139326296720612 pf139326296720613 pf139326296720614 pf13932629672067" inlinks="pf13932543398440 pf139326296720612 pf139326296720615 pf139326296720616" path="/registration.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="shopping_cart.xhtml" x="554" y="521" id="pf13932543398454" referenceLink="//@navigationRule.3/@navigationCase.2/@toViewId|" outlinks="pf13932629672068 pf139326296720615 pf139326296720617 pf139326296720618 pf13932629672069" inlinks="pf13932543398441 pf139326296720613 pf139326296720617 pf139326296720619" path="/shopping_cart.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="single_book.xhtml" x="338" y="723" id="pf13932543398455" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf139326296720610 pf139326296720616 pf139326296720619 pf139326296720720 pf139326296720611" inlinks="pf13932543398442 pf139326296720614 pf139326296720618 pf139326296720720" path="/single_book.xhtml"/>
+  <links id="pf13928622455394" target="pf13928622455395" source="pf13928622455393" outcome="contact"/>
+  <links id="pf13928625728147" target="pf13928622455395" source="pf13928622455393" outcome="genres"/>
+  <links id="pf13932543398440" target="pf13932543398443" source="pf13928622455393" outcome="registration"/>
+  <links id="pf13932543398441" target="pf13932543398454" source="pf13928622455393" outcome="shopping_cart"/>
+  <links id="pf13932543398442" target="pf13932543398455" source="pf13928622455393" outcome="single_book"/>
+  <links id="pf13932629672066" target="pf13928622455395" source="pf13932543398443" outcome="contact"/>
+  <links id="pf139326296720613" target="pf13932543398454" source="pf13932543398443" outcome="shopping_cart"/>
+  <links id="pf139326296720614" target="pf13932543398455" source="pf13932543398443" outcome="single_book"/>
+  <links id="pf13932629672067" target="pf13928622455395" source="pf13932543398443" outcome="genres"/>
+  <links id="pf13932629672068" target="pf13928622455395" source="pf13932543398454" outcome="contact"/>
+  <links id="pf139326296720615" target="pf13932543398443" source="pf13932543398454" outcome="registration"/>
+  <links id="pf139326296720618" target="pf13932543398455" source="pf13932543398454" outcome="single_book"/>
+  <links id="pf13932629672069" target="pf13928622455395" source="pf13932543398454" outcome="genres"/>
+  <links id="pf139326296720610" target="pf13928622455395" source="pf13932543398455" outcome="contact"/>
+  <links id="pf139326296720616" target="pf13932543398443" source="pf13932543398455" outcome="registration"/>
+  <links id="pf139326296720619" target="pf13932543398454" source="pf13932543398455" outcome="shopping_cart"/>
+  <links id="pf139326296720611" target="pf13928622455395" source="pf13932543398455" outcome="genres"/>
+  <links id="pf13934333407920" target="pf13928622455395" source="pf13928622455393" outcome="genre"/>
+  <links id="pf139326296720612" target="pf13932543398443" source="pf13932543398443" outcome="registration">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf139326296720617" target="pf13932543398454" source="pf13932543398454" outcome="shopping_cart">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf139326296720720" target="pf13932543398455" source="pf13932543398455" outcome="single_book">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+</pageflow:Pageflow>

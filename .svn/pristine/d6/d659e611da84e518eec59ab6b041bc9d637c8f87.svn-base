@@ -1,0 +1,2090 @@
+﻿/* Drop tables */
+DROP TABLE IF EXISTS newsfeed;
+DROP TABLE IF EXISTS customer_reviews;
+DROP TABLE IF EXISTS invoice;
+DROP TABLE IF EXISTS order_details;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS authors_books;
+DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS banners;
+DROP TABLE IF EXISTS survey_answers;
+DROP TABLE IF EXISTS survey_questions;
+
+/* Create GENRE table */
+CREATE TABLE genres (
+
+	_id INT(10) NOT NULL AUTO_INCREMENT,
+	genre VARCHAR(50) UNIQUE NOT NULL,
+	
+	PRIMARY KEY (_id)
+	
+) ENGINE=InnoDB;
+
+/* Create books table */
+CREATE TABLE books (
+
+	_id INT(10) NOT NULL AUTO_INCREMENT,
+	isbn VARCHAR(20) NOT NULL default '',
+	title VARCHAR(100) NOT NULL default '',
+	publisher VARCHAR(100) NOT NULL default '',	
+	pages INT(8) default 0,
+	genre_id INT(10) NOT NULL,
+	cover VARCHAR(255) NOT NULL default '', 
+	book_type INT(1) default 0,
+	eformat VARCHAR(10) default 0,
+	on_hand INT(10) default 0,
+	wholesale_price DECIMAL(10,2) NOT NULL default 0 ,
+	list_price DECIMAL(10,2) default 0,
+	sale_price DECIMAL(10,2) default 0,
+	weight DECIMAL(7,2) default 0,
+	dimensions VARCHAR(255) default '',
+	create_date TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
+	removal_status INT(1) default 0,
+	link VARCHAR(255) NOT NULL default 'book.pdf',
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT genre_id_fk FOREIGN KEY(genre_id) REFERENCES genres(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create AUTHORS table */
+CREATE TABLE authors (
+
+	_id int(10) NOT NULL auto_increment,
+	lastname varchar(35) NOT NULL default '',
+	firstname varchar(35) NOT NULL default '',
+	
+	PRIMARY KEY (_id)
+	
+) ENGINE=InnoDB;
+
+/* Create AUTHORS_BOOKS table */
+CREATE TABLE authors_books (
+
+	_id int(10) NOT NULL auto_increment,
+	author_id int(10) NOT NULL,
+	book_id int(10) NOT NULL,
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT authors_book_id_fk FOREIGN KEY (author_id) REFERENCES authors(_id),
+	CONSTRAINT authors_books_book_id_fk FOREIGN KEY (book_id) REFERENCES books(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create users table */
+CREATE TABLE users(
+
+	_id INT(10) NOT NULL AUTO_INCREMENT ,
+	login VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	title VARCHAR(20) NOT NULL default '',
+	last_name VARCHAR(50) NOT NULL default '',	
+	first_name VARCHAR(50) NOT NULL default '',
+	company VARCHAR(50) NOT NULL default '',
+	address1 VARCHAR(50) NOT NULL default '',
+	address2 VARCHAR(50) NOT NULL default '',
+	city VARCHAR(50) NOT NULL default '',
+	province VARCHAR(50) NOT NULL default '',
+	country VARCHAR(50) NOT NULL default '',
+	postal_code VARCHAR(50) NOT NULL default '',
+	shipping_title VARCHAR(50) NOT NULL default '',
+	shipping_last_name VARCHAR(50) NOT NULL default '',
+	shipping_first_name VARCHAR(50) NOT NULL default '',
+	shipping_company VARCHAR(50) NOT NULL default '',
+	shipping_address1 VARCHAR(50) NOT NULL default '',
+	shipping_address2 VARCHAR(50) NOT NULL default '',
+	shipping_city VARCHAR(50) NOT NULL default '',
+	shipping_province VARCHAR(50) NOT NULL default '',
+	shipping_country VARCHAR(50) NOT NULL default '',
+	shipping_postal_code VARCHAR(50) NOT NULL default '',
+	phone VARCHAR(50) NOT NULL default '',
+	cellphone VARCHAR(50) NOT NULL default '',
+	email VARCHAR(255) NOT NULL default '',
+	last_genre INT(10) NOT NULL DEFAULT 1,
+	manager BOOLEAN NOT NULL default 0,
+
+	PRIMARY KEY (_id),
+	CONSTRAINT users_genres_id_fk FOREIGN KEY(last_genre) REFERENCES genres(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create ORDERS table */
+CREATE TABLE orders(
+
+	_id int(10) NOT NULL AUTO_INCREMENT, 
+	order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	user_id INT(10) NOT NULL,
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT user_orders_id_fk FOREIGN KEY(user_id) REFERENCES users(_id)
+
+) ENGINE=InnoDB;
+	
+/* Create order_details table */
+CREATE TABLE order_details(
+
+	_id int(10) NOT NULL AUTO_INCREMENT, 
+	books_id INT(10) NOT NULL,
+	order_id INT(10) NOT NULL,
+	quantity INT(4) NOT NULL,
+	price DECIMAL(10,2) NOT NULL,
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT books_order_details_id_fk FOREIGN KEY(books_id) REFERENCES books(_id),
+	CONSTRAINT orders_order_details_id_fk FOREIGN KEY(order_id) REFERENCES orders(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create INVOICE table */
+CREATE TABLE invoice(
+
+	_id INT(10) NOT NULL AUTO_INCREMENT,
+	sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	user_id INT(10) NOT NULL,
+	total_value DECIMAL(5,2) NOT NULL default 0,
+	pst DECIMAL(5,2) NOT NULL default 0,
+	gst DECIMAL(5,2) NOT NULL default 0,
+	hst DECIMAL(5,2) NOT NULL default 0,
+	total_gross DECIMAL(5,2) NOT NULL default 0,
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT invoice_user_id_fk FOREIGN KEY(user_id) REFERENCES users(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create CUSTOMER_REVIEWS table */
+CREATE TABLE customer_reviews(
+
+	_id INT(10) NOT NULL AUTO_INCREMENT ,
+	book_id INT(10) NOT NULL,
+	user_id INT(10) NOT NULL,
+	invoice_id INT(10) NOT NULL,
+	name VARCHAR(100) NOT NULL default '',	
+	review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	rating INT(1) NOT NULL default 3,
+	review VARCHAR(750) NOT NULL default 'Default Review Text',
+	approval BOOLEAN NOT NULL default 0,
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT customer_review_books_id_fk FOREIGN KEY(book_id) REFERENCES books(_id),
+	CONSTRAINT customer_review_user_id_fk FOREIGN KEY(user_id) REFERENCES users(_id),
+	CONSTRAINT customer_review_invoice_id_fk FOREIGN KEY(invoice_id) REFERENCES invoice(_id)
+	
+) ENGINE=InnoDB;
+
+/* Create NEWSFEED table */	
+CREATE TABLE newsfeed(
+	
+	_id int(10) NOT NULL AUTO_INCREMENT,
+	title VARCHAR(50) NOT NULL,
+	user_id INT(10) NOT NULL,
+	content VARCHAR(255) NOT NULL default 'Default Text',
+	create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	active INT(1),
+	
+	PRIMARY KEY (_id),
+	CONSTRAINT newsfeed_users_id_fk FOREIGN KEY(user_id) REFERENCES users(_id)	
+) ENGINE=InnoDB;
+	
+
+/* Create BANNERS table */	
+	CREATE TABLE banners(
+	
+	_id int(5) NOT NULL AUTO_INCREMENT,
+	title VARCHAR(50) NOT NULL,
+	image VARCHAR(255) NOT NULL default '',
+	active INT(1),
+
+	PRIMARY KEY (_id)
+) ENGINE=InnoDB;
+
+
+
+
+
+
+
+/* ***************** I WANT TO DELETE TABLE: 'surveys' ********************  */
+/* ***************** AND REPLACE WITH 'survey_questions' & 'survey_answers' ********************  */
+/* ***************** ALLOWS FOR AS LITTLE AS 1 TO AS MANY AS INFINITE AMOUNT OF ANSWERS ********************  */
+
+
+CREATE TABLE survey_questions (
+	
+	_id int(10) NOT NULL AUTO_INCREMENT,
+	question VARCHAR(255) NOT NULL,
+	active INT(1),
+	
+	PRIMARY KEY (_id)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE survey_answers (
+
+	_id int(10) NOT NULL AUTO_INCREMENT,
+	question_id int(10) NOT NULL,
+	answer VARCHAR(50),
+	answer_count INT(3) NOT NULL default 0,
+
+	CONSTRAINT survey_question_id_fk FOREIGN KEY(question_id) REFERENCES survey_questions(_id),
+	PRIMARY KEY (_id)
+) ENGINE=InnoDB;
+
+
+
+
+
+
+
+
+
+
+/* ***************** POPULATE TABLES ***************** */
+
+/* Populate GENRES table */
+INSERT INTO genres(genre)
+VALUES
+	('fantasy'), /*1*/
+	('humor'), /*2*/
+	('novel'), /*3*/
+	('horror'), /*4*/
+	('thriller'), /*5*/
+	('educational'), /*6*/
+	('fiction'), /*7*/
+	('philosophy'), /*8*/
+	('history'), /*9*/
+	('science fiction'), /*10*/
+	('romance'), /*11*/
+	('cookbook') /*12*/
+;
+
+/* Populate BOOKS table */
+INSERT INTO books
+(
+	isbn,title,publisher,pages,genre_id,cover,
+	book_type,eformat,on_hand, 
+	wholesale_price,list_price,sale_price, 
+	weight,dimensions,removal_status
+) 
+VALUES 
+( /* 1-20: Chris */
+	'1491945575',
+	'OS 7 Programming Fundamentals: Objective-C Xcode, and Cocoa Basics',
+	'O"Reilly Media; Revised edition (Oct. 29 2013)',
+	'422',
+	'6',
+	'./images/books/1491945575.png',
+	'0',
+	'0',
+	'10',
+	'26.30',
+	'41.99',
+	'37.98',
+	'862',
+	'22.1 x 17.8 x 2.5 cm',
+	'0'
+),( /* 1-20: Chris */
+	'1118183487',
+	'Professional Android Sensor Programming',
+	'Wrox (June 5 2012)',
+	'552',
+	'6',
+	'./images/books/1118183487.png',
+	'0',
+	'0',
+	'10',
+	'37.61',
+	'59.99',
+	'54.98',
+	'885',
+	'23.2 x 18.6 x 2.5 cm',
+	'0'
+),( /* 1-20: Chris */
+	'1118199545',
+	'Beginning Android 4 Application Development',
+	'Wrox (March 6 2012)',
+	'560',
+	'6',
+	'./images/books/1118199545.png',
+	'0',
+	'0',
+	'10',
+	'30.09',
+	'47.99',
+	'42.98',
+	'930',
+	'24.9 x 17.2 x 2.5 cm',
+	'0'
+),( /* 1-20: Chris */
+	'1118026438',
+	'Professional Android Programming with Mono for Android and .NET/C#',
+	'Wrox (April 3 2012)',
+	'552',
+	'6',
+	'./images/books/1118026438.png',
+	'0',
+	'0',
+	'10',
+	'33.85',
+	'53.99',
+	'48.98',
+	'930',
+	'23.5 x 19 x 2.6 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'1449372341',
+	'Programming iOS 7',
+	'O''Reilly Media; Fourth Edition edition (Dec 31 2013)',
+	'930',
+	'6',
+	'./images/books/1449372341.png',
+	'0',
+	'0',
+	'10',
+	'32.92',
+	'52.99',
+	'47.98',
+	'1500',
+	'23.1 x 17.8 x 5.1 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'1430257229',
+	'Learn Java for Android Development',
+	'Apress Publishers; 2 edition (Feb. 19 2013)',
+	'780',
+	'6',
+	'./images/books/1430257229.png',
+	'0',
+	'0',
+	'10',
+	'29.78',
+	'50.50',
+	'45.49',
+	'1600',
+	'23.4 x 19.3 x 4.1 cm',
+	'0'
+),( /* 1-20: Chris */
+	'0073376205',
+	'Your UNIX/Linux: The Ultimate Guide',
+	'McGraw-Hill Science/Engineering/Math; 3 edition (Jan. 21 2012)',
+	'800',
+	'6',
+	'./images/books/0073376205.png',
+	'1',
+	'0',
+	'10',
+	'136.00',
+	'153.95',
+	'148.98',
+	'1300',
+	'23.5 x 18.4 x 3.0 cm',
+	'0'
+),( /* 1-20: Chris */
+	'1593272200',
+	'The Linux Programming Interface',
+	'No Starch Press; 1st (first) edition (Nov. 3 2010)',
+	'1552',
+	'6',
+	'./images/books/1593272200.png',
+	'1',
+	'0',
+	'10',
+	'65.80',
+	'114.95',
+	'109.98',
+	'2300',
+	'24.1 x 18.4 x 5.9 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0131411551',
+	'Unix Network Programming, Volume 1: The Sockets Networking API (3rd Edition)',
+	'Addison-Wesley Professional; 3 edition (Nov. 14 2003)',
+	'1024',
+	'6',
+	'./images/books/0131411551.png',
+	'1',
+	'0',
+	'10',
+	'52.91',
+	'83.99',
+	'78.98',
+	'1500',
+	'23.9 x 18.6 x 4.2 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0471773913',
+	'Web Application Design and Implementation: Apache 2, PHP5, MySQL, JavaScript, and Linux/UNIX',
+	'Wiley-IEEE Computer Society Pr; 1 edition (Dec 26 2006)',
+	'295',
+	'6',
+	'./images/books/0471773913.png',
+	'1',
+	'0',
+	'10',
+	'68.66',
+	'108.99',
+	'103.98',
+	'612',
+	'23.3 x 15.9 x 2.5 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0857294482',
+	'Guide to HTML, JavaScript and PHP: For Scientists and Engineers',
+	'Springer; 2011 edition (May 18 2011)',
+	'472',
+	'6',
+	'./images/books/0857294482.png',
+	'1',
+	'0',
+	'10',
+	'76.31',
+	'96.10',
+	'91.98',
+	'771',
+	'23.5 x 15.9 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'1608075338',
+	'Adv Standard SQL Dynamic Structured Data Modeling & Hierarchical Processing',
+	'Artech House Publishers (Jan. 1 2013)',
+	'390',
+	'6',
+	'./images/books/1608075338.png',
+	'1',
+	'0',
+	'10',
+	'128.25',
+	'138.50',
+	'133.48',
+	'662',
+	'23.4 x 16.0 x 2.6 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0321336313',
+	'TCP/IP Illustrated, Volume 1: The Protocols (2nd Edition)',
+	'Addison-Wesley Professional; 2 edition (Nov. 15 2011)',
+	'1056',
+	'6',
+	'./images/books/0321336313.png',
+	'1',
+	'0',
+	'10',
+	'45.98',
+	'72.99',
+	'67.98',
+	'1500',
+	'23.3 x 18.2 x 4.0 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'1449320104',
+	'C# 5.0 in a Nutshell: The Definitive Reference',
+	'O''Reilly Media; Fifth Edition edition (June 26 2012)',
+	'1064',
+	'6',
+	'./images/books/1449320104.png',
+	'0',
+	'0',
+	'10',
+	'32.92',
+	'52.99',
+	'47.98',
+	'1400',
+	'22.5 x 15.0 x 6.0 cm',
+	'0'
+),( /* 1-20: Chris */
+	'0137081898',
+	'Core Java Volume I--Fundamentals (9th Edition)',
+	'Prentice Hall; 9 edition (Nov. 27 2012)',
+	'1008',
+	'6',
+	'./images/books/0137081898.png',
+	'0',
+	'0',
+	'10',
+	'39.68',
+	'62.99',
+	'57.98',
+	'1600',
+	'22.9 x 17.8 x 5.1 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0321563840',
+	'The C++ Programming Language (4th Edition),',
+	'Addison-Wesley Professional; 4 edition (May 9 2013)',
+	'1368',
+	'6',
+	'./images/books/0321563840.png',
+	'0',
+	'0',
+	'10',
+	'49.76',
+	'78.99',
+	'73.98',
+	'1100',
+	'23.1 x 18.7 x 4.2 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0321543726',
+	'Programming: Principles and Practice Using C++',
+	'Addison-Wesley Professional; 1 edition (Dec 15 2008)',
+	'1272',
+	'6',
+	'./images/books/0321543726.png',
+	'0',
+	'0',
+	'10',
+	'49.76',
+	'78.99',
+	'73.98',
+	'1800',
+	'23.1 x 18.2 x 4.5 cm',
+	'0'	
+),( /* 1-20: Chris */
+	'0070435928',
+	'Java The Complete Reference, 8th Edition',
+	'McGraw-Hill Osborne Media; 8 edition (June 22 2011)',
+	'1152',
+	'6',
+	'./images/books/0070435928.png',
+	'0',
+	'0',
+	'10',
+	'43.44',
+	'68.95',
+	'63.97',
+	'1800',
+	'23.2 x 19.0 x 5.7 cm',
+	'0'
+),( /* 1-20: Chris (fake) */
+	'0070435929',
+	'Fake One',
+	'Publisher',
+	'1152',
+	'6',
+	'fake.png',
+	'0',
+	'0',
+	'10',
+	'43.44',
+	'68.95',
+	'63.97',
+	'1800',
+	'23.2 x 19.0 x 5.7',
+	'0'
+),( /* 1-20: Chris */
+	'1400049628',
+	'The Zombie Survival Guide: Complete Protection from the Living Dead',
+	'Broadway Books; 1 edition (Sept. 16 2003)',
+	'288',
+	'6',
+	'./images/books/1400049628.png',
+	'0',
+	'0',
+	'10',
+	'12.58',
+	'17.99',
+	'15.98',
+	'318',
+	'20.9 x 13.9 x 1.9 cm',
+	'0'
+);
+
+/* INSERT MATT'S BOOKS */
+INSERT INTO books
+(
+	isbn,title,publisher,pages,genre_id,cover, 
+	book_type,eformat,on_hand, 
+	wholesale_price,list_price,sale_price, 
+	weight,dimensions,removal_status
+) 
+VALUES
+( /* 21-40: Matthieu */
+	'9782700230', 
+	'La quête d Ewilan, Tome 1 : D un Monde à l autre',
+	'Rageot',
+	'281',
+	'1',
+	'./images/books/9782700231.jpg',
+	'1',
+	'0',
+	'25',
+	'9.70',
+	'7.70',
+	'8.70',
+	'886',
+	'18.00 x 12.00 x 2.00',
+	'0'
+),( /* 21-40: Matthieu */
+	'9782700231', 
+	'La quête d Ewilan, Tome 2 : Les frontières de glace',
+	'Rageot',
+	'320',
+	'1',
+	'./images/books/9782700231.jpg',
+	'1',
+	'2',
+	'24',
+	'9.49',
+	'7.49',
+	'8.49',
+	'886',
+	'22,5 x 14,5 x 2,6',
+	'0'
+),( /* 21-40: Matthieu */
+	'2700228146', 
+	'La quête dEwilan, Tome 3 : Lîle du destin',
+	'Rageot',
+	'355',
+	'1',
+	'./images/books/2700228146.jpg',
+	'1',
+	'1',
+	'22',
+	'10.70',
+	'9.00',
+	'9.70',
+	'886',
+	'21,8 x 14,4 x 3,4',
+	'0'
+),( /* 21-40: Matthieu */
+	'2700232704', 
+	'Le Pacte des MarchOmbres, Tome 1 : Ellana',
+	'Rageot',
+	'425',
+	'1',
+	'./images/books/2700232704.jpg',
+	'1',
+	'1',
+	'12',
+	'16.55',
+	'15.49',
+	'12.70',
+	'886',
+	'22,4 x 14,8 x 4',
+	'0'
+),( /* 21-40: Matthieu */
+	'2700237722', 
+	'Le Pacte des MarchOmbres, Tome 2 : Ellana, la prophétie',
+	'Rageot',
+	'640',
+	'1',
+	'./images/books/2700237722.jpg',
+	'1',
+	'4',
+	'10',
+	'10.55',
+	'8.27',
+	'9.70',
+	'886',
+	'18,4 x 12,2 x 3,6',
+	'0'
+),( /* 21-40: Matthieu */
+	'2700237714', 
+	'Le Pacte des MarchOmbres, Tome 3 : Ellana, l envol',
+	'Rageot',
+	'480',
+	'1',
+	'./images/books/2700237714.jpg',
+	'1',
+	'2',
+	'45',
+	'19.55',
+	'7.70',
+	'12.70',
+	'886',
+	'17,6 x 12,2 x 2,8',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915351', 
+	'Les Chevaliers d Emeraude, Tome 1 : Le feu dans le ciel',
+	'Michel Lafon',
+	'362',
+	'1',
+	'./images/books/2749915351.jpg',
+	'1',
+	'1',
+	'35',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,6 x 12,6 x 2,2',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915392', 
+	'Les Chevaliers d Emeraude, Tome 2 : Les dragons de l Empereur Noir',
+	'Michel Lafon',
+	'432',
+	'1',
+	'./images/books/2749915392.jpg',
+	'1',
+	'0',
+	'15',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,6 x 12,6 x 2,4',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915422', 
+	'Les Chevaliers d Emeraude, Tome 2 : Les dragons de l Empereur Noir',
+	'Michel Lafon',
+	'432',
+	'1',
+	'./images/books/2749915422.jpg',
+	'1',
+	'1',
+	'16',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17 x 12,4 x 2,2',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915422', 
+	'Les Chevaliers d Emeraude, Tome 3 : Piège au Royaume des Ombres',
+	'Michel Lafon',
+	'424',
+	'1',
+	'./images/books/2749915422.jpg',
+	'1',
+	'1',
+	'16',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17 x 12,4 x 2,2',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915578', 
+	'Les Chevaliers d Emeraude, Tome 4 : La princesse rebelle',
+	'Michel Lafon',
+	'435',
+	'1',
+	'./images/books/2749915578.jpg',
+	'1',
+	'3',
+	'13',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,8 x 12,6 x 2,2',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915815', 
+	'Les Chevaliers d Emeraude, Tome 5 : L île des Lézards',
+	'Michel Lafon',
+	'407',
+	'1',
+	'./images/books/2749915815.jpg',
+	'1',
+	'3',
+	'50',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,4 x 12,4 x 2,6',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749915982', 
+	'Les Chevaliers d Emeraude, Tome 6 : Le journal d Onyx',
+	'Michel Lafon',
+	'400',
+	'1',
+	'./images/books/2749915982.jpg',
+	'1',
+	'4',
+	'30',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,6 x 12,4 x 2,2',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749910863', 
+	'Les Chevaliers d Emeraude, Tome 7 : L enlèvement',
+	'Michel Lafon',
+	'427',
+	'1',
+	'./images/books/2749910863.jpg',
+	'1',
+	'0',
+	'12',
+	'9.55',
+	'7.22',
+	'8.70',
+	'886',
+	'17,8 x 12,4 x 2,4',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749910145', 
+	'Les Chevaliers d Emeraude, Tome 8 : les Dieux Déchus',
+	'Michel Lafon',
+	'435',
+	'1',
+	'./images/books/2749910145.jpg',
+	'1',
+	'1',
+	'25',
+	'15.54',
+	'14.54',
+	'13.54',
+	'886',
+	'23,2 x 15,4 x 3',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749911052', 
+	'Les Chevaliers d Emeraude, Tome 9 : L héritage de Danalieth',
+	'Michel Lafon',
+	'411',
+	'1',
+	'./images/books/2749911052.jpg',
+	'1',
+	'3',
+	'14',
+	'15.54',
+	'14.25',
+	'13.54',
+	'886',
+	'23,4 x 15,2 x 2,6',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749911540', 
+	'Les Chevaliers d Emeraude, Tome 10 : Représailles',
+	'Michel Lafon',
+	'403',
+	'1',
+	'./images/books/2749911540.jpg',
+	'1',
+	'3',
+	'14',
+	'15.54',
+	'14.25',
+	'13.54',
+	'886',
+	'23,5 x 15,2 x 2,7',
+	'0'
+),(/* 21-40: Matthieu */
+	'2749911931', 
+	'Les Chevaliers d Emeraude, Tome 11 : La justice céleste',
+	'Michel Lafon',
+	'403',
+	'1',
+	'./images/books/2749911931.jpg',
+	'1',
+	'3',
+	'17',
+	'15.54',
+	'14.25',
+	'13.54',
+	'886',
+	'15,4 x 23,6 x 2,7',
+	'0'
+),( /* 21-40: Matthieu */
+	'2749911949', 
+	'Les Chevaliers d Emeraude, Tome 12 : Irianeth',
+	'Michel Lafon',
+	'468',
+	'1',
+	'./images/books/2749911949.jpg',
+	'1',
+	'1',
+	'2',
+	'15.54',
+	'14.25',
+	'13.54',
+	'886',
+	'23 x 15,4 x 3,8',
+	'0'
+),( /* 21-40: Matthieu */
+	'2709642522', 
+	'Cinquante nuances de Grey',
+	'E.L. James',
+	'560',
+	'3',
+	'./images/books/2709642522.jpg',
+	'1',
+	'4',
+	'1',
+	'17.54',
+	'16.15',
+	'15.54',
+	'555',
+	'20,4 x 13,2 x 4,2',
+	'0'
+);
+/*INSERT TRISTAN'S BOOKS*/
+INSERT INTO books
+(
+	isbn,title,publisher,pages,genre_id,cover,
+	book_type,eformat,on_hand, 
+	wholesale_price,list_price,sale_price, 
+	weight,dimensions,removal_status
+) 
+VALUES
+( /* 21-40: Tristan */
+    '7322607',  
+    'The Hobbit',
+	'bantam',
+    '322',  
+    '1',
+    './images/books/7322607.jpg',  
+    '2',  
+    'pdf',  
+    '10',  
+    '5.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '',  
+    '0'
+),( /* 21-40: Tristan */
+	'765348780',  
+    'Gardens of the Moon', 
+	'bantam',  
+    '768',  
+    '1', 
+    './images/books/765348780.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '5.00',  
+    '9.95',  
+    '7.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553813110',  
+    'Deadhouse Gates',  
+	'bantam',  
+    '960',  
+    '1', 
+    './images/books/553813110.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553813129',  
+    'Memories of Ice', 
+	'bantam',   
+    '1187',  
+    '1',
+    './images/books/553813129.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553813137',  
+    'House of Chains', 
+	'bantam',   
+    '1021',  
+    '1',  
+    './images/books/553813137.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'1469225808',  
+    'Midnight Tides',  
+	'bantam',  
+    '940',  
+    '1',
+    './images/books/1469225808.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '12.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553813153',  
+    'Bonehunters',   
+	'bantam', 
+    '1232',  
+    '1', 
+    './images/books/553813153.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '10.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'765348845',  
+    'Reapers Gale',   
+	'bantam', 
+    '1280',  
+    '1',  
+    './images/books/765348845.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '9.95',  
+    '7.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780553824803',  
+    'Dust of Dreams',   
+	'bantam', 
+    '1280',  
+    '1',
+    './images/books/9780553824803.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780553825602',  
+    'The Crippled God',  
+	'bantam',  
+    '1280',  
+    '1',
+    './images/books/9780553824803.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'765363496',  
+    'Night of Knives',  
+	'bantam',  
+    '336',  
+    '1',
+    './images/books/765363496.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '9.95',  
+    '6.95',  
+    '200',  
+    '16.8 x 10.4 x 3 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'765363488',  
+    'Return of the Crimson Guard',  
+	'bantam',  
+    '880',  
+    '1',
+    './images/books/765363488.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '9.95',  
+    '7.95',  
+    '400',  
+    '17.1 x 10.7 x 3.5 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780553824704',  
+    'Stonewielder',  
+	'bantam',  
+    '816',  
+    '1',  
+    './images/books/9780553824704.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '581',  
+    '18 x 10.8 x 4.2 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780765329998',  
+    'Orb Scepter Throne',  
+	'bantam',  
+    '608',  
+    '1',
+    './images/books/9780765329998.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '422',  
+    '23.6 x 16.2 x 2.8 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553824724',  
+    'Blood and Bone', 
+	'bantam',   
+    '422',  
+    '1',
+    './images/books/553824724.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '422',  
+    '17.8 x 11 x 4 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553103547',  
+    'Game of Thrones',  
+	'bantam',  
+    '704',  
+    '1', 
+    './images/books/553103547.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '10.00',  
+    '25.95',  
+    '19.95',  
+    '1100',  
+    '23.4 x 16.5 x 4.3 cm',  
+    '0'
+),( /* 21-40: Tristan */
+ '553108034',  
+    'Clash of Kings',  
+	'bantam',  
+    '768',  
+    '1',
+    './images/books/553108034.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '10.00',  
+    '25.95',  
+    '19.95',  
+    '1100',  
+    '23.4 x 16.5 x 4.3 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'553106635',  
+    'Storm of Swords',  
+	'bantam',  
+    '992',  
+    '1', 
+    './images/books/553106635.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '10.00',  
+    '25.95',  
+    '19.95',  
+    '1100',  
+    '23.4 x 16.5 x 4.3 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780553813197',  
+    'Toll the Hounds',   
+	'bantam', 
+    '1296',  
+    '1',
+    './images/books/9780553813197.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '10.95',  
+    '8.95',  
+    '500',  
+    '10.8 x 6 cm',  
+    '0'
+),( /* 21-40: Tristan */
+'9780553824377',  
+    'The first collected tales of Bauchelain and Korbal Broach',    
+	'bantam',
+    '320',  
+    '1',
+    './images/books/9780553824377.jpg',  
+    '1',  
+    '',  
+    '10',  
+    '6.00',  
+    '11.95',  
+    '8.95',  
+    '200',  
+    '17.6 x 11 x 2.8 cm',  
+    '0'
+);
+/* INSERT XANDER'S BOOKS */
+INSERT INTO books
+(
+	isbn,title,publisher,pages,genre_id,cover, 
+	book_type,eformat,on_hand, 
+	wholesale_price,list_price,sale_price, 
+	weight,dimensions,removal_status
+) 
+VALUES
+( /* 21-40: Xander */
+	'1476727651',  
+    'Doctor Sleep: A Novel',
+    'Scribner',  
+    '544',  
+    '5', 
+    './images/books/1476727651.jpg',  
+    '1',  
+    '0',  
+    '12',  
+    '10.00',  
+    '12.95',  
+    '21.30',  
+    '898',  
+    '15.2 x 22.9 cm',  
+    '0'
+),( /* 21-40: Xander */
+ '1781162646',  
+    'Joyland', 
+    'Hard Case Crime',   
+    '228',  
+    '4',  
+    './images/books/1781162646.jpg',  
+    '1',  
+    '0',  
+    '4',  
+    '3.88',  
+    '12.95',  
+    '9.07',  
+    '222',  
+    '20.8 x 13.2 x 2 cm',  
+    '0'
+),( /* 21-40: Xander */
+ '1451627297',  
+    '11/22/63: A Novel', 
+    'Gallery Books',  
+    '880',  
+    '5',
+    './images/books/1451627297.jpg',  
+    '1',  
+    '0',  
+    '8',  
+    '9.32',  
+    '24.99',  
+    '12.70',  
+    '408',  
+    '15.2 x 22.9 cm',  
+    '0'
+),( /* 21-40: Xander */
+ '1476754454',  
+    'Mr. Mercedes: A Novel', 
+    'Scribner',    
+    '496',  
+    '5',
+    './images/books/1476754454.jpg',  
+    '2',  
+    '4',  
+    '100',  
+    '13.05',  
+    '34.99',  
+    '21.90',  
+    '0',  
+    '',  
+    '0'
+),( /* 21-40: Xander */
+   '9780451196712',  
+    'The Long Walk', 
+    'Signet',  
+    '384',  
+    '5',  
+    './images/books/9780451196712.jpg',  
+    '1',  
+    '0',  
+    '48',  
+    '0.85',  
+    '8.99',  
+    '8.54',  
+    '181',  
+    '2.6 x 10.4 x 16.7 cm',  
+    '0'
+),( /* 21-40: Xander */
+    'B005COO1X6',  
+    'Mile 81', 
+    'Scribner',    
+    '80',  
+    '5',
+    './images/books/B005COO1X6.jpg',  
+    '2',  
+    '4',  
+    '100',  
+    '0.99',  
+    '3.99',  
+    '1.99',  
+    '0',  
+    '',  
+    '0'
+),( /* 21-40: Xander */
+    '9780307743657',  
+    'The Shining', 
+    'Anchor',   
+    '688',  
+    '5', 
+    './images/books/9780307743657.jpg',  
+    '1',  
+    '0',  
+    '84',  
+    '2.85',  
+    '9.99',  
+    '9.49',  
+    '272',  
+    '2.9 x 11.4 x 18.4 cm',  
+    '0'
+),( /* 21-40: Xander */
+    '307743683',  
+    'The Stand', 
+    'Anchor',     
+    '1472',  
+    '5', 
+    './images/books/0307743683.jpg',  
+    '1',  
+    '0',  
+    '43',  
+    '1.10',  
+    '10.99',  
+    '9.89',  
+    '621',  
+    '5.3 x 10.8 x 18.4 cm',  
+    '0'
+),( /* 21-40: Xander */
+    '9781451658903',  
+    'The Wind Through the Keyhole', 
+    'Scribner',  
+    '320',  
+    '5', 
+    './images/books/9781451658903.jpg',  
+    '1',  
+    '0',  
+    '12',  
+    '11.19',  
+    '29.99',  
+    '18.80',  
+    '567',  
+    '3.3 x 16.5 x 24.8 cm',  
+    '0'
+),( /* 21-40: Xander */
+   '1587674211',  
+    'The Dark Man', 
+    'Cemetery Dance Publications',  
+    '25',  
+    '5',  
+    './images/books/1587674211.jpg',  
+    '1',  
+    '0',  
+    '9',  
+    '15.47',  
+    '27.05',  
+    '0',  
+    '249',  
+    '21.1 x 14.2 x 1.5 cm',  
+    '0'
+),( /* 21-40: Xander */
+   'B009T6JVNS',  
+    'In the Tall Grass', 
+    'Scribner',  
+    '25',  
+    '5',
+    './images/books/B009T6JVNS.jpg',  
+    '2',  
+    '4',  
+    '5',  
+    '1.99',  
+    '2.99',  
+    '0',  
+    '0',  
+    '',  
+    '0'
+),( /* 21-40: Xander */
+    '451210840',  
+    'The Gunslinger', 
+    'Signet',  
+    '25',  
+    '5', 
+    './images/books/0451210840.jpg',  
+    '1',  
+    '0',  
+    '36',  
+    '3.01',  
+    '9.99',  
+    '6.98',  
+    '159',  
+    ' 2.3 x 11.1 x 17.1 cm',  
+    '0'
+),( /* 21-40: Xander */
+    'B0030H7UIU',  
+    'Under the Dome: A Novel', 
+    'Scribner',  
+    '1092',  
+    '5',
+    './images/books/B0030H7UIU.jpg',  
+    '1',  
+    '0',  
+    '2',  
+    '11.00',  
+    '24.99',  
+    '14.00',  
+    '0',  
+    '',  
+    '0'
+),( /* 21-40: Xander */
+   '451188462',  
+    'Desperation',  
+    'Signet',  
+    '560',  
+    '5',
+    './images/books/0451188462.jpg',  
+    '1',  
+    '0',  
+    '8',  
+    '1.05',  
+    '10.50',  
+    '9.45',  
+    '295',  
+    '3.8 x 10.6 x 17.2 cm',  
+    '0'
+),( /* 21-40: Xander */
+    '067103264X',  
+    'Storm of the Century: The Labor Day Hurricane of 1935',   
+    'Gallery Books',  
+    '400',  
+    '5',
+    './images/books/067103264X.jpg',  
+    '1',  
+    '0',  
+    '48',  
+    '5.67',  
+    '21.00',  
+    '15.30',  
+    '522',  
+    '23.3 x 15.4 x 2.8 cm',  
+    '0'
+),( /* 21-40: Xander */
+    '451167538',  
+    'Different Seasons',   
+    'Signet',  
+    '512',  
+    '5', 
+    './images/books/0451167538.jpg',  
+    '1',  
+    '0',  
+    '5',  
+    '1.49',  
+    '10.99',  
+    '9.5',  
+    '249',  
+    '2.5 x 10.5 x 17.3 cm',  
+    '0'
+),( /* 21-40: Xander */
+    'B001RF3U9K',  
+    'UR',  
+    'Amazon Digital Services, Inc.',  
+    '61',  
+    '5',  
+    './images/books/B001RF3U9K.jpg',  
+    '2',  
+    '4',  
+    '100',  
+    '0.85',  
+    '4.20',  
+    '3.35',  
+    '0',  
+    '',  
+    '0'
+),( /* 21-40: Xander */
+    '307743667',  
+    'Carrie',  
+    'Anchor',  
+    '304',  
+    '5', 
+    './images/books/0307743667.jpg',  
+    '1',  
+    '0',  
+    '8',  
+    '0.50',  
+    '9.99',  
+    '9.49',  
+    '159',  
+    '2.3 x 10.5 x 17 cm',  
+    '0'
+),( /* 21-40: Xander */
+    '451197879',  
+    'Roadwork',   
+    'Signet',  
+    '320',  
+    '5', 
+    './images/books/0451197879.jpg',  
+    '1',  
+    '0',  
+    '7',  
+    '0.45',  
+    '8.99',  
+    '8.54',  
+    '204',  
+    '17.5 x 10.7 x 2.2 cm',  
+    '0'
+),( /* 21-40: Xander */
+
+    '340951451',  
+    'It',   
+    'Signet',  
+    '1396',  
+    '5',
+    './images/books/0340951451.jpg',  
+    '2',  
+    '4',  
+    '100',  
+    '10.46',  
+    '21.45',  
+    '11.00',  
+    '0',  
+    '',  
+    '0'
+);
+
+INSERT INTO books
+(
+	isbn,title,publisher,pages,genre_id,cover, 
+	book_type,eformat,on_hand, 
+	wholesale_price,list_price,sale_price, 
+	weight,dimensions,removal_status
+) 
+VALUES 
+( /* Polina 81 author id: 47*/
+    '0449912442',
+	'The Black Obelisk',
+	'Random House Trade Paperbacks',
+	'448',
+	'3',
+	'./images/books/0449912442.jpg',
+	'0',
+	'0',
+	'12754',
+	'14.00',
+	'20.00',
+	'14.60',
+	'522',
+	'2.9 x 13.8 x 21.3 cm',
+	'0'
+),( /* Polina 82 author id: 6*/
+    '099489929',
+	'The Night Watch',
+	'Arrow Book',
+	'438',
+	'7',
+	'./images/books/099489929.jpg',
+	'0',
+	'',
+	'48',
+	'10.00',
+	'17.53',
+	'0',
+	'340',
+	'12.8 x 19.6 cm',
+	'0'
+),( /* Polina 83 author id: 6 */
+	'0385663668',
+	'The Day Watch',
+	'Anchor Canada',
+	'496',
+	'7',
+	'./images/books/0385663668.jpg',
+	'0',
+	'',
+	'56',
+	'12.24',
+	'20.00',
+	'0',
+	'499',
+	'20.8 x 14.7 x 3.8 cm',
+	'0'
+),( /* Polina 84 author id: 6 */
+	'0385663773',
+	'The Twilight Watch',
+	'Anchor Canada',	
+	'448',
+	'7',
+	'./images/books/0385663773.jpg',
+	'0',
+	'',
+	'43',
+	'5.00',
+	'11.00',
+	'0',
+	'454',
+	'20.3 x 13.7 x 3.6 cm',
+	'0'
+),( /* Polina 85 author id: 6 */
+	'0385663994',
+	'The Last Watch',
+	'Anchor Canada',
+	'400',
+	'7',
+	'./images/books/0385663994.jpg',
+	'0',
+	'',
+	'12',
+	'12.37',
+	'25.00',
+	'0',
+	'408',
+	'20.8 x 14 x 3 cm',
+	'0'
+),( /* Polina 86 author id: 7 */
+	'0007448031',
+	'A Game Of Thrones',
+	'Random House Canada',
+	'819',
+	'1',
+	'./images/books/0007448031.jpg',
+	'2',
+	'2',
+	'0',
+	'0',
+	'10.99',
+	'0',
+	'0',
+	'',
+	'0'
+
+),( /* Polina 87 author id: 7 */
+	'0553579908',
+	'A Clash Of Kings',
+	'Bantam',
+	'1040',
+	'1',
+	'./images/books/0553579908.jpg',
+	'2',
+	'2',
+	'0',
+	'0',
+	'10.79',
+	'0',
+	'0',
+	'',
+	'0'
+),( /* Polina 88 author id: 7 */
+	'0553106635',
+	'A Storm Of Swords',
+	'Bantam',
+	'992',
+	'1',
+	'./images/books/0553106635.jpg',
+	'2',
+	'2',
+	'0',
+	'0',
+	'10.99',
+	'0',
+	'0',
+	'',
+	'0'
+),( /* Polina 89 author id: 7 */
+	'055358202X',
+	'A Feast For Crows',
+	'Bantam',
+	'1104',
+	'1',
+	'./images/books/055358202X.jpg',
+	'2',
+	'2',
+	'0',
+	'0',
+	'10.99',
+	'0',
+	'0',
+	'',
+	'0'
+),( /* Polina 90 author id: 7 */
+	'0007466064',
+	'A Dance With Dragons',
+	'Harper Voyager',
+	'1152',
+	'1',
+	'./images/books/0007466064.jpg',
+	'2',
+	'2',
+	'0',
+	'0',
+	'10.99',
+	'0',
+	'0',
+	'',
+	'0'
+),( /* Polina 91 author id: 8 */
+	'0674992008',
+	'On Nature of Things',
+	'Harvard University Press',
+	'672',
+	'8',
+	'./images/books/0674992008.jpg',
+	'1',
+	'',
+	'256',
+	'15.76',
+	'35.99',
+	'23.91',
+	'454',
+	'2.8 x 11.6 x 16.4 cm',
+	'0'
+),( /* Polina 92 author id: 9 */
+	'0374528373',
+	'Brothers Karamazov',
+	'FSG Adult',
+	'824',
+	'3',
+	'./images/books/0374528373.jpg',
+	'1',
+	'',
+	'11',
+	'25.76',
+	'54.25',
+	'0',
+	'612',
+	'3.6 x 13.9 x 20.9 cm',
+	'0'
+),( /* Polina 93 author id: 9 */
+	'0486454118',
+	'Crime and Punishment',
+	'Dover Publications',
+	'480',
+	'3',
+	'./images/books/0486454118.jpg',
+	'1',
+	'',
+	'8',
+	'6.00',
+	'12.00',
+	'0',
+	'113',
+	'3 x 13 x 20.5 cm',
+	'0'
+),( /* Polina 94 author id: 10 */
+	'1169227929',
+	'The Importance of Being Earnest',
+	'Kessinger Publishing',
+	'82',
+	'3',
+	'./images/books/1169227929.jpg',
+	'1',
+	'',
+	'34',
+	'20.88',
+	'27.95',
+	'0',
+	'295',
+	'0.6 x 25 x 17.5 cm',
+	'0'
+),( /* Polina 95 author id: 11 */
+	'2764622376',
+	'Le Camp des Justes',
+	'Boreal',
+	'296',
+	'9',
+	'./images/books/2764622376.jpg',
+	'0',
+	'0',
+	'23',
+	'14.13',
+	'21.73',
+	'0',
+	'315',
+	'2.3 x 11.6 x 16.4 cm',
+	'0'
+),( /* Polina 96 author id: 12 */
+	'0486406636',
+	'Thus Spake Zarathustra',
+	'Dover Publications',
+	'288',
+	'8',
+	'./images/books/0486406636.jpg',
+	'0',
+	'0',
+	'17',
+	'4.75',
+	'6.75',
+	'5.22',	
+	'222',	
+	'21 x 13.2 x 1.8 cm',
+	'0'
+),( /* Polina 97 author id: 13 */
+	'8497941640',
+	'Anna Karenina',
+	'Edimat Libros',
+	'496',
+	'3',
+	'./images/books/8497941640.jpg',
+	'1',
+	'0',
+	'3',
+	'44.75',
+	'56.78',
+	'50.22',
+	'444',
+	'23.2 x 16.2 x 4.2 cm',
+	'0'
+),( /* Polina 98 author id: 14 */
+	'B004IAIPQY',
+	'Fahrenheit 451 Deluxe Edition',
+	'Easton Press',
+	'458',
+	'10',
+	'./images/books/B004IAIPQY.jpg',
+	'1',
+	'0',
+	'1',
+	'550.00',
+	'1200.00',
+	'550.00',
+	'679',
+	'22.4 x 15.6 x 1.8 cm',
+	'0'
+
+),( /* Polina 99 author id: 15 */
+	'0862250013',
+	'Pride and Prejudice',
+	'Imprint unknown',
+	'368',
+	'11',
+	'./images/books/0862250013.jpg',
+	'1',
+	'0',
+	'1',
+	'281.95',
+	'425.70',
+	'281.95',
+	'386',
+	'20.3 x 13 x 2.8 cm',
+	'0'
+),( /* Polina 92 author id: 16 */
+	'0811821846',
+	'A Star Wars Cookbook',
+	'Chronicle Books',
+	'132',
+	'12',
+	'./images/books/0811821846.jpg',
+	'0',
+	'0',
+	'73',
+	'3.44',
+	'7.85',
+	'5.66',
+	'363',
+	'30.5 x 20.3 x 5.1 cm',
+	'0'
+	);
+								
+/* POPULATE AUTHOR'S TABLE */
+INSERT INTO authors
+(
+	lastname, firstname
+)
+VALUES 
+('King', 'Stephen'), 			/*1 - XANDER'S*/
+('Robillard', 'Anne'), 			/*2 - MATT'S*/
+('James', 'E.L.'), 				/*3*/
+('Girard', 'Anne-Sophie'), 		/*4*/
+('Girard', 'Marie-Aldine'), 	/*5*/
+('Lukyanenko', 'Sergei'), 		/*6 - POLINA'S*/
+('Martin', 'George'), 			/*7*/
+('Lucretius', ''), 				/*8*/
+('Dostoevsky', 'Fyodor'), 		/*9*/
+('Wilde', 'Oscar'), 			/*10*/
+('Courtemanche', 'Gil'), 		/*11*/
+('Nietzsche', 'Friedrich'), 	/*12*/
+('Tolstoy', 'Leo'), 			/*13*/
+('Bradbury', 'Ray'), 			/*14*/
+('Austen', 'Jane'), 			/*15*/
+('Davis', 'Robin'), 			/*16*/
+('Erikson', 'Steven'), 			/*17 - TRISTAN'S*/
+('Esslemont', 'Ian'), 			/*18*/
+('Tolkien', 'J. R. R.'), 		/*19*/
+('Neuburg', 'Mat'), 			/*20 - CHRIS'S*/
+('Milette', 'Greg'), 			/*21*/
+('Stroud', 'Adam'), 			/*22*/
+('Lee', 'Wei-Meng'), 			/*23*/
+('McClure', 'Wallace B.'), 		/*24*/
+('Blevins', 'Nathan'), 			/*25*/
+('Croft', 'John J.'), 			/*26*/
+('Dick', 'Jonathan'), 			/*27*/
+('Hardy', 'Chris'), 			/*28*/
+('Friesen', 'Jeff'), 			/*29*/
+('Das', 'Sumitabha'), 			/*30*/
+('Kerrisk', 'Michael'), 		/*31*/
+('Stevens', 'W. Richard'), 		/*32*/
+('Fenner', 'Bill'),		 		/*33*/
+('Rudoff', 'Andrew M.'), 		/*34*/
+('Gabarro', 'Steven A.'), 		/*35*/
+('Brooks', 'David R.'), 		/*36*/
+('David', 'Michael'), 			/*37*/
+('Fall', 'Kevin R.'), 			/*38*/
+('Albahari', 'Joseph'), 		/*39*/
+('Albahari', 'Ben'), 			/*40*/
+('Horstmann', 'Cay S.'), 		/*41*/
+('Cornell', 'Gary'), 			/*42*/
+('Stroustrup', 'Bjarne'), 		/*43*/
+('Josuttis', 'Nicolai M.'), 	/*44*/
+('Schildt', 'Herbert'), 		/*45*/
+('Brooks', 'Max'), 				/*46*/
+('Remarque', 'Erich Maria'), 	/*47 - POLINA'S*/
+('Bottero', 'Pierre') 			/*48 - MATT'S*/
+; 
+
+/* POPULATE AUTHORS_BOOKS TABLE */
+/*Polina's*/
+
+INSERT INTO authors_books
+(book_id, author_id)
+VALUES
+(1,20),
+(2,21),
+(2,22),
+(3,23),
+(4,24),
+(4,25),
+(4,26),
+(4,27),
+(4,28),
+(5,20),
+(6,29),
+(7,30),
+(8,31),
+(9,32),
+(9,33),
+(9,34),
+(10,35),
+(11,36),
+(12,37),
+(13,38),
+(13,32),
+(14,39),
+(14,40),
+(15,41),
+(15,42),
+(16,43),
+(17,43),
+(18,45),
+(19,44),
+(20,46),
+(21,48),
+(22,48),
+(23,48),
+(24,48),
+(25,48),
+(26,48),
+(27,2),
+(28,2),
+(29,2),
+(30,2),
+(31,2),
+(32,2),
+(33,2),
+(34,2),
+(35,2),
+(36,2),
+(37,2),
+(38,2),
+(39,2),
+(40,3),
+(41,19),
+(42,17),
+(43,17),
+(44,17),
+(45,17),
+(46,17),
+(47,17),
+(48,17),
+(49,17),
+(50,17),
+(51,18),
+(52,18),
+(53,18),
+(54,18),
+(55,18),
+(56,7),
+(57,7),
+(58,7),
+(59,17),
+(60,17),
+(61,1),
+(62,1),
+(63,1),
+(64,1),
+(65,1),
+(66,1),
+(67,1),
+(68,1),
+(69,1),
+(70,1),
+(71,1),
+(72,1),
+(73,1),
+(74,1),
+(75,1),
+(76,1),
+(77,1),
+(78,1),
+(79,1),
+(80,1),
+(81,47),
+(82,6),
+(83,6),	
+(84,6),
+(85,6),	
+(86,7),	
+(87,7),
+(88,7),	
+(89,7),	
+(90,7),	
+(91,8),	
+(92,9),	
+(93,9),
+(94,10),	
+(95,11),
+(96,12),
+(97,13),
+(98,14),
+(99,15),
+(100,16);

@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+	<ui:debug hotkey="x"
+		rendered="#{initParam['javax.faces.PROJECT_STAGE'] eq 'Development'}" />
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="REGISTRATION" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page"
+							value="Make sure the information is accurate" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br />
+					<br /> <br />
+
+					<h:form>
+						<h:panelGrid styleClass="grid_5 alpha">
+							<h:outputLabel for="login" value="Login: *" />
+							<h:inputText id="login" />
+							<br />
+							<h:outputLabel for="password" value="Password: *" />
+							<h:inputSecret id="password" />
+							<br />
+							<h:outputLabel for="cpassword" value="Confirm Password: *" />
+							<h:inputSecret id="cpassword" />
+						</h:panelGrid>
+						<h:panelGrid styleClass="grid_5 omega">
+							<h:outputLabel for="phone" value="Phone Number: " />
+							<h:inputText id="phone" />
+							<br />
+							<h:outputLabel for="cell" value="Cell: " />
+							<h:inputSecret id="cell" />
+							<br />
+							<h:outputLabel for="email" value="Email: *" />
+							<h:inputSecret id="email" />
+						</h:panelGrid>
+
+
+						<h:panelGrid styleClass="grid_5 alpha">
+							<br />
+							<h:outputText styleClass="h2" value="Address" />
+							<br />
+							<br />
+							<h:outputLabel for="title" value="Title: " />
+							<h:inputText id="title" />
+							<br />
+							<h:outputLabel for="lname" value="Last Name: " />
+							<h:inputText id="lname" />
+							<br />
+							<h:outputLabel for="fname" value="First Name: " />
+							<h:inputText id="fname" />
+							<br />
+							<h:outputLabel for="company" value="Company Name: " />
+							<h:inputText id="company" />
+							<br />
+							<h:outputLabel for="address1" value="Address: " />
+							<h:inputText id="address1" />
+							<br />
+							<h:outputLabel for="address2" value="Address Line 2: " />
+							<h:inputText id="address2" />
+							<br />
+							<h:outputLabel for="address3" value="Address Line 3: " />
+							<h:inputText id="address3" />
+							<br />
+							<h:outputLabel for="city" value="City: " />
+							<h:selectOneMenu id="city"
+								value="city">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="province" value="Province: " />
+							<h:selectOneMenu id="province"
+								value="province">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="Country" value="Country: " />
+							<h:selectOneMenu id="country"
+								value="country">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="postal" value="Postal Code: " />
+							<h:inputText id="postal" />
+
+						</h:panelGrid>
+
+						<h:panelGrid styleClass="grid_5 omega">
+							<br />
+							<h:outputText styleClass="h2" value="Shipping Address" /> (if different)
+							<br />
+							<br />
+							<h:outputLabel for="s_title" value="Title: " />
+							<h:inputText id="s_title" />
+							<br />
+							<h:outputLabel for="s_lname" value="Last Name: " />
+							<h:inputText id="s_lname" />
+							<br />
+							<h:outputLabel for="s_fname" value="First Name: " />
+							<h:inputText id="s_fname" />
+							<br />
+							<h:outputLabel for="s_company" value="Company Name: " />
+							<h:inputText id="s_company" />
+							<br />
+							<h:outputLabel for="s_address1" value="Address: " />
+							<h:inputText id="s_address1" />
+							<br />
+							<h:outputLabel for="s_address2" value="Address Line 2: " />
+							<h:inputText id="s_address2" />
+							<br />
+							<h:outputLabel for="s_address3" value="Address Line 3: " />
+							<h:inputText id="s_address3" />
+							<br />
+							<h:outputLabel for="s_city" value="City: " />
+							<h:selectOneMenu id="s_city"
+								value="s_city">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="s_province" value="Province: " />
+							<h:selectOneMenu id="s_province"
+								value="s_province">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="s_country" value="Country: " />
+							<h:selectOneMenu id="s_country"
+								value="s_country">
+								<!-- <f:selectItem id="item1" itemLabel="News" itemValue="1" />
+								<f:selectItem id="item2" itemLabel="Sports" itemValue="2" />
+								<f:selectItem id="item3" itemLabel="Music" itemValue="3" />
+								<f:selectItem id="item4" itemLabel="Java" itemValue="4" />
+								<f:selectItem id="item5" itemLabel="Web" itemValue="5" /> -->
+							</h:selectOneMenu>
+							<br />
+							<h:outputLabel for="s_postal" value="Postal Code: " />
+							<h:inputText id="s_postal" />
+
+
+						</h:panelGrid>
+
+						<h:panelGroup styleClass="clear"></h:panelGroup>
+						<br />
+						<br />
+
+						<h:commandButton value="Register" action="#"
+							style="margin-right:10px;" />
+						<h:commandButton value="Clear" action="#"
+							style="margin-right:10px;" />
+						<h:commandButton value="Cancel" action="#" />
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

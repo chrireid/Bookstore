@@ -1,0 +1,324 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="REGISTRATION" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page"
+							value="Make sure the information is accurate" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> 
+
+					<h:form>
+						<h:panelGrid styleClass="grid_5 alpha" columns="2">
+						
+							<h:outputText styleClass="h2" value="Login Info" />
+							<br /> 
+							<h:outputLabel for="login" value="Login: *" />
+							<h:inputText id="login" value="#{userBean.login}">
+							<f:validateLength minimum="6"></f:validateLength>
+							</h:inputText>
+							<h:message for = "login" />
+							<!--  Password fields -->
+							<h:outputLabel for="password" value="Password: *" />
+							<h:inputSecret id="password" binding="#{passwordComponent}" value="#{userBean.password}">
+							<h:message for = "password" />
+							<f:validateLength minimum="6"/>
+							</h:inputSecret>
+							<h:outputLabel for="cpassword" value="Confirm Password: *" />
+							<h:inputSecret id="cpassword" required="#{not empty passwordComponent.value}">
+							  <f:validator validatorId="confirmPasswordValidator" />
+   							 <f:attribute name="passwordComponent" value="#{passwordComponent}" />
+							</h:inputSecret>
+								<h:message for = "cpassword" />
+							<br /> 	
+							<h:outputText styleClass="h3" value="Address" />
+							<br />
+							<h:outputLabel for="title" value="Title: " />
+							<h:inputText id="title" value="#{userBean.title}">
+							<f:validateLength minimum="2"/>
+							</h:inputText>
+							<h:message for = "title" />
+							<br /> 
+							<h:outputLabel for="lname" value="Last Name: " />
+							<h:inputText id="lname" value="#{userBean.lastName}">
+							<f:validateLength minimum="2"/>
+							</h:inputText>
+							<br /> 
+							<h:message for = "lname" />
+							<h:outputLabel for="fname" value="First Name: " />
+							<h:inputText id="fname" value="#{userBean.firstName}">
+							<f:validateLength minimum="2"/>
+							</h:inputText>
+							<h:message for = "fname" />
+							<br /> 
+							<h:outputLabel for="company" value="Company Name: " />
+							<h:inputText id="company" value="#{userBean.company}">
+							<f:validateLength minimum="2"/>
+							</h:inputText>
+							<h:message for = "company" />
+							<br /> 
+							<h:outputLabel for="address1" value="Address: " />
+							<h:inputText id="address1" value="#{userBean.address1}">
+							<f:validateLength minimum="6"/>
+							</h:inputText>
+							<h:message for = "address1" />
+							<br /> 
+							<h:outputLabel for="address2" value="Address Line 2: " />
+							<h:inputText id="address2" value="#{userBean.address2}">
+							</h:inputText>
+							<br /> 							
+							<h:outputLabel for="city" value="City: " />
+							<br /> 
+							<h:selectOneMenu id="city" value="#{userBean.city}">
+								<f:selectItem id="tor" itemLabel="Toronto" itemValue="Toronto" />
+								<f:selectItem id="mon" itemLabel="Montreal" itemValue="Montreal" />
+								<f:selectItem id="que" itemLabel="Quebec City"
+									itemValue="Quebec City" />
+								<f:selectItem id="hal" itemLabel="Halifax" itemValue="Halifax" />
+								<f:selectItem id="sai" itemLabel="Saint-John"
+									itemValue="Saint-John" />
+								<f:selectItem id="fre" itemLabel="Fredericton"
+									itemValue="Fredericton" />
+								<f:selectItem id="win" itemLabel="Winnipeg" itemValue="Winnipeg" />
+								<f:selectItem id="vic" itemLabel="Victoria" itemValue="Victoria" />
+								<f:selectItem id="van" itemLabel="Vancouver"
+									itemValue="Vancouver" />
+								<f:selectItem id="cha" itemLabel="Charlottetown"
+									itemValue="Charlottetown" />
+								<f:selectItem id="reg" itemLabel="Regina" itemValue="Regina" />
+								<f:selectItem id="edm" itemLabel="Edmonton" itemValue="Edmonton" />
+								<f:selectItem id="sas" itemLabel="Saskatoon"
+									itemValue="Saskatoon" />
+								<f:selectItem id="cal" itemLabel="Calgary" itemValue="Calgar" />
+								<f:selectItem id="stjohns" itemLabel="St. John's"
+									itemValue="St. Johns" />
+								<f:selectItem id="ott" itemLabel="Ottawa" itemValue="Ottawa" />
+								<f:selectItem id="whi" itemLabel="Whitehorse"
+									itemValue="Whitehorse" />
+								<f:selectItem id="yel" itemLabel="Yellowknife"
+									itemValue="Yellowknife" />
+								<f:selectItem id="uqa" itemLabel="Iqaluit" itemValue="Iqaluit" />
+								<f:selectItem id="kuj" itemLabel="Kuujjuaq" itemValue="Kuujjuaq" />
+							</h:selectOneMenu>
+							<br /> 
+							<h:outputLabel for="province" value="Province: " />
+							<br /> 
+							<h:selectOneMenu id="province" value="#{userBean.province}">
+								<f:selectItem id="ab" itemLabel="AB" itemValue="Alberta" />
+								<f:selectItem id="bc" itemLabel="BC"
+									itemValue="British Columbia" />
+								<f:selectItem id="mb" itemLabel="MB" itemValue="Manitoba" />
+								<f:selectItem id="nb" itemLabel="NB" itemValue="New Brunswick" />
+								<f:selectItem id="nl" itemLabel="NL" itemValue="NewfoundLand" />
+								<f:selectItem id="ns" itemLabel="NS" itemValue="Nova Scotia" />
+								<f:selectItem id="nt" itemLabel="NT"
+									itemValue="Northwest Territories" />
+								<f:selectItem id="nu" itemLabel="NU" itemValue="Nunavut" />
+								<f:selectItem id="on" itemLabel="ON" itemValue="Ontario" />
+								<f:selectItem id="pe" itemLabel="PE"
+									itemValue="Prince Edward Island" />
+								<f:selectItem id="qc" itemLabel="QC" itemValue="Quebec" />
+								<f:selectItem id="ks" itemLabel="SK" itemValue="Saskatchewan" />
+								<f:selectItem id="yt" itemLabel="YT" itemValue="Yukon" />
+							</h:selectOneMenu>
+							<br /> 
+							<h:outputLabel for="country_menu" value="Country: " />
+							<ui:insert name="right_pane">
+								<ui:include src="/resources/templates/countries.xhtml" />
+							</ui:insert>
+							<br /> 
+							<h:outputLabel for="postal" value="Postal Code: " />
+							<h:inputText id="postal" value="#{userBean.postalCode}" >
+								<f:validateLength minimum="6"/>
+								</h:inputText>
+								<h:message for = "postal" />
+						</h:panelGrid>
+						<h:panelGrid styleClass="grid_5 omega" columns="2">
+							<h:outputText styleClass="h2" value="Contact" />
+							<h:outputText styleClass="h2" value="Info" />
+							<h:outputLabel for="phone" value="Phone Number: " />
+							<h:inputText id="phone" value="#{userBean.phone}">
+								<f:validateLength minimum="10"/>
+								</h:inputText>
+								<h:message for = "phone" />
+								<br /> 
+							<h:outputLabel for="cell" value="Cell: " />
+							<h:inputText id="cell" value="#{userBean.cellphone}" >
+							<f:validateLength minimum="10"/>
+								</h:inputText>
+								<h:message for = "cell" />
+								<br /> 
+							<h:outputLabel for="email" value="Email: *" />
+							<h:inputText id="email" value="#{userBean.email}">
+							<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</h:inputText>
+							<h:message for = "email" />
+							<br /> 
+							<h:outputText styleClass="h2" value="Shipping Address" />
+							<br /> 
+							<h:outputLabel for="s_title" value="Title: " />
+							<h:inputText id="s_title" value="#{userBean.shippingTitle}" >
+							<f:validateLength minimum="2"/>
+								</h:inputText>
+								<h:message for = "s_title" />
+								<br /> 
+							<h:outputLabel for="s_lname" value="Last Name: " />
+							<h:inputText id="s_lname" value="#{userBean.shippingLastName}" >
+							<f:validateLength minimum="3"/>
+								</h:inputText>
+								<h:message for = "s_lname" />
+								<br /> 
+							<h:outputLabel for="s_fname" value="First Name: " />
+							<h:inputText id="s_fname" value="#{userBean.shippingFirstName}" >
+							<f:validateLength minimum="3"/>
+								</h:inputText>
+								<h:message for = "s_fname" />
+								<br /> 
+							<h:outputLabel for="s_company" value="Company Name: " />
+							<h:inputText id="s_company" value="#{userBean.shippingCompany}" >
+							<f:validateLength minimum="2"/>
+								</h:inputText>
+								<h:message for = "s_company" />
+								<br /> 
+							<h:outputText for="s_addrs" value="Shipping Address" />
+							<h:inputText id="s_addrs" value="#{userBean.shippingAddress1}">
+							<f:validateLength minimum="6"/>
+								</h:inputText>
+								<h:message for = "s_addrs" />
+								<br /> 
+							<h:outputText for="s_addrs2" value="Shipping Address Line 2" />
+							<h:inputText id="s_addrs2" value="#{userBean.shippingAddress2}" />
+							<h:message for = "s_addrs2" />
+							<br /> 
+							<h:outputLabel for="s_city" value="City: " />
+							<h:selectOneMenu id="s_city" value="#{userBean.shippingCity}">
+								<f:selectItem id="s_tor" itemLabel="Toronto" itemValue="Toronto" />
+								<f:selectItem id="s_mon" itemLabel="Montreal"
+									itemValue="Montreal" />
+								<f:selectItem id="s_que" itemLabel="Quebec City"
+									itemValue="Quebec City" />
+								<f:selectItem id="s_hal" itemLabel="Halifax" itemValue="Halifax" />
+								<f:selectItem id="s_sai" itemLabel="Saint-John"
+									itemValue="Saint-John" />
+								<f:selectItem id="s_fre" itemLabel="Fredericton"
+									itemValue="Fredericton" />
+								<f:selectItem id="s_win" itemLabel="Winnipeg"
+									itemValue="Winnipeg" />
+								<f:selectItem id="s_vic" itemLabel="Victoria"
+									itemValue="Victoria" />
+								<f:selectItem id="s_van" itemLabel="Vancouver"
+									itemValue="Vancouver" />
+								<f:selectItem id="s_cha" itemLabel="Charlottetown"
+									itemValue="Charlottetown" />
+								<f:selectItem id="s_reg" itemLabel="Regina" itemValue="Regina" />
+								<f:selectItem id="s_edm" itemLabel="Edmonton"
+									itemValue="Edmonton" />
+								<f:selectItem id="s_sas" itemLabel="Saskatoon"
+									itemValue="Saskatoon" />
+								<f:selectItem id="s_cal" itemLabel="Calgary" itemValue="Calgary" />
+								<f:selectItem id="s_stjohns" itemLabel="St. John's"
+									itemValue="St. Johns" />
+								<f:selectItem id="s_ott" itemLabel="Ottawa" itemValue="Ottawa" />
+								<f:selectItem id="s_whi" itemLabel="Whitehorse"
+									itemValue="Whitehors" />
+								<f:selectItem id="s_yel" itemLabel="Yellowknife"
+									itemValue="Yellowknif" />
+								<f:selectItem id="s_uqa" itemLabel="Iqaluit" itemValue="Iqaluit" />
+								<f:selectItem id="s_kuj" itemLabel="Kuujjuaq"
+									itemValue="Kuujjuaq" />
+							</h:selectOneMenu>
+							<h:outputLabel for="s_province" value="Province: " />
+							<h:selectOneMenu id="s_province"
+								value="#{userBean.shippingProvince}">
+								<f:selectItem id="s_ab" itemLabel="AB" itemValue="Alberta" />
+								<f:selectItem id="s_bc" itemLabel="BC"
+									itemValue="British Columbia" />
+								<f:selectItem id="s_mb" itemLabel="MB" itemValue="Manitoba" />
+								<f:selectItem id="s_nb" itemLabel="NB" itemValue="New Brunswick" />
+								<f:selectItem id="s_nl" itemLabel="NL" itemValue="Newfoundland" />
+								<f:selectItem id="s_ns" itemLabel="NS" itemValue="Nova Scotia" />
+								<f:selectItem id="s_nt" itemLabel="NT"
+									itemValue="Northwest Territories" />
+								<f:selectItem id="s_nu" itemLabel="NU" itemValue="Nunavut" />
+								<f:selectItem id="s_on" itemLabel="ON" itemValue="Ontario" />
+								<f:selectItem id="s_pe" itemLabel="PE"
+									itemValue="Prince Edward Island" />
+								<f:selectItem id="s_qc" itemLabel="QC" itemValue="Quebec" />
+								<f:selectItem id="s_sk" itemLabel="SK" itemValue="Saskatchewan" />
+								<f:selectItem id="s_yt" itemLabel="YT" itemValue="Yukon" />
+							</h:selectOneMenu>
+							<h:outputLabel for="s_country" value="Country: " />
+						
+							<h:selectOneMenu id="s_country"
+								value="#{userBean.shippingCountry}">
+								<f:selectItem id="s_canada" itemLabel="Canada"
+									itemValue="Canada" />
+							</h:selectOneMenu>
+						
+							<h:outputLabel for="s_postal" value="Postal Code: " />
+							<br /> 
+							<h:inputText id="s_postal" value="#{userBean.shippingPostalCode}" >
+							<f:validateLength minimum="6"/>
+								</h:inputText>
+								<h:message for = "s_postal" />
+						</h:panelGrid>
+
+						<h:panelGroup styleClass="clear"></h:panelGroup>
+						<br />
+						<br />
+
+												<h:commandButton value="Register" action="#{userDAO.insert(userBean)}" 
+												style="margin-right:10px;" /> 
+ 
+
+											<h:commandButton value="Clear" action="#" 
+													style="margin-right:10px;" /> 
+											<h:commandButton value="Cancel" action="#" /> 
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

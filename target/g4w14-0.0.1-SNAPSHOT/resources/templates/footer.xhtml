@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<body>
+	<ui:debug hotkey="x"
+		rendered="#{initParam['javax.faces.PROJECT_STAGE'] eq 'Development'}" />
+	<div class="bottom">
+		<div class="container_12">
+			<div class="grid_4 alpha">
+				<h3 class="title">#{msgs.join}</h3>
+				<h:form action="#" method="post" id="newsletter-form">
+					<p>
+						<label for="name">#{msgs.nameLabel}</label> <input type="text"
+							name="name" id="name" value="" tabindex="1" />
+					</p>
+					<p>
+						<label for="email">#{msgs.emailLabel}</label> <input type="text"
+							name="email" id="email" value="" tabindex="2" />
+					</p>
+					<p>
+						<input type="submit" value="Join Us" />
+					</p>
+				</h:form>
+			</div>
+
+			<div class="grid_4 omega" id="footer-align-right">
+				<h3 class="title">#{msgs.contactLabel}</h3>
+				<p>
+					BOOKDEPOT 2014 © All Rights Reserved<br /> Montreal, Quebec,
+					Canada <br /> Email: <a href="#">info@bookdepot.com</a><br />
+					Dawson College - Computer Science <br /> Winter 2014 - Group 4 <br />
+					Chris, Matt, Polina, Tristan, Xander
+				</p>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="footer-logo">
+			<div id="footer-logo">
+				<h:graphicImage width="210" name="./images/footer-logo.png"
+					alt="image" />
+			</div>
+		</div>
+	</div>
+	<!-- Bottom End -->
+
+</body>
+</html>

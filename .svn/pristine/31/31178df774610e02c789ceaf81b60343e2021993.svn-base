@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+package g4w14.BookStore.beans;
+
+import java.sql.Timestamp;
+
+/**
+ * @author 1141649
+ *
+ */
+public class OrdersBean {
+
+	private int _id;
+	private Timestamp order_date;
+	private int user_id;
+	private OrderDetailsBean order_details;
+}

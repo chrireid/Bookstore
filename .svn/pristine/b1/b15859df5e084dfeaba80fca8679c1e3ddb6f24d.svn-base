@@ -1,0 +1,125 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.CustomerReviewBean;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+
+/**
+ * This class gives the search functionality to the customer reviews on the management site.
+ * 
+ * @author Chris
+ */
+@Named
+@SessionScoped
+public class CustomerReviewSearchAction implements Serializable {
+	
+	private static final long serialVersionUID = -3734874800190237466L;
+	
+	private CustomerReviewActionBean crab;
+	private ArrayList<CustomerReviewBean> customerReviews;
+	private CustomerReviewBean customerReviewToEdit;
+	
+	private long user_id;
+	private long book_id;
+	private String approval;
+	
+	private boolean popup;
+	
+	/*
+	 * Constructor
+	 */
+	public CustomerReviewSearchAction() throws NullPointerException, IOException, SQLException {
+		this.crab = new CustomerReviewActionBean();
+		this.customerReviews = crab.getAllCustomerReviews();
+		this.customerReviewToEdit = new CustomerReviewBean();
+		this.user_id = -1;
+		this.book_id = -1;
+		this.approval = "*"; // default search all
+		this.popup = false;
+		
+		
+	}
+	
+	
+	/*
+	 * GET/SET methods
+	 */
+	public long getUserId() {
+		return user_id;
+	}
+
+	public void setUserId(long user_id) {
+		this.user_id = user_id;
+	}
+
+	public long getBookId() {
+		return book_id;
+	}
+
+	public void setBookId(long book_id) {
+		this.book_id = book_id;
+	}
+
+	public String getApproval() {
+		return approval;
+	}
+
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+
+	public ArrayList<CustomerReviewBean> getCustomerReviews() {
+		return customerReviews;
+	}
+
+	public void setCustomerReviews(ArrayList<CustomerReviewBean> customerReviews) {
+		this.customerReviews = customerReviews;
+	}
+
+	public CustomerReviewBean getCustomerReviewToEdit() {
+		return customerReviewToEdit;
+	}
+
+	public void setCustomerReviewToEdit(CustomerReviewBean customerReviewToEdit) {
+		this.customerReviewToEdit = customerReviewToEdit;
+	}
+	
+	public boolean isPopup() {
+		return popup;
+	}
+
+	public void setPopup(boolean popup) {
+		this.popup = popup;
+	}
+
+
+	/*
+	 * Other methods
+	 */
+	public void search() throws SQLException {
+		
+		setCustomerReviews(crab.searchCustomerReviews(user_id, book_id, approval));
+	}
+	
+	public void edit(CustomerReviewBean crb) throws SQLException {
+		this.customerReviewToEdit = crb;
+		setPopup(true);
+	}
+	
+	public void submit() throws SQLException {
+		
+		crab.update(customerReviewToEdit);
+		closePopup();
+	}
+	
+	public void closePopup() {
+		setPopup(false);
+	}
+
+}

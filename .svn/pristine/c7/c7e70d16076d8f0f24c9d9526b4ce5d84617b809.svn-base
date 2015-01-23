@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+
+<h:form>
+	<div id="header">
+		<div class="container_12">
+
+			<div class="grid_13">
+				<h:commandLink title="BookDepot" fragment="home.xhtml">
+					<div class="grid_3 alpha">
+					<h:graphicImage width="200" name="./images/logo.png" alt="image" style="margin-top:13px;" /></div>
+				</h:commandLink>
+				<ul class="menu sf-menu">
+					<li><h:commandLink fragment="#" value="Home" /></li>
+					<li><h:commandLink fragment="#" value="Genres" />
+						<ul>
+							<ui:repeat value="#{genreDAO.allGenres}" var="genre_list">
+								<li><h:commandLink value="#{genre_list.genre}"></h:commandLink></li>
+							</ui:repeat>
+
+						</ul></li>
+					<li><a href="registration.xhtml">Registration</a></li>
+					<li><a href="shopping_cart.xhtml" >Shopping Cart</a></li>
+					<li><a href="single_book.xhtml">Random</a></li>
+					<li class="login-menu"><h:form id="newsletter-form">
+							<h:inputText id="login" required="true" label="login"
+								value="login" />
+							<h:outputText value="&#160;" />
+							<h:outputText value="&#160;" />
+							<h:commandButton class="button" value="Log in" action="#"></h:commandButton>
+							<br />
+							<h:inputText id="password" required="true" label="password"
+								value="password" />
+							<h:outputText value="&#160;" />
+							<h:outputText value="&#160;" />
+							<h:commandLink fragment="fantasy.xhtml">Forgot password?</h:commandLink>
+							<br />
+							<br />
+						</h:form></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			<div class="shadow-down"></div>
+		</div>
+	</div>
+
+</h:form>
+
+</html>

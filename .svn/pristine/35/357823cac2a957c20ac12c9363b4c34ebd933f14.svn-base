@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class BannerTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.BannerActionBean#BannerActionBean()}.
+	 */
+	@Test
+	public void testBannerActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.BannerActionBean#getAllBanners()}.
+	 */
+	@Test
+	public void testGetAllBanners() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.BannerActionBean#insert(g4w14.BookStore.beans.BannerBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.BannerActionBean#remove(g4w14.BookStore.beans.BannerBean)}.
+	 */
+	@Test
+	public void testRemove() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

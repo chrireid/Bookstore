@@ -1,0 +1,73 @@
+package g4w14.BookStore.actionbeans;
+
+
+
+import g4w14.BookStore.beans.CartBean;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+
+import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+
+@Named
+@RequestScoped
+public class CookieAction 
+{
+	
+	  ArrayList<Object> ac = null;
+	  ArrayList<CartBean> rl = null;
+	public ArrayList<CartBean> getCookies()
+	{
+	
+		FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
+      
+        // Retrieve all cookies
+        if (cookieMap == null || cookieMap.isEmpty()) {
+        	System.out.println("No cookies");
+        } else {
+        	ac = new ArrayList<>(cookieMap.values());
+        	rl = new ArrayList<CartBean>();
+        	String name, value;
+        	for(int i = 0; i < ac.size();i++)
+        	{
+        		 name = (((Cookie)ac.get(i)).getName());
+        		 value = (((Cookie)ac.get(i)).getValue());
+        		try
+        		{
+        			rl.add(new CartBean(Integer.parseInt(name),Integer.parseInt(value)));
+        		}
+        		catch (Exception e)
+        		{
+        			
+        		}
+        		
+        	}
+        }
+        return rl;
+       }
+	
+
+
+    public void writeCookie(String name, String val)  
+    {
+    	
+    	System.out.println("Inside writeCookie : " + name + " " + val);
+    			
+		HttpServletResponse resp = (HttpServletResponse) FacesContext
+				.getCurrentInstance().getExternalContext().getResponse();
+		resp.addCookie(new Cookie(name,val));
+    }
+	
+	}
+
+

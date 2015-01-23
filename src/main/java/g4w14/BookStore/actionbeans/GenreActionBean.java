@@ -1,0 +1,322 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.GenreBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The implementation class for Genres table database queries.
+ * 
+ * @author Christopher Reid
+ */
+@Named("genreAction")
+@RequestScoped
+public class GenreActionBean implements Serializable {
+
+	private static final long serialVersionUID = -4980763739964639318L;
+
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+
+	private boolean DEBUG;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	public GenreActionBean() throws IOException, NullPointerException {
+		super();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		log.debug("CustomersDAOImpl instantiated");
+		DEBUG = true;
+	}
+
+	/**
+	 * Inserts a genre into the Genres table by using a GenreBean object.
+	 * 
+	 * @param ub
+	 */
+	public long insert(GenreBean gb) throws SQLException {
+
+		System.out.println(gb.getGenre() + " " + gb.getId());
+		
+		long affected = 0;
+		String preparedSQL = "INSERT INTO genres VALUES (null, ?)";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the GenreBean object
+
+			ps.setString(1, gb.getGenre());
+			if (DEBUG) {
+				System.out.println();
+				System.out.println("**INSIDE genre insert ***");
+				System.out.println("Sending in " + ps.toString());
+
+			}
+			affected = ps.executeUpdate();
+
+			// must be 1 because ID is unique
+			if (affected != 1)
+				affected = -1;
+
+			// returns id of last book inserted
+
+			try (Connection conn = ds.getConnection();
+					PreparedStatement stmnt = connection
+							.prepareStatement("SELECT * FROM genres WHERE genre = ?");) {
+
+				stmnt.setString(1, gb.getGenre());
+				ResultSet rs = null;
+				rs = stmnt.executeQuery();
+				if (rs.next())
+					affected = rs.getLong("_id");
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		return affected;
+	}
+
+	/**
+	 * Updates a genre from the Genres table that matches the id.
+	 * 
+	 * @param gb
+	 */
+	public int update(GenreBean gb) throws SQLException {
+
+		int affected = 0;
+		String preparedSQL = "UPDATE genres SET genre = ? WHERE _id = ?";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the UserBean object
+			ps.setString(1, gb.getGenre());
+			ps.setLong(2, gb.getId());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [insert]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+	/**
+	 * Deletes a genre from the Genres table that matches the id.
+	 * 
+	 * @param gb
+	 */
+	public int remove(GenreBean gb) throws SQLException {
+
+		int affected = 0;
+		String preparedSQL = "DELETE FROM genres WHERE _id = ?";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the UserBean object
+			ps.setLong(1, gb.getId());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [delete]=" + affected);
+
+		// Return result
+		return affected;
+
+	}
+
+	/**
+	 * Returns all the records from the Genres table.
+	 * @author Matthieu,Tristan, Chris
+	 * @param gb
+	 */
+	public ArrayList<GenreBean> getAllGenres() throws SQLException {
+
+		ArrayList<GenreBean> genres = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM genres ORDER BY genre";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL);
+				ResultSet resultSet = ps.executeQuery()) {
+
+			while (resultSet.next()) {
+
+				GenreBean bean = new GenreBean();
+				bean.setId(resultSet.getLong("_ID"));
+				bean.setGenre(resultSet.getString("GENRE"));
+
+				genres.add(bean);
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [getAllGenres]=" + genres.size());
+		return genres;
+	}
+
+	/**
+	 * Returns all the records from the Genres table that match the id of the
+	 * bean.
+	 * 
+	 * @param gb
+	 */
+	public GenreBean getGenreById(GenreBean gb) throws SQLException {
+
+		GenreBean bean = new GenreBean();
+		String preparedSQL = "SELECT * FROM genres WHERE _id = ?";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			ps.setLong(1, gb.getId());
+
+			try (ResultSet resultSet = ps.executeQuery()) {
+
+				while (resultSet.next()) {
+
+					bean.setId(resultSet.getLong("_id"));
+					bean.setGenre(resultSet.getString("genre"));
+
+					if (DEBUG) {
+						System.out.println();
+						System.out.println("Inside getGenreById, sendin in: "
+								+ ps.toString());
+						System.out.println("Inside getGenreById resultSet");
+						System.out
+								.println("Inside getGenreById Bean contains..."
+										+ bean.getGenre() + " AND "
+										+ bean.getId());
+						System.out.println();
+					}
+
+				}
+			} catch (SQLException sqlex) {
+				// Log the exception
+				log.error("ResultSet failed", sqlex);
+				// Re-throw the exception
+				throw sqlex;
+			}
+
+		} catch (SQLException sqlex) {
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// log.debug("Total number of genres [searchByGenre]=" + genres.size());
+
+		return bean;
+	}
+
+	/**
+	 * Returns all the records from the Genres table that match the genre of the
+	 * bean.
+	 * 
+	 * @param gb
+	 */
+	public ArrayList<GenreBean> getGenresByGenre(GenreBean gb)
+			throws SQLException {
+
+		ArrayList<GenreBean> genres = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM genres WHERE genre = ?";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			ps.setString(1, gb.getGenre());
+			try (ResultSet resultSet = ps.executeQuery();) {
+
+				while (resultSet.next()) {
+
+					GenreBean bean = new GenreBean();
+					bean.setId(resultSet.getLong("_ID"));
+					bean.setGenre(resultSet.getString("GENRE"));
+					genres.add(bean);
+				}
+			} catch (SQLException sqlex) {
+				// Log the exception
+				log.error("ResultSet failed", sqlex);
+				// Re-throw the exception
+				throw sqlex;
+			}
+
+		} catch (SQLException sqlex) {
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [searchByGenre]=" + genres.size());
+		return genres;
+	}
+}

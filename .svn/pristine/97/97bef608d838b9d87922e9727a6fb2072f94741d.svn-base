@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+    xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Sales" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:outputText value="Management Options" class="h2" />
+					<br />
+					<br />
+
+					<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+					<div class="menu alpha">
+
+						<h:outputText value="Search by book:" />
+						<br /><br />
+
+						<h:form>
+							<h:inputText value="#{searchManagementAction.string}" size="32"
+								style="padding:7px;" />
+							<h:outputText value="&#160;" />
+							<br />
+	
+							<h:selectOneMenu id="searchby" value="#" immediate="true">
+	
+								<f:selectItem id="by_title" itemLabel="By title"
+									itemValue="by_title" />
+								<f:selectItem id="by_publisher" itemLabel="By publisher"
+									itemValue="by_publisher" />
+								<f:selectItem id="by_author" itemLabel="By author"
+									itemValue="by_author" />
+								<f:selectItem id="by_isbn" itemLabel="By isbn"
+									itemValue="by_isbn" />
+								<f:ajax execute="searchby"
+									listener="#{searchManagementAction.updateTypeSearch}" />
+							</h:selectOneMenu>
+	
+							<h:commandButton style="margin-left:3px;"
+								styleClass="small-button" type="submit" value="#{msgs.search}"
+								action="#{searchManagementAction.searchAction}">
+
+							</h:commandButton>
+							<br /> <br />
+						
+						</h:form>
+						
+
+					</div>
+					
+					<h:panelGrid styleClass="alpha" style="padding-top:25px;">
+						<h:form>
+							<rich:dataTable value="#{searchManagementAction.books}"
+									width="800" height="400" var="book" id="table">
+							
+								<!-- ISBN Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="ISBN" id="isbn" />
+									</f:facet>
+									<h:outputText value="#{book.isbn}" />
+								</h:column>
+								
+								<!-- TITLE Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Title" id="title" />
+									</f:facet>
+									<h:outputText value="#{book.title}" />
+								</h:column>
+
+
+
+							
+							</rich:dataTable>
+						</h:form>
+						
+					</h:panelGrid>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

@@ -1,0 +1,97 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.CustomerReviewBean;
+import g4w14.BookStore.beans.UserBean;
+
+import java.io.Serializable;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The implementation class for Submitting a Review.
+ * 
+ * @author Chris
+ *
+ */
+@Named("submitReviewAction")
+@RequestScoped
+public class SubmitReviewAction implements Serializable {
+	
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	
+	@Inject
+	UserBean ub;
+	
+	@Inject
+	CustomerReviewBean crb;
+	
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+	
+	public SubmitReviewAction() {
+		super();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		log.debug("submitReviewAction instantiated");
+		
+	}
+	
+
+	public int getRating() {
+		return crb.getRating();
+	}
+
+	public void setRating(String rating) {
+		
+		int ratingValue = 0;
+		
+		switch (rating) {
+			case "1":	ratingValue = 1; break;
+			case "2":	ratingValue = 2; break;
+			case "3":	ratingValue = 3; break;
+			case "4":	ratingValue = 4; break;
+			case "5":	ratingValue = 5; break;
+		}
+		
+		crb.setRating(ratingValue);
+	}
+	
+	public String getReview() {
+		return crb.getReview();
+	}
+	
+	public void setReview(String review) {
+		crb.setReview(review);
+	}
+	
+	public String getName() {
+		return crb.getName();
+	}
+	
+	public void setName(String name) {
+		crb.setName(name);
+	}
+	
+	public void submit(long book_id) {
+		
+		crb.setBookId(book_id);
+		crb.setUserId(ub.getId());
+		
+	}
+}

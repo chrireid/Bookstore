@@ -1,0 +1,60 @@
+package g4w14.prerenderview;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+@Named
+@RequestScoped
+public class PreRenderViewBean {
+
+	public void checkCookies() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, Object> cookieMap = context.getExternalContext()
+				.getRequestCookieMap();
+
+		// Retrieve all cookies
+		if (cookieMap == null || cookieMap.isEmpty()) {
+			System.out.println("No cookies");
+		} else {
+			ArrayList<Object> ac = new ArrayList<>(cookieMap.values());
+
+			for (Object c : ac) {
+				System.out.println(((Cookie) c).getName());
+				System.out.println(((Cookie) c).getValue());
+			}
+		}
+
+		// Retrieve a specific cookie
+		Object my_cookie = context.getExternalContext().getRequestCookieMap()
+				.get("KenCookie");
+		if (my_cookie != null) {
+			System.out.println(((Cookie) my_cookie).getName());
+			System.out.println(((Cookie) my_cookie).getValue());
+		}
+
+		writeCookie();
+	}
+
+	// http://docs.oracle.com/javaee/6/api/javax/faces/context/ExternalContext.html#addResponseCookie(java.lang.String,
+	// java.lang.String, java.util.Map)
+	// See the web site above for how to set
+	public void writeCookie() {
+		// ///////////////without properties
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().addResponseCookie("KenCookie",
+				"JSF Rules", null);
+		// ////////////// with properties
+		Cookie c = new Cookie("user_genre", "");
+		
+		HttpServletResponse resp = (HttpServletResponse) FacesContext
+				.getCurrentInstance().getExternalContext().getResponse();
+		resp.addCookie(c);
+	}
+
+}

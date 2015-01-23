@@ -1,0 +1,9 @@
+g4w14\BookStore\beans\AuthorBean.class
+g4w14\BookStore\beans\InvoiceBean.class
+g4w14\BookStore\beans\CustomerReviewBean.class
+g4w14\BookStore\beans\SurveyBean.class
+g4w14\BookStore\beans\UserBean.class
+g4w14\BookStore\beans\BannerBean.class
+g4w14\BookStore\util\LoadProperties.class
+g4w14\BookStore\beans\GenreBean.class
+g4w14\BookStore\beans\BookBean.class

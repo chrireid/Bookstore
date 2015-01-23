@@ -1,0 +1,172 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.UserBean;
+import g4w14.BookStore.beans.UserLoginBean;
+import g4w14.BookStore.util.LoadProperties;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The implementation class for Users Login (authentication).
+ * 
+ * @author Polina Rolich
+ */
+
+@Named("userLoginAction")
+@RequestScoped
+public class UserLoginActionBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5242694896272472620L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+
+	@Inject
+	UserBean ub;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	public UserLoginActionBean() throws IOException, NullPointerException {
+		super();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		log.debug("CustomersDAOImpl instantiated");
+	}
+
+	/**
+	 * Authenticate user by username and password
+	 */
+	public String authenticate() {
+		ArrayList<UserBean> users = new ArrayList<>();
+
+		// SQL String to search for user with right login and password
+		String preparedSQL = "SELECT * FROM users WHERE login = ? AND password = ?";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+			ps.setString(1, ub.getLogin());
+			ps.setString(2, ub.getPassword());
+
+			try (ResultSet resultSet = ps.executeQuery()) {
+				while (resultSet.next()) {
+					UserBean bean = new UserBean();
+					bean.setId(resultSet.getLong("_id"));
+					bean.setLogin(resultSet.getString("login"));
+					bean.setPassword(resultSet.getString("password"));
+					bean.setTitle(resultSet.getString("title"));
+					bean.setLastName(resultSet.getString("last_name"));
+					bean.setFirstName(resultSet.getString("first_name"));
+					bean.setCompany(resultSet.getString("company"));
+					bean.setAddress1(resultSet.getString("address1"));
+					bean.setAddress2(resultSet.getString("address2"));
+					bean.setCity(resultSet.getString("city"));
+					bean.setProvince(resultSet.getString("province"));
+					bean.setCountry(resultSet.getString("country"));
+					bean.setPostalCode(resultSet.getString("postal_code"));
+					bean.setShippingTitle(resultSet.getString("shipping_title"));
+					bean.setShippingLastName(resultSet
+							.getString("shipping_last_name"));
+					bean.setShippingFirstName(resultSet
+							.getString("shipping_first_name"));
+					bean.setShippingCompany(resultSet
+							.getString("shipping_company"));
+					bean.setShippingAddress1(resultSet
+							.getString("shipping_address1"));
+					bean.setShippingAddress2(resultSet
+							.getString("shipping_address2"));
+					bean.setShippingCity(resultSet.getString("shipping_city"));
+					bean.setShippingProvince(resultSet
+							.getString("shipping_province"));
+					bean.setShippingPostalCode(resultSet
+							.getString("shipping_postal_code"));
+					bean.setPhone(resultSet.getString("phone"));
+					bean.setCellphone(resultSet.getString("cellphone"));
+					bean.setEmail(resultSet.getString("email"));
+
+					bean.setManager(resultSet.getBoolean("manager"));
+
+					users.add(bean);
+				}
+			}
+
+		} catch (SQLException sqlex) {
+			log.error("ResultSet failed", sqlex);
+		}
+
+		log.debug("The user has been authenticated: " + users.size());
+		if (users.size() > 0) {
+			ub = users.get(0);
+			System.out.println("UserLoginActionBean: UserBean contains:\nid:\t"
+					+ ub.getId() + "\nlogin:\t" + ub.getLogin());
+			ub.setLoggedin(true);
+			return "authenticated";
+		} else {
+			return "login";
+		}
+	}
+
+	public String logout() {
+		if (ub.getId() != -1) {
+			ub.setId(-1);
+			ub.setLogin("");
+			ub.setPassword("");
+			ub.setTitle("");
+			ub.setLastName("");
+			ub.setFirstName("");
+			ub.setCompany("");
+			ub.setAddress1("");
+			ub.setAddress2("");
+			ub.setCity("");
+			ub.setProvince("");
+			ub.setCountry("");
+			ub.setPostalCode("");
+			ub.setShippingTitle("");
+			ub.setShippingLastName("");
+			ub.setShippingFirstName("");
+			ub.setShippingCompany("");
+			ub.setShippingAddress1("");
+			ub.setShippingAddress2("");
+			ub.setShippingCity("");
+			ub.setShippingProvince("");
+			ub.setShippingCountry("");
+			ub.setShippingPostalCode("");
+			ub.setPhone("");
+			ub.setCellphone("");
+			ub.setEmail("");
+			ub.setLastGenre(-1);
+			ub.setManager(false);
+			ub.setLoggedin(false);
+		}
+
+		return "logout";
+	}
+
+}

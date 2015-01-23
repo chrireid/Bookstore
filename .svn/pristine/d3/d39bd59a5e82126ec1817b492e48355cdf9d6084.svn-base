@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- Made by Polina, Chris, Matthieu -->
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="grid.css" target="head" /> 
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+<!-- Polina -->
+</h:head>
+
+<h:body styleClass="body">
+	<ui:insert name="content">
+
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+
+					<h:panelGroup styleClass="grid_5 alpha">
+						<h:outputText styleClass="h1 left-outline"
+							value="#{msgs.homeTitle}" />
+					</h:panelGroup>
+					<br /><br /><br /><br />
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					
+					<h:panelGroup class="menu grid_5">
+						<h:form>
+							<h:inputText value="#{searchAction.string}" size="32"
+								style="padding:7px;" />
+							<h:outputText value="&#160;" />
+							<br />
+
+							<h:selectOneMenu id="searchby" value="#" immediate="true">
+
+								<f:selectItem id="by_title" itemLabel="By title"
+									itemValue="by_title" />
+								<f:selectItem id="by_publisher" itemLabel="By publisher"
+									itemValue="by_publisher" />
+								<f:selectItem id="by_author" itemLabel="By author"
+									itemValue="by_author" />
+								<f:selectItem id="by_isbn" itemLabel="By isbn"
+									itemValue="by_isbn" />
+								<f:ajax execute="searchby"
+									listener="#{searchAction.updateTypeSearch}" />
+							</h:selectOneMenu>
+
+							<h:commandButton style="margin-left:3px;"
+								styleClass="small-button" type="submit" value="#{msgs.search}"
+								action="#{searchAction.searchActionMobile}">
+
+							</h:commandButton>
+							<br /> <br />
+							</h:form>
+						</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					<h:panelGroup class="grid_5">
+					<ui:repeat value="#{bookAction.randomBooksByGenre}" var="book">
+						<h:form>
+							<h:panelGroup class="grid_3">
+								
+									<h:graphicImage width="200" height="300" name="#{book.cover}"
+										alt="image" styleClass="shadow" />
+									<f:param name="_id" value="#{book.id}" />
+								<br />
+								<br />
+									<h3>#{book.title}</h3>
+									<f:param name="_id" value="#{book.id}" />
+								<h4 style="color: #EB540A;">$#{book.price}</h4>
+							</h:panelGroup>
+						</h:form>
+					</ui:repeat>
+					<p style="color: #f2f2f2; text-align: center;">__________________________________________________________________________________________________________</p>
+					</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+
+</h:body>
+</html>

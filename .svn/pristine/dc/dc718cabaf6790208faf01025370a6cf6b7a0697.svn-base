@@ -1,0 +1,204 @@
+package g4w14.BookStore.actionbeans;
+
+import g4w14.BookStore.beans.BookBean;
+import g4w14.BookStore.beans.CartBean;
+import g4w14.BookStore.beans.OrderDetailsBean;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
+
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Named("cartAction")
+@SessionScoped
+public class CartAction implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1172316563189830208L;
+	private ArrayList<Object> ac;
+	private ArrayList<CartBean> rl;
+	private BigDecimal bd = null;
+
+	@Inject
+	NavigationBean navBean;
+	@Inject
+	BookActionBean bookAction;
+	@Inject
+	CookieAction cookieA;
+
+	public ArrayList<CartBean> getCookies() {
+		ac = null;
+		rl = null;
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, Object> cookieMap = context.getExternalContext()
+				.getRequestCookieMap();
+
+		// Retrieve all cookies
+		if (cookieMap == null || cookieMap.isEmpty()) {
+			System.out.println("No cookies");
+		} else {
+			ac = new ArrayList<>(cookieMap.values());
+			rl = new ArrayList<CartBean>();
+			String name, value;
+			for (int i = 0; i < ac.size(); i++) {
+				name = (((Cookie) ac.get(i)).getName());
+				value = (((Cookie) ac.get(i)).getValue());
+				try {
+
+					rl.add(new CartBean(Integer.parseInt(name), Integer
+							.parseInt(value)));
+
+				} catch (NumberFormatException e) {
+					// Ignore if not an int
+				}
+
+			}
+		}
+		return rl;
+	}
+
+	public String getSubTotalCost() {
+
+		bd = null;
+		BookBean tempBook;
+
+		try {
+			for (int i = 0; i < rl.size(); i++) {
+				tempBook = (bookAction.getBookById(rl.get(i).getId() + ""));
+
+				if (!(rl.get(i).getQty() == 0)) {
+					if (bd == null && tempBook != null) {
+						bd = tempBook.getList_price().multiply(
+								new BigDecimal(rl.get(i).getQty()));
+
+					} else if (tempBook != null) {
+						bd = bd.add((tempBook.getList_price()
+								.multiply((new BigDecimal(rl.get(i).getQty())))));
+					}
+
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (bd != null)
+			return bd.toString();
+		else
+			return "0.00";
+
+	}
+
+	public void updateCart(int id, int qty) {
+
+		// int _id = Integer.parseInt(id);
+
+		for (int i = 0; i < rl.size(); i++) {
+			if (rl.get(i).getId() == id)
+				rl.get(i).setQty(qty);
+		}
+	}
+
+	public void commitChanges() {
+		System.out.println("COMMIT");
+		for (int i = 0; i < rl.size(); i++) {
+			if (rl.get(i).getQty() > 0) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.getExternalContext().addResponseCookie(
+						rl.get(i).getId() + "", rl.get(i).getQty() + "", null);
+			} else {
+				removeCookie(rl.get(i).getId());
+			}
+		}
+	}
+
+	/**
+	 * Remove cookies
+	 * 
+	 * @param id
+	 *            to be deleted
+	 */
+	public void removeCookie(int id) {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest httpServletRequest = (HttpServletRequest) context
+				.getExternalContext().getRequest();
+		Cookie[] cookies = httpServletRequest.getCookies();
+
+		for (int i = 0; i < cookies.length; i++) {
+			System.out.println((cookies[i].getName()));
+			if (cookies[i].getName().equals(id + "")) {
+
+				cookies[i].setMaxAge(0);
+				HttpServletResponse resp = (HttpServletResponse) context
+						.getExternalContext().getResponse();
+				resp.addCookie(cookies[i]);
+
+			}
+		}
+	}
+
+	// TODO FINISH THIS
+	public String convertToOrderDetails() {
+		ArrayList<OrderDetailsBean> orderDetails = null;
+		OrderDetailsBean temp;
+		BookBean book;
+		for (int i = 0; i < rl.size(); i++) {
+			try {
+				book = bookAction.getBookById("" + rl.get(i).getId());
+
+				temp = new OrderDetailsBean();
+				temp.setBook(book);
+				temp.setQuantity(rl.get(i).getQty());
+
+				orderDetails.add(temp);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public String getQst() {
+		String val;
+		if (bd == null)
+			val = "0.00";
+		else
+			val = (bd.multiply(new BigDecimal(0.09975))).toString().substring(
+					0, 4);
+
+		return val;
+	}
+
+	public String getTotalCost() {
+		String val;
+		if (bd == null)
+			val = "0.00";
+		else
+			val = (bd.multiply(new BigDecimal(0.09975))).add(bd).toString()
+					.substring(0, 4);
+
+		return val;
+	}
+
+	public String writeCookie(String name, String val) {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().addResponseCookie(name, val, null);
+
+		return navBean.toCheckout();
+	}
+
+}

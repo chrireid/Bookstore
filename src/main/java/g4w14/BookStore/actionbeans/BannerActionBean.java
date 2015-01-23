@@ -1,0 +1,254 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import g4w14.BookStore.beans.BannerBean;
+import g4w14.BookStore.beans.FileUploadBean;
+import g4w14.BookStore.util.LoadProperties;
+
+/**
+ * @author Xander, Tristan
+ * 
+ */
+
+@Named("bannerAction")
+@RequestScoped
+public class BannerActionBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3178465092877793425L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private boolean popup; 
+	private BannerBean editBB;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+	
+	@Inject
+	FileUploadBean fub;
+	
+	@Inject
+	BannerManagerId bmi;
+
+	/**
+	 * @throws IOException
+	 * @throws NullPointerException
+	 * 
+	 */
+	public BannerActionBean() throws NullPointerException, IOException {
+		super();
+		popup = false;
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/genres");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see g4w14.BookStore.persistence.interfaces.BannerDAO#getAllBanners()
+	 */
+	public ArrayList<BannerBean> getAllBanners() throws SQLException {
+		ArrayList<BannerBean> banners = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM banners";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL);
+				ResultSet resultSet = ps.executeQuery()) {
+
+			while (resultSet.next()) {
+
+				BannerBean bb = new BannerBean();
+				bb.setId(resultSet.getLong("_id"));
+				bb.setTitle(resultSet.getString("title"));
+				bb.setImage(resultSet.getString("image"));
+				bb.setActive(resultSet.getBoolean("active"));
+
+				banners.add(bb);
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [getAllBanners]=" + banners.size());
+		return banners;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.BannerDAO#insert(g4w14.BookStore
+	 * .beans.BannerBean)
+	 */
+	public int insert(BannerBean bb) throws SQLException {
+		int affected = 0;
+		String preparedSQL = "INSERT INTO banners (_id, title, image, active) VALUES (?,?,?,?)";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the BannerBean object
+			ps.setLong(1, bb.getId());
+			ps.setString(2, bb.getTitle());
+			ps.setString(3, fub.getLastInserted());
+			ps.setBoolean(4, bb.isActive());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [insert]=" + affected);
+
+		// Return result
+		return affected;
+	}
+	
+	/**
+	 * Gets two random "active" banners from database
+	 * @return
+	 * @throws SQLException
+	 */
+	public ArrayList<BannerBean> getRandomActiveBanners() throws SQLException
+	{
+	
+		ArrayList<BannerBean> banners = new ArrayList<BannerBean>();
+		String preparedSQL = "SELECT * FROM banners WHERE active = true ORDER by RAND() LIMIT 2";
+		// Using Java 1.7 try with resources
+				try (Connection connection = ds.getConnection();
+						PreparedStatement ps = connection.prepareStatement(preparedSQL);
+						ResultSet resultSet = ps.executeQuery()) {
+
+					while (resultSet.next()) {
+
+						BannerBean bb = new BannerBean();
+						bb.setId(resultSet.getLong("_id"));
+						bb.setTitle(resultSet.getString("title"));
+						bb.setImage(resultSet.getString("image"));
+						bb.setActive(resultSet.getBoolean("active"));
+
+						banners.add(bb);
+					}
+
+				} catch (SQLException sqlex) {
+
+					// Log the exception
+					log.error("JDBC Connection failed", sqlex);
+
+					// Re-throw the exception
+					throw sqlex;
+				}
+
+				log.debug("Total number of genres [getAllBanners]=" + banners.size());
+				return banners;
+	}
+	
+	public int updateBanner() throws SQLException
+	{
+		int affected = 0;
+		String preparedSQL = "UPDATE banners SET title = ?, active = ? WHERE _id = ?";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = ds.getConnection();
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the BannerBean object
+			System.out.println(editBB.toString());
+			System.out.println(editBB.isActive());
+			System.out.println(bmi.getId());
+			ps.setString(1, editBB.getTitle());
+			ps.setBoolean(2, editBB.isActive());
+			ps.setLong(3, bmi.getId());
+	
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+		return affected;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.BannerDAO#remove(g4w14.BookStore
+	 * .beans.BannerBean)
+	 */
+	public int remove(BannerBean bb) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public boolean getPopup()
+	{
+		return popup;
+	}
+	
+	public void editBanner(BannerBean bb)
+	{
+		editBB=bb;
+		bmi.setId(bb.getId()); 
+		popup = true;
+	}
+	
+	public BannerBean getEditBean()
+	{
+		if(editBB==null)
+			editBB = new BannerBean();
+		
+		return editBB;
+	}
+
+}

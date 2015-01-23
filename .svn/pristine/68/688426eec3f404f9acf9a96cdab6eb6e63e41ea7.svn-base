@@ -1,0 +1,478 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:rich="http://richfaces.org/rich">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+	<script type="text/javascript">
+		var visibleAdd = false;
+		var visibleSearch = false;
+
+		function showAdd() {
+			if (visibleAdd) {
+				document.getElementById("addBook").style.display = "none";
+				visibleAdd = false;
+			} else if (!visibleAdd) {
+				if (visibleSearch) {
+					document.getElementById("doSearch").style.display = "none";
+					visibleSearch = false;
+				}
+				document.getElementById("addBook").style.display = "block";
+				visibleAdd = true;
+			}
+		}
+		function showSearch() {
+			if (visibleSearch) {
+				document.getElementById("doSearch").style.display = "none";
+				visibleSearch = false;
+			} else if (!visibleSearch) {
+				if (visibleAdd) {
+					document.getElementById("addBook").style.display = "none";
+					visibleAdd = false;
+				}
+				document.getElementById("doSearch").style.display = "block";
+				visibleSearch = true;
+			}
+		}
+	</script>
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Inventory" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page"
+							value="you are a great manager" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					<h:outputText value="Management Options" class="h2" />
+					<br /> <br />
+
+
+					<h:commandButton class="management_list" onclick="showAdd()"
+						value="Add a new book" />
+					<br />
+					<h:commandButton class="management_list" onclick="showSearch()"
+						value="Search book(s)" />
+
+					<h:form id="addBook" style="display:none">
+						<h:panelGrid styleClass="grid_10 alpha" style="padding-left:200px">
+							<h:outputText class="h2" value="Add a new book"
+								style="text-decoration:underline;" />
+							<br />
+							<h:outputText class="h6" value="Title:" />
+							<h:inputText value="#{bookBean.title}" />
+							<br />
+							<h:outputText for="isbn" class="h6" value="ISBN:" />
+							<h:inputText id="isbn" value="#{bookBean.isbn}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="isbnerror" />
+							</h:inputText>
+							<h:message id="isbnerror" for="isbn" errorStyle="color:red;" />
+							<br />
+							<h:outputText class="h6" value="Publisher:" />
+							<h:selectOneMenu value="#{bookBean.publisher}">
+								<f:selectItems value="#{bookAction.allPublishers}" var="pub"
+									itemLabel="#{pub}" itemValue="#{pub}" />
+							</h:selectOneMenu>
+							<br />
+							<h:outputText for="nbp" class="h6" value="Number of pages:" />
+							<h:inputText id="nbp" value="#{bookBean.pages}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="nbperror" />
+							</h:inputText>
+							<h:message id="nbperror" for="nbp" errorStyle="color:red;" />
+							<br />
+							<h:outputText class="h6" value="Genre:" />
+							<h:selectOneMenu value="#{bookBean.genre}">
+								<f:selectItems value="#{genreAction.allGenres}" var="genre"
+									itemLabel="#{genre.genre}" itemValue="#{genre.id}" />
+							</h:selectOneMenu>
+							<br />
+							<h:outputText class="h6" value="Book type:" />
+							<h:selectOneMenu value="#{bookBean.type}">
+								<f:selectItem itemLabel="Soft Cover" itemValue="0" />
+								<f:selectItem itemLabel="Hard Cover" itemValue="1" />
+								<f:selectItem itemLabel="EBook" itemValue="2" />
+							</h:selectOneMenu>
+							<br />
+							<h:outputText class="h6" value="Eformat:" />
+							<h:selectOneMenu value="#{bookBean.eformat}">
+								<f:selectItem itemLabel="Not applicable" itemValue="0" />
+								<f:selectItem itemLabel="LIT" itemValue="1" />
+								<f:selectItem itemLabel="PDF" itemValue="2" />
+								<f:selectItem itemLabel="ODF" itemValue="3" />
+								<f:selectItem itemLabel="EPUB" itemValue="4" />
+							</h:selectOneMenu>
+							<br />
+							<h:outputText for="onhand" class="h6" value="On hand :" />
+							<h:inputText id="onhand" value="#{bookBean.on_hand}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="onhanderror" />
+							</h:inputText>
+							<h:message id="onhanderror" for="onhand" errorStyle="color:red;" />
+							<br />
+							<h:outputText for="wprice" class="h6" value="Wholesale price:" />
+							<h:inputText id="wprice" value="#{bookBean.wholesale_price}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="wpriceerror" />
+							</h:inputText>
+							<h:message id="wpriceerror" for="wprice" errorStyle="color:red;" />
+							<br />
+							<h:outputText for="lprice" class="h6" value="List price:" />
+							<h:inputText id="lprice" value="#{bookBean.list_price}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="lpriceerror" />
+							</h:inputText>
+							<h:message id="lpriceerror" for="lprice" errorStyle="color:red;" />
+							<br />
+							<h:outputText for="sprice" class="h6" value="Sale price:" />
+							<h:inputText id="sprice" value="#{bookBean.sale_price}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="spriceerror" />
+							</h:inputText>
+							<h:message id="spriceerror" for="sprice" errorStyle="color:red;" />
+							<br />
+							<h:outputText for="weight" class="h6" value="Weight:" />
+							<h:inputText id="weight" value="#{bookBean.weight}">
+								<f:validateRegex pattern="[0-9]+" />
+								<f:ajax event="keyup" render="werror" />
+							</h:inputText>
+							<h:message id="werror" for="weight" errorStyle="color:red;" />
+							<br />
+							<h:outputText class="h6" value="Dimensions:" />
+							<h:inputText value="#{bookBean.dimensions}"></h:inputText>
+							<br />
+							<h:outputText class="h6" value="Create date:" />
+							<rich:calendar value="#{calendarBean.selectedDate}"
+								locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+								datePattern="#{calendarBean.pattern}" cellWidth="24px"
+								cellHeight="22px" style="width:200px" showInput="true" />
+							<br />
+							<h:outputText class="h6" value="Status:" />
+							<h:selectOneMenu value="#{bookBean.status}">
+								<f:selectItem itemLabel="Not available" itemValue="0" />
+								<f:selectItem itemLabel="Sale" itemValue="1" />
+								<f:selectItem itemLabel="Liquidation" itemValue="2" />
+								<f:selectItem itemLabel="Backorder" itemValue="3" />
+								<f:selectItem itemLabel="Discontinued" itemValue="4" />
+							</h:selectOneMenu>
+							<br />
+							<h:commandButton action="#{bookAction.newBook}" value="Submit" />
+						</h:panelGrid>
+					</h:form>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+
+					<h:panelGrid id="doSearch" styleClass="grid_10 alpha"
+						style="padding-left:200px;display:none;">
+						<h:outputText class="h2" value="Search"
+							style="text-decoration:underline;" />
+						<br />
+						<h:outputText styleClass="h6"
+							value="Simply modify the book and click on 'Edit'" />
+						<br />
+						<br />
+						<h:form>
+							<div class="menu">
+
+								<h:inputText value="#{searchAction.string}" size="32" />
+
+								<h:selectOneMenu id="searchby" value="#" immediate="true">
+
+									<f:selectItem id="by_publisher" itemLabel="By publisher"
+										itemValue="by_publisher" />
+									<f:selectItem id="by_author" itemLabel="By author"
+										itemValue="by_author" />
+									<f:selectItem id="by_title" itemLabel="By title"
+										itemValue="by_title" />
+									<f:selectItem id="by_isbn" itemLabel="By isbn"
+										itemValue="by_isbn" />
+									<f:ajax execute="searchby"
+										listener="#{searchAction.updateTypeSearch}" />
+								</h:selectOneMenu>
+
+								<h:commandButton style="margin-left:3px;"
+									styleClass="small-button" type="submit" value="#{msgs.search}"
+									action="#{searchAction.searchActionMt}">
+								</h:commandButton>
+								<br />
+							</div>
+						</h:form>
+						<h:form id="form">
+							<h:panelGrid columns="2" columnClasses="top , top">
+								<rich:dataTable
+									onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+									onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+									value="#{searchAction.list_books}" var="books" id="table"
+									width="580px" height="400px">
+									<rich:column label="Title" id="col_1">
+										<f:facet name="header">
+											<h:outputText value="Title" id="title" />
+										</f:facet>
+										<h:outputText value="#{books.title}" />
+									</rich:column>
+									<rich:column id="col_2">
+										<f:facet name="header">
+											<h:outputText value="Authors" id="auth" />
+										</f:facet>
+										<ui:repeat var="authors" value="#{books.authors}">
+											<h:outputText
+												value="#{authors.firstname} #{authors.lastname}" />
+										</ui:repeat>
+									</rich:column>
+									<rich:column id="col_3">
+										<f:facet name="header">
+											<h:outputText value="Publisher" id="pub" />
+										</f:facet>
+										<h:outputText value="#{books.publisher}" />
+									</rich:column>
+									<rich:column id="col_4">
+										<f:facet name="header">
+											<h:outputText value="Pages" id="pages" />
+										</f:facet>
+										<h:outputText value="#{books.pages}" />
+									</rich:column>
+									<rich:column id="col_5">
+										<f:facet name="header">
+											<h:outputText value="Genre" id="genre" />
+										</f:facet>
+										<h:outputText value="#{books.genre.genre}" />
+									</rich:column>
+									<rich:column id="col_6">
+										<f:facet name="header">
+											<h:outputText value="Image" id="image" />
+										</f:facet>
+										<h:graphicImage name="#{books.cover}" alt="image" width="100%" />
+									</rich:column>
+									<rich:column id="col_7">
+										<f:facet name="header">
+											<h:outputText value="Type" id="type" />
+										</f:facet>
+										<h:outputText value="Hard cover" rendered="#{books.type eq 0}" />
+										<h:outputText value="Soft cover" rendered="#{books.type eq 1}" />
+										<h:outputText value="EBook" rendered="#{books.type eq 2}" />
+									</rich:column>
+									<rich:column id="col_8">
+										<f:facet name="header">
+											<h:outputText value="EBook Format" id="format" />
+										</f:facet>
+										<h:outputText value="#{books.eformat}" />
+									</rich:column>
+									<rich:column id="col_9">
+										<f:facet name="header">
+											<h:outputText value="On Hand" id="onhand" />
+										</f:facet>
+										<h:outputText value="#{books.on_hand}" />
+									</rich:column>
+									<rich:column id="col_10">
+										<f:facet name="header">
+											<h:outputText value="Wholesale Price" id="wp" />
+										</f:facet>
+										<h:outputText value="#{books.wholesale_price}" />
+									</rich:column>
+									<rich:column id="col_11">
+										<f:facet name="header">
+											<h:outputText value="List Price" id="lp" />
+										</f:facet>
+										<h:outputText value="#{books.list_price}" />
+									</rich:column>
+									<rich:column id="col_12">
+										<f:facet name="header">
+											<h:outputText value="Sale Price" id="sp" />
+										</f:facet>
+										<h:outputText value="#{books.sale_price}" />
+									</rich:column>
+									<rich:column id="col_13">
+										<f:facet name="header">
+											<h:outputText value="Weight" id="weight" />
+										</f:facet>
+										<h:outputText value="#{books.weight}" />
+									</rich:column>
+									<rich:column id="col_14">
+										<f:facet name="header">
+											<h:outputText value="Dimensions" id="dim" />
+										</f:facet>
+										<h:outputText value="#{books.dimensions}" />
+									</rich:column>
+									<rich:column id="col_15">
+										<f:facet name="header">
+											<h:outputText value="Create Date" id="crDate" />
+										</f:facet>
+										<h:outputText value="#{books.create_date}" />
+									</rich:column>
+									<rich:column id="col_16">
+										<f:facet name="header">
+											<h:outputText value="Status" id="status" />
+										</f:facet>
+										<h:outputText value="Not applicable"
+											rendered="#{books.status eq 0}" />
+										<h:outputText value="LIT" rendered="#{books.status eq 1}" />
+										<h:outputText value="PDF" rendered="#{books.status eq 3}" />
+										<h:outputText value="ODF" rendered="#{books.status eq 4}" />
+										<h:outputText value="EPUB" rendered="#{books.status eq 5}" />
+									</rich:column>
+									<rich:column id="col_17">
+
+										<f:facet name="header">
+											<h:outputText value="Options" id="options" />
+										</f:facet>
+										<h:commandButton value="Edit">
+											<f:ajax render="editBook"/>
+										</h:commandButton>
+										<h:commandButton value="Delete" onclick="showDelete()">
+
+										</h:commandButton>
+									</rich:column>
+								</rich:dataTable>
+							</h:panelGrid>
+						</h:form>
+
+					</h:panelGrid>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+
+					<h:form id="editBook" rendered="false">
+						<h:panelGrid styleClass="grid_10 alpha" style="padding-left:200px">
+							<h:outputText class="h2" value="Add a new book"
+								style="text-decoration:underline;" />
+							<br />
+							<h:outputText class="h6" value="Title:" />
+							<h:inputText value="#{bookBean.title}" />
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="isbn" class="h6" value="ISBN:" /> -->
+<!-- 							<h:inputText id="isbn" value="#{bookBean.isbn}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="isbnerror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="isbnerror" for="isbn" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Publisher:" /> -->
+<!-- 							<h:selectOneMenu value="#{bookBean.publisher}"> -->
+<!-- 								<f:selectItems value="#{bookAction.allPublishers}" var="pub" -->
+<!-- 									itemLabel="#{pub}" itemValue="#{pub}" /> -->
+<!-- 							</h:selectOneMenu> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="nbp" class="h6" value="Number of pages:" /> -->
+<!-- 							<h:inputText id="nbp" value="#{bookBean.pages}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="nbperror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="nbperror" for="nbp" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Genre:" /> -->
+<!-- 							<h:selectOneMenu value="#{bookBean.genre}"> -->
+<!-- 								<f:selectItems value="#{genreAction.allGenres}" var="genre" -->
+<!-- 									itemLabel="#{genre.genre}" itemValue="#{genre.id}" /> -->
+<!-- 							</h:selectOneMenu> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Book type:" /> -->
+<!-- 							<h:selectOneMenu value="#{bookBean.type}"> -->
+<!-- 								<f:selectItem itemLabel="Soft Cover" itemValue="0" /> -->
+<!-- 								<f:selectItem itemLabel="Hard Cover" itemValue="1" /> -->
+<!-- 								<f:selectItem itemLabel="EBook" itemValue="2" /> -->
+<!-- 							</h:selectOneMenu> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Eformat:" /> -->
+<!-- 							<h:selectOneMenu value="#{bookBean.eformat}"> -->
+<!-- 								<f:selectItem itemLabel="Not applicable" itemValue="0" /> -->
+<!-- 								<f:selectItem itemLabel="LIT" itemValue="1" /> -->
+<!-- 								<f:selectItem itemLabel="PDF" itemValue="2" /> -->
+<!-- 								<f:selectItem itemLabel="ODF" itemValue="3" /> -->
+<!-- 								<f:selectItem itemLabel="EPUB" itemValue="4" /> -->
+<!-- 							</h:selectOneMenu> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="onhand" class="h6" value="On hand :" /> -->
+<!-- 							<h:inputText id="onhand" value="#{bookBean.on_hand}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="onhanderror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="onhanderror" for="onhand" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="wprice" class="h6" value="Wholesale price:" /> -->
+<!-- 							<h:inputText id="wprice" value="#{bookBean.wholesale_price}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="wpriceerror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="wpriceerror" for="wprice" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="lprice" class="h6" value="List price:" /> -->
+<!-- 							<h:inputText id="lprice" value="#{bookBean.list_price}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="lpriceerror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="lpriceerror" for="lprice" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="sprice" class="h6" value="Sale price:" /> -->
+<!-- 							<h:inputText id="sprice" value="#{bookBean.sale_price}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="spriceerror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="spriceerror" for="sprice" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText for="weight" class="h6" value="Weight:" /> -->
+<!-- 							<h:inputText id="weight" value="#{bookBean.weight}"> -->
+<!-- 								<f:validateRegex pattern="[0-9]+" /> -->
+<!-- 								<f:ajax event="keyup" render="werror" /> -->
+<!-- 							</h:inputText> -->
+<!-- 							<h:message id="werror" for="weight" errorStyle="color:red;" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Dimensions:" /> -->
+<!-- 							<h:inputText value="#{bookBean.dimensions}"></h:inputText> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Create date:" /> -->
+<!-- 							<rich:calendar value="#{calendarBean.selectedDate}" -->
+<!-- 								locale="#{calendarBean.locale}" popup="#{calendarBean.popup}" -->
+<!-- 								datePattern="#{calendarBean.pattern}" cellWidth="24px" -->
+<!-- 								cellHeight="22px" style="width:200px" showInput="true" /> -->
+<!-- 							<br /> -->
+<!-- 							<h:outputText class="h6" value="Status:" /> -->
+<!-- 							<h:selectOneMenu value="#{bookBean.status}"> -->
+<!-- 								<f:selectItem itemLabel="Not available" itemValue="0" /> -->
+<!-- 								<f:selectItem itemLabel="Sale" itemValue="1" /> -->
+<!-- 								<f:selectItem itemLabel="Liquidation" itemValue="2" /> -->
+<!-- 								<f:selectItem itemLabel="Backorder" itemValue="3" /> -->
+<!-- 								<f:selectItem itemLabel="Discontinued" itemValue="4" /> -->
+<!-- 							</h:selectOneMenu> -->
+<!-- 							<br /> -->
+<!-- 							<h:commandButton action="" value="Submit" /> -->
+						</h:panelGrid>
+					</h:form>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+<!-- 	<ui:insert name="footer"> -->
+<!-- 		<ui:include src="/resources/templates/footer.xhtml" /> -->
+<!-- 	</ui:insert> -->
+</h:body>
+</html>

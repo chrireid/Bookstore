@@ -1,0 +1,228 @@
+package g4w14.tests;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import g4w14.BookStore.actionbeans.CustomerReviewActionBean;
+import g4w14.BookStore.beans.CustomerReviewBean;
+import g4w14.BookStore.beans.UserBean;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/** 
+ * The JUnit test cases for CustomerReviews database methods.
+ * 
+ * @author Christopher Reid
+ */
+public class CustomerReviewDBTests {
+
+	private CustomerReviewActionBean reviews;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+
+	/**
+	 * This method executes before each test is run. It drops the table, creates
+	 * the table and fills the table with records for destructive testing.
+	 * 
+	 * @throws SQLException
+	 */
+	@Before
+	public void dropCreatePopulateCustomersTable() throws SQLException {
+
+		// Database connection information
+		final String url = "jdbc:mysql://waldo2.dawsoncollege.qc.ca:3306/g4w14";
+		final String user = "g4w14";
+		final String password = "handle2parrot";
+
+		// MySQL statement to drop the table
+		String sql = "DROP TABLE IF EXISTS customer_reviews_test";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+
+		// MySQL statement to create the table
+		sql = "CREATE TABLE customer_reviews_test ("
+				+ "_id INT(10) NOT NULL AUTO_INCREMENT, "
+				+ "book_id INT(10) NOT NULL, "
+				+ "user_id INT(10) NOT NULL, "
+				+ "invoice_id INT(10) NOT NULL, "
+				+ "name VARCHAR(100) NOT NULL default '', "
+				+ "review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+				+ "rating INT(1) NOT NULL default 3, "
+				+ "review VARCHAR(750) NOT NULL default '', "
+				+ "approval BOOLEAN NOT NULL default 0, " 
+				+ "PRIMARY KEY (_id) "
+				+ ") ENGINE=InnoDB;";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+
+		// MySQL statement to populate the table
+		sql = "INSERT INTO customer_reviews_test(book_id, user_id, invoice_id, "
+				+ "name, rating, review, approval) VALUES (1, 1, 1, 'Chris', "
+				+ "5, 'This book was interesting...', 0), (1, 2, 3, 'Tristan', "
+				+ "1, 'This book was bad... really bad', 0), (2, 4, 6, 'Moose', "
+				+ "2, 'Needs more moose...', 0)";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(sql);) {
+
+			// Execute SQL
+			ps.execute();
+		}
+
+		// Instantiate the CustomerReviewDAOImpl object
+		try {
+			reviews = new CustomerReviewActionBean();
+		} catch (IOException e) {
+
+			// Log the exception
+			log.error("CustomerReviewDAOImpl instantiation failed", e);
+
+		} catch (NullPointerException e) {
+
+			// Log the exception
+			log.error("CustomerReviewDAOImpl instantiation failed", e);
+
+		}
+	}
+	
+	/**
+	 * Tests the insert method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testInsertCustomerReviewNull() throws SQLException {
+		reviews.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid CustomerReviewBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testInsertCustomerReviewValid() throws SQLException {
+		
+		CustomerReviewBean crb = new CustomerReviewBean();
+		crb.setBookId(6);
+		crb.setUserId(1);
+		crb.setInvoiceId(7);
+		crb.setName("Test Insert Method");
+		crb.setRating(4);
+		crb.setReview("Compelling and inspiring, #neknominate");
+		
+		int result = reviews.insert(crb);
+		assertEquals("1 row affected: ", 1, result);
+	}
+	
+	/**
+	 * Tests the update method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testUpdateCustomerReviewNull() throws SQLException {
+		reviews.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid CustomerReviewBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testUpdateCustomerReviewValid() throws SQLException {
+		
+		CustomerReviewBean crb = new CustomerReviewBean();
+		crb.setId(1);
+		crb.setReview("This review changed");
+		
+		int result = reviews.update(crb);
+		assertEquals("1 row affected", 1, result);
+	}
+	
+	/**
+	 * Tests the update method with an invalid CustomerReviewBean (doesn't exist).
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testUpdateCustomerReviewInvalid() throws SQLException {
+		
+		CustomerReviewBean crb = new CustomerReviewBean();
+		crb.setId(171);
+		crb.setReview("This review change did nothing.");
+		
+		int result = reviews.update(crb);
+		assertEquals("0 rows affected", 0, result);
+	}
+	
+	/**
+	 * Tests the delete method with a null value.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(expected = NullPointerException.class, timeout = 1000)
+	public void testDeleteCustomerReviewNull() throws SQLException {
+		reviews.insert(null);
+		fail("NullPointerException not thrown when expected");
+	}
+	
+	/** 
+	 * Tests the insert method with a valid CustomerReviewBean.
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testDeleteCustomerReviewValid() throws SQLException {
+		
+		CustomerReviewBean crb = new CustomerReviewBean();
+		crb.setId(2);
+		
+		int result = reviews.delete(crb);
+		assertEquals("1 row affected", 1, result);
+	}
+	
+	/**
+	 * Tests the delete method with an invalid CustomerReviewBean (doesn't exist).
+	 * 
+	 * @throws SQLException
+	 */
+	@Test(timeout = 1000)
+	public void testDeleteCustomerReviewInvalid() throws SQLException {
+		
+		CustomerReviewBean crb = new CustomerReviewBean();
+		crb.setId(51);
+		
+		int result = reviews.delete(crb);
+		assertEquals("0 rows affected", 0, result);
+	}
+}

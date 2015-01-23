@@ -1,0 +1,154 @@
+/**
+ * 
+ */
+package g4w14.BookStore.actionbeans;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import g4w14.BookStore.beans.BannerBean;
+import g4w14.BookStore.util.LoadProperties;
+
+/**
+ * @author Xander
+ * 
+ */
+
+@Named("bannerAction")
+@RequestScoped
+public class BannerActionBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3178465092877793425L;
+	private final Logger log = LoggerFactory.getLogger(this.getClass()
+			.getName());
+	private String url;
+	private String user;
+	private String password;
+
+	// See the context.xml for the datasource
+	@Resource(name = "jdbc/genres")
+	private DataSource ds;
+
+	/**
+	 * @throws IOException
+	 * @throws NullPointerException
+	 * 
+	 */
+	public BannerActionBean() throws NullPointerException, IOException {
+		super();
+		String values[] = LoadProperties.loadProperties();
+		url = values[0];
+		user = values[1];
+		password = values[2];
+		log.debug("CustomersDAOImpl instantiated");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see g4w14.BookStore.persistence.interfaces.BannerDAO#getAllBanners()
+	 */
+	public ArrayList<BannerBean> getAllBanners() throws SQLException {
+		ArrayList<BannerBean> banners = new ArrayList<>();
+		String preparedSQL = "SELECT * FROM banners";
+
+		// Using Java 1.7 try with resources
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL);
+				ResultSet resultSet = ps.executeQuery()) {
+
+			while (resultSet.next()) {
+
+				BannerBean bb = new BannerBean();
+				bb.setId(resultSet.getLong("_id"));
+				bb.setTitle(resultSet.getString("title"));
+				bb.setImage(resultSet.getString("image"));
+				bb.setActive(resultSet.getBoolean("active"));
+
+				banners.add(bb);
+			}
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		log.debug("Total number of genres [getAllBanners]=" + banners.size());
+		return banners;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.BannerDAO#insert(g4w14.BookStore
+	 * .beans.BannerBean)
+	 */
+	public int insert(BannerBean bb) throws SQLException {
+		int affected = 0;
+		String preparedSQL = "INSERT INTO banners (_id, title, image, active) VALUES (?,?,?,?)";
+
+		// Using Java 1.7 try with resources to create JDBC connection
+		try (Connection connection = DriverManager.getConnection(url, user,
+				password);
+				PreparedStatement ps = connection.prepareStatement(preparedSQL)) {
+
+			// Set the values of PreparedStatement from the BannerBean object
+			ps.setLong(1, bb.getId());
+			ps.setString(2, bb.getTitle());
+			ps.setString(3, bb.getImage());
+			ps.setBoolean(4, bb.isActive());
+
+			affected = ps.executeUpdate();
+
+		} catch (SQLException sqlex) {
+
+			// Log the exception
+			log.error("JDBC Connection failed", sqlex);
+
+			// Re-throw the exception
+			throw sqlex;
+		}
+
+		// Log the number of affected rows in table
+		log.debug("Number of rows affected [insert]=" + affected);
+
+		// Return result
+		return affected;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * g4w14.BookStore.persistence.interfaces.BannerDAO#remove(g4w14.BookStore
+	 * .beans.BannerBean)
+	 */
+	public int remove(BannerBean bb) throws SQLException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

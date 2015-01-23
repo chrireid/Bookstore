@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup id="slideshow"></h:panelGroup>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="Summary" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_5">
+						<h:outputText styleClass="h2 main-page" value="Your Shopping Cart" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+					
+
+						<h:form>
+					<h:panelGrid class="box-style grid_10 omega" columns="5"
+						style="padding-top:25px;width:780px;">
+						<h:outputText value="Remove"/>
+						<h:outputText value="Book Title"/>
+						<h:outputText value="Preview" />
+						<h:outputText value="Quantity" />
+						<h:outputText value="Price" />
+					
+							<ui:repeat value="#{cookieAction.cookies}" var="var">
+								<h:panelGrid columns="5" style="padding-top:25px;padding-right:25px;">
+								<h:commandButton styleClass="small-button" value="X" action="#{cookieAction.removeCookie(var.id)}"></h:commandButton>
+
+						
+								<h:outputText value="#{bookAction.getBookById(var.id).title}" styleClass="h2"></h:outputText>
+								<h:graphicImage name="#{bookAction.getBookById(var.id).cover}" width="100" alt="image" styleClass="shadow" />
+							
+									<h:panelGroup >
+									<!--  
+						  				<h:selectOneMenu name="qtySelectMenu" id="cartQtyMenu" value="#{cartBean.cartSelection}" immediate="true">
+										<f:selectItems value="#{var.list}" itemLabel="#{numbr}" itemValue="#{numbr}" var="numbr"/>
+										</h:selectOneMenu>-->
+										
+									<h:inputText id="textFor" size="1" value="#{var.qty}">
+								
+									<f:ajax event="blur" execute="@this"  listener="#{cookieAction.updateCart(var.id,var.qty)}"/>
+								
+									
+									</h:inputText>
+									</h:panelGroup>
+									
+										<h:outputText value="#{bookAction.getBookById(var.id).list_price}">$</h:outputText>
+								</h:panelGrid>
+							</ui:repeat>
+						<br />	
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText><h3>SUBTOTAL:</h3></h:outputText>
+						<h:outputText value="#{cookieAction.subTotalCost}">$</h:outputText>
+						
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText><h3>P.S.T./Q.S.T.:</h3></h:outputText>
+						<h:outputText value="#{cookieAction.qst}">$</h:outputText>
+						<!--  cookieAction.qst -->
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText value=""></h:outputText>
+						<h:outputText><h3>TOTAL TO PAY:</h3></h:outputText>
+						<h:outputText value="#{cookieAction.totalCost}">$</h:outputText>
+
+					</h:panelGrid>
+					
+					<h:panelGroup class="grid_10 to_cart">
+						<h:commandLink action="#{OrderDe}" value="CHECKOUT" class="addtocart"/>
+						<h:commandLink action="#{cookieAction.convertToOrderDetails}" value="UPDATE CART" class="addtocart"/>
+						<!-- update cart - if the quantity was changed, update does recalculating the taxes and total -->
+
+					</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					</h:form>
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

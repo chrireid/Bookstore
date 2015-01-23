@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui" >
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<!--  Christopher Reid -->
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+<!-- by Polina -->
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+	
+	<br />
+	<br />
+	<br />
+
+	<h:panelGroup styleClass="grid_3 alpha">
+		<h:outputText styleClass="h1 left-outline" value="Reviews Management" />
+	</h:panelGroup>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+
+					<br /> <br /> <br /> <br /> <br />
+
+					<center>
+						<h:outputText value="Links can go here" />
+						<p style="color: #f2f2f2;">______________________________________________________________________________________________________________________</p>
+					</center>
+					
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					
+					<h:form>
+						<div class="grid_4 alpha">
+								<h:outputText value="Search for a customer review: " />
+								
+								<br />
+								<br />
+								
+								<h:outputLabel for="userId" value="User Id:" />
+								<h:inputText value="#{customerReviewSearchAction.userId}" id="userId" />
+								
+								<br />
+								
+								<h:outputLabel for="bookId" value="Book Id:" />
+								<h:inputText value="#{customerReviewSearchAction.bookId}" id="bookId" />
+								
+								<br />
+								
+								<h:outputLabel for="startDate" value="Start Date: " />
+								<rich:calendar value=""
+									locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+									datePattern="#{calendarBean.pattern}" cellWidth="24px"
+									cellHeight="22px" style="width:200px" showInput="true"
+									id="startDate" />
+									
+								<br />
+									
+								<h:outputLabel for="endDate" value="End Date:" />
+								<rich:calendar value=""
+									locale="#{calendarBean.locale}" popup="#{calendarBean.popup}"
+									datePattern="#{calendarBean.pattern}" cellWidth="24px"
+									cellHeight="22px" style="width:200px" showInput="true"
+									id="endDate" />
+									
+								<br />
+									
+								<h:outputLabel for="approval" value="Approval: " />
+								<h:selectOneRadio layout="pageDirection" id="approval" 
+										value="#{customerReviewSearchAction.approval}" >
+									<f:selectItem itemLabel="All" itemValue="*" />
+									<f:selectItem itemLabel="Pending Approval" itemValue="0" />
+									<f:selectItem itemLabel="Approved" itemValue="1" />
+									<f:selectItem itemLabel="Rejected" itemValue="2" />
+								</h:selectOneRadio>
+								
+								<br />
+								<h:commandButton value="Search Customer Reviews"
+									action="#{customerReviewSearchAction.search}" />
+							
+						</div>
+
+					</h:form>
+					
+					<h:panelGrid styleClass="grid_7 alpha" style="padding-top:25px;">
+						<h:form>
+							<rich:dataTable value="#{customerReviewSearchAction.customerReviews}"
+									width="800" height="400" var="review" id="table">
+							
+								<!-- Book Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Book(Id)" id="bookId" />
+									</f:facet>
+									<h:outputText value="#{review.bookId}" />
+								</h:column>
+								
+								<!-- User Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="User(Id)" id="userId" />
+									</f:facet>
+									<h:outputText value="#{review.userId}" />
+								</h:column>
+								
+								<!-- Name Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Name" id="name" />
+									</f:facet>
+									<h:outputText value="#{review.name}" />
+								</h:column>
+								
+								<!-- Review Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Review" id="review" />
+									</f:facet>
+									<h:outputText value="#{review.review}" />
+								</h:column>
+								
+								<!-- Rating Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Rating" id="rating" />
+									</f:facet>
+									<h:outputText value="#{review.rating}" />
+								</h:column>
+								
+								<!-- Approval Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Approval" id="approval" />
+									</f:facet>
+									<h:outputText value="#{review.approval}" />
+								</h:column>
+								
+								<!-- ReviewDate Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Review Date" id="reviewDate" />
+									</f:facet>
+									<h:outputText value="#{review.reviewDate}" />
+								</h:column>
+								
+								<!-- Edit? Column -->
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Actions" id="actions" />
+									</f:facet>
+									<h:commandButton value="Edit" 
+										action="#{customerReviewSearchAction.edit(review)}" >
+									</h:commandButton>
+								</h:column>
+							
+							</rich:dataTable>
+						</h:form>
+						
+					</h:panelGrid>
+					
+					
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+					
+					<p:dialog visible="#{customerReviewSearchAction.popup}"
+						showEffect="explode" hideEffect="explode"
+						header="Edit Customer Review 2.0"
+						width="600" height="500" modal="true" resizable="false" >
+						
+						<p:ajax event="close" listener="#{customerReviewSearchAction.closePopup}" />
+						
+						<h:form>
+						
+							<h:panelGrid>
+							
+								<h:outputText for="name" value="Name:" />
+								<h:inputText id="name" value="#{customerReviewSearchAction.customerReviewToEdit.name}">
+									<f:validateRegex pattern="[0-9a-zA-Z' ]+" />
+								</h:inputText>
+								
+								<h:outputText for="rating" value="Rating:" />
+								<h:selectOneMenu id="rating" value="#{customerReviewSearchAction.customerReviewToEdit.rating}" >
+									<f:selectItem itemLabel="1 star" itemValue="1" />
+									<f:selectItem itemLabel="2 stars" itemValue="2" />
+									<f:selectItem itemLabel="3 stars" itemValue="3" />
+									<f:selectItem itemLabel="4 stars" itemValue="4" />
+									<f:selectItem itemLabel="5 stars" itemValue="5"  />
+								</h:selectOneMenu>
+								
+								<h:outputText for="review" value="Review:" />
+								<h:inputTextarea id="review" 
+									value="#{customerReviewSearchAction.customerReviewToEdit.review}"
+									cols="90" rows="8" resizable="false" >
+								</h:inputTextarea>
+								
+								<h:outputText for="approval" value="Approval:" />
+								<h:selectOneMenu id="approval" value="#{customerReviewSearchAction.customerReviewToEdit.approval}" >
+									<f:selectItem itemLabel="Pending Approval" itemValue="0" />
+									<f:selectItem itemLabel="Approved" itemValue="1" />
+									<f:selectItem itemLabel="Rejected" itemValue="2" />
+								</h:selectOneMenu>
+								
+							</h:panelGrid>
+							
+							<br /> <br />
+							
+							<h:commandButton value="Submit Changes" action="#{customerReviewSearchAction.submit}" />
+							
+						</h:form>
+						
+					</p:dialog>
+					
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+</h:body>
+</html>

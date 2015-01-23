@@ -1,0 +1,14 @@
+package g4w14.BookStore.controller;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+@ManagedBean(name = "menuBarController", eager = true)
+@RequestScoped
+public class MenuBarController {
+
+	public String goToContact(){
+		return "contact";
+		
+	}
+}

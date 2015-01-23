@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>#{msgs.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<div id="slideshow"></div>
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline"
+							value="#{msgs.homeTitle}" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="grid_7">
+						<h:outputText styleClass="h2 main-page" value="#{msgs.slogan}" />
+					</h:panelGroup>
+					<br /> <br /> <br /> <br /> <br />
+					<ui:repeat value="#{bookDAO.randomBooksByGenre}" var="book">
+						<h:panelGroup class="grid_3">
+
+							<h:graphicImage width="200" name="#{book.cover}" alt="image"
+								styleClass="shadow" />
+							<br />
+							<br />
+							<h3>#{book.title}</h3>
+							<h3>#{book.cover}</h3>
+							<h4 style="color: #EB540A;">ONLY $#{book.list_price}</h4>
+
+						</h:panelGroup>
+					</ui:repeat>
+					<!-- 					<h:panelGroup class="grid_3"> -->
+					<!-- 						<h:graphicImage width="200" name="./images/books/0553579908.jpg" -->
+					<!-- 							alt="image" styleClass="shadow" /> -->
+					<!-- 						<br /> -->
+					<!-- 						<br /> -->
+					<!-- 						<ui:repeat value="#{bookDAO.getBooksByTitle('Clash')}" var="bok"> -->
+					<!-- 							<h3>#{bok.title}</h3> -->
+					<!-- 						</ui:repeat> -->
+					<!-- 						<h4 style="color: #EB540A;">ONLY $12.99</h4> -->
+
+					<!-- 					</h:panelGroup> -->
+
+					<!-- 					<h:panelGroup class="grid_3"> -->
+					<!-- 						<h:graphicImage width="200" name="./images/books/8497941640.jpg" -->
+					<!-- 							alt="image" styleClass="shadow" /> -->
+					<!-- 						<br /> -->
+					<!-- 						<br /> -->
+					<!-- 						<h3>Anna Karenina</h3> -->
+					<!-- 						<h4 style="color: #EB540A;">ONLY $29.99</h4> -->
+
+					<!-- 					</h:panelGroup> -->
+
+					<!-- 					<h:panelGroup class="grid_3"> -->
+					<!-- 						<h:graphicImage width="200" name="./images/books/0007448031.jpg" -->
+					<!-- 							alt="image" styleClass="shadow" /> -->
+					<!-- 						<br /> -->
+					<!-- 						<br /> -->
+					<!-- 						<h3>The Game of Thrones</h3> -->
+					<!-- 						<h4 style="color: #EB540A;">ONLY $12.99</h4> -->
+
+					<!-- 					</h:panelGroup> -->
+					<p style="color: #f2f2f2; text-align: center;">______________________________________________________________________________________________________________________</p>
+					<br />
+					<h:panelGroup class="grid_5 alpha"
+						style="padding:10px 10px 10px 10px;">
+						<h:outputText styleClass="h2" value="#{msgs.newsTitle}"
+							style="color:#EB540A;" />
+						<br />
+						<h:panelGroup>
+							<br />
+							<h3>‘Speed of light’ fibre optic</h3>
+							<p style="color: #EB540A;">
+								/ 25 April 2013 / <br /> by Professor David Richardson <br />
+							</p>
+							<p>By exploiting a characteristic of hollow-core optical
+								fibres, researchers at the University of Southampton claim to
+								have brought data transmission rates within touching distance of
+								the speed of light.</p>
+							<a href="http://www.google.com/">#{msgs.readMore}</a>
+						</h:panelGroup>
+
+					</h:panelGroup>
+					<h:panelGroup class="grid_5">
+						<h:outputText styleClass="h2" value="RECENTLY ADDED"
+							style="color:#EB540A;" />
+						<br />
+						<br />
+						<div class="grid_2">
+							<h:graphicImage name="./images/books/0307743667.jpg" alt="image"
+								styleClass="shadow" width="100" />
+							Some Stonehendge
+						</div>
+						<div class="grid_2">
+							<h:graphicImage name="./images/books/0307743683.jpg" alt="image"
+								styleClass="shadow" width="100" />
+							<br />It is the best henge of all.
+						</div>
+						<br />
+						<br />
+						<h:panelGroup styleClass="clear"></h:panelGroup>
+						<div class="grid_2">
+							<h:graphicImage name="./images/books/067103264X.jpg" alt="image"
+								styleClass="shadow" width="100" />
+							French fries.
+						</div>
+						<div class="grid_2">
+							<h:graphicImage name="./images/books/067103264X.jpg" alt="image"
+								styleClass="shadow" width="100" />
+							Some dubstep maybe?
+						</div>
+					</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

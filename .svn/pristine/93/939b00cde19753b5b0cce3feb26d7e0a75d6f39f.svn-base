@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:of="http://omnifaces.org/functions">
+<h:head>
+	<title>#{msg.homeTitle}</title>
+	<h:outputStylesheet library="css" name="colorbox.css" target="head" />
+	<h:outputStylesheet library="css" name="custom.css" target="head" />
+	<h:outputStylesheet library="css" name="fixes.css" target="head" />
+	<h:outputStylesheet library="css" name="grid.css" target="head" />
+	<h:outputStylesheet library="css" name="reset.css" target="head" />
+	<h:outputStylesheet library="css" name="slickmap.css" target="head" />
+	<h:outputStylesheet library="css" name="styles.css" target="head" />
+	<h:outputStylesheet library="css" name="superfish.css" target="head" />
+	<h:outputStylesheet library="css" name="tipTip.css" target="head" />
+
+</h:head>
+<h:body styleClass="body">
+
+	<ui:insert name="menu">
+		<ui:include src="/resources/templates/menu.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="right_pane">
+		<ui:include src="/resources/templates/right_pane.xhtml" />
+	</ui:insert>
+
+	<ui:insert name="content">
+		<h:panelGroup id="wrapper">
+
+			<h:panelGroup class="container_12">
+				<div class="main-content">
+					<h:panelGroup styleClass="grid_3 alpha">
+						<h:outputText styleClass="h1 left-outline" value="SEARCH" />
+					</h:panelGroup>
+
+					<br /> <br /> <br /> <br /> <br />
+					<h:panelGroup class="grid_10">
+						<ui:repeat value="#{searchAction.list_books}" var="book">
+							<h:form>
+								<h:panelGroup class="grid_3">
+									<h:commandLink width="200" action="#{bookAction.getShowBook}"
+										alt="image" styleClass="shadow">
+										<h:graphicImage width="200" name="#{book.cover}" alt="image"
+											styleClass="shadow" />
+										<f:param name="_id" value="#{book.id}" />
+									</h:commandLink>
+									<br />
+									<br />
+									<h:commandLink action="#{bookAction.getShowBook}">
+										<h3>#{of:abbreviate(book.title, 20)}</h3>
+										<f:param name="_id" value="#{book.id}" />
+									</h:commandLink>
+									<h4 style="color: #EB540A;">ONLY $#{book.list_price}</h4>
+								</h:panelGroup>
+							</h:form>
+						</ui:repeat>
+					</h:panelGroup>
+					<h:panelGroup styleClass="clear"></h:panelGroup>
+
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:insert>
+
+	<ui:insert name="footer">
+		<ui:include src="/resources/templates/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

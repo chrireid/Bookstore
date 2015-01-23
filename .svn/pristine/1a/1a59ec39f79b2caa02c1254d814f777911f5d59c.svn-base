@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class UserTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#UserActionBean()}.
+	 */
+	@Test
+	public void testUserActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#insert(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#update(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#updatePassword(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testUpdatePassword() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#delete(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testDelete() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#getAllUsers()}.
+	 */
+	@Test
+	public void testGetAllUsers() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.UserActionBean#searchByForm(g4w14.BookStore.beans.UserBean)}.
+	 */
+	@Test
+	public void testSearchByForm() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}

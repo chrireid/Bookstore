@@ -1,0 +1,72 @@
+/**
+ * 
+ */
+package g4w14.tests;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+/**
+ * @author Xander
+ *
+ */
+public class CustomerReviewTest {
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#CustomerReviewActionBean()}.
+	 */
+	@Test
+	public void testCustomerReviewActionBean() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#insert(g4w14.BookStore.beans.CustomerReviewBean)}.
+	 */
+	@Test
+	public void testInsert() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#update(g4w14.BookStore.beans.CustomerReviewBean)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#remove(g4w14.BookStore.beans.CustomerReviewBean)}.
+	 */
+	@Test
+	public void testRemove() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#getCustomerReviewsById()}.
+	 */
+	@Test
+	public void testGetCustomerReviewsById() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#getAlreadyReviewed()}.
+	 */
+	@Test
+	public void testGetAlreadyReviewed() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link g4w14.BookStore.actionbeans.CustomerReviewActionBean#getCustomerReviews()}.
+	 */
+	@Test
+	public void testGetCustomerReviews() {
+		fail("Not yet implemented"); // TODO
+	}
+
+}
